@@ -1,25 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>  
-    <title>Lofi Haven ✪</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="Misto Portfolio Template">
-    <meta name="keywords" content="portfolio">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>Lofi Haven ✪</title>
+<meta charset="UTF-8">
+<meta name="description" content="Misto Portfolio Template">
+<meta name="keywords" content="portfolio">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/style.css"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #1e1e1e;
+            color: #f5f5f5;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+        }
 
+        /* Dark and Light Mode */
+        .dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .light-mode {
+            background-color: #f0f0f0;
+            color: #1e1e1e;
+        }
+
+        /* Container */
+        .container {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 20px auto;
+            line-height: 1.6;
+        }
+
+        button {
+            background-color: #ff4081;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #e73370;
+        }
+
+        /* Social Media Links */
+        .social-links a {
+            color: #ff4081;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        /* Lofi Girl Image */
+        .lofi-girl {
+            width: 300px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+        }
+
+        /* Rain Effect (Fixed) */
+        .rain {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.3);
+            animation: fall linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes fall {
+            0% { top: -60px; }
+            100% { top: 110vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Rain Background -->
+    <div class="rain" id="rain"></div>
+
+    <!-- Music -->
+    <audio id="background-music" autoplay loop>
+        <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_7771e7b2d5.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Lofi Girl Image -->
+        <img class="lofi-girl" src="https://i.pinimg.com/originals/bd/fd/e0/bfdfe04bb034c73466e06bb86de2dcab.gif" alt="Lofi Girl">
+
+        <!-- Welcome Title -->
+        <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
+
+        <!-- Welcome Paragraph -->
+        <p id="welcome-paragraph">
+            Relax, unwind, and let the soothing sounds of lo-fi beats carry you away.  
+            Welcome to your peaceful retreat where it's always cozy and calm —  
+            whether you're studying, working, or just taking a moment for yourself.  
+        </p>
+
+        <!-- Mode Switch -->
+        <button onclick="toggleMode()">Switch Day/Night Mode</button>
+
+        <!-- Language Switch -->
+        <button onclick="switchLanguage('en')">English</button>
+        <button onclick="switchLanguage('ka')">ქართული</button>
+
+        <!-- Social Media Links -->
+        <div class="social-links">
+            <a href="https://facebook.com" target="_blank">Facebook</a>
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+            <a href="https://twitter.com" target="_blank">Twitter</a>
+        </div>
+    </div>
+
+    <script>
+        // Rain generation
+        const rain = document.getElementById('rain');
+        for (let i = 0; i < 80; i++) {
+            let drop = document.createElement('div');
+            drop.className = 'raindrop';
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+            rain.appendChild(drop);
+        }
+
+        // Dark/Light Mode
+        function toggleMode() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+        }
+
+        // Language Switch
+        function switchLanguage(lang) {
+            if (lang === 'en') {
+                document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
+                document.getElementById('welcome-paragraph').innerText =
+                    'Relax, unwind, and let the soothing sounds of lo-fi beats carry you away. Welcome to your peaceful retreat where it\'s always cozy and calm — whether you\'re studying, working, or just taking a moment for yourself.';
+            } else if (lang === 'ka') {
+                document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
+                document.getElementById('welcome-paragraph').innerText =
+                    'დასვენდით, მოდუნდით და მიეცით თავს ლოფი ბითების დამამშვიდებელ ჰანგებში გადაშვება. კეთილი იყოს თქვენი მობრძანება მშვიდი თავშესაფრის სივრცეში, სადაც ყოველთვის სიმშვიდე და სითბოა — იქნებ სწვალობთ, მუშაობთ ან უბრალოდ ისვენებთ.';
+            }
+        }
+
+        // Default dark mode
+        document.body.classList.add('dark-mode');
+  
     <!-- FAVICON  -->
     <link rel="shortcut icon" href="images/logotest.png">    
 
-    <!-- Font icons --> 
+  	<!-- Font icons --> 
     <link rel="stylesheet" href="icon-fonts/fontawesome-5.12.0/css/all.min.css"/>
     <link rel="stylesheet" type="text/css" href="icon-fonts/flaticon/flaticon.css" />
 
-    <!--Font -->
+	   <!--Font -->
     <link rel="stylesheet" href="https://use.typekit.net/utg8fym.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800&display=swap" rel="stylesheet">
+
 </head> 
 <body> 
 
@@ -30,35 +200,36 @@
 
 <main>
 
-<!-- HEADER SECTION ================================================== --> 
+<!-- HEADER SECTION
+================================================== --> 
 <header>
 <a href="index.html" class="logo">
-  <img src="/images/logotest.png" alt="Logo">
+  <img src="/images/logotest.png" alt="">
 </a>
 
 <div class="hamburger icon-wrap">
-  <div class="button-icon">
-    <span></span>
-    <span></span>
-  </div>
+<div class=" button-icon">
+  <span></span>
+  <span></span>
+</div>
 </div>
 </header>
-
 <div class="full-menu">
   <div class="outter">
     <div class="inner">
-      <nav>
-        <ul>
-          <li><a href="#hero">მთავარი</a></li>
-          <li><a href="#about">არხის შესახებ</a></li>
-          <li><a href="#contact">კონტაქტი</a></li>
-        </ul>
-      </nav>
+  <nav>
+      <ul>
+        <li><a href="#hero">მთავარი</a></li>
+        <li><a href="#about">არხის შესახებ</a></li>
+        <li><a href="#contact">კონტაქტი</a></li>
+      </ul>
+    </nav>
     </div>
   </div>
 </div>
 
-<!-- HOME SECTION ================================================== --> 
+<!-- HOME SECTION
+================================================== --> 
 <section id="hero" class="hero" style="background-image: url(images/loficity.jpg);">
   <div class="container">
     <div class="outter">
@@ -66,101 +237,168 @@
         <span class="hero-little">Lofi Haven Official</span>
         <h1 class="hero-title">შემოგვიერთდი და<br> <span id="element" data-typist="განიტვირთე,ისწავლე">გაატარე დრო მშვიდად</span>.</h1>
         <div class="arrow icon-wrap">
-          <svg class="arrow-svg button-icon" xmlns="http://www.w3.org/2000/svg" width="14.486" height="18.412" viewBox="0 0 14.486 18.412">
-            <path d="M7.073,26.241h0L0,19.172l1.414-1.415,4.829,4.829V8h2V22.586l4.829-4.829,1.415,1.415-7.241,7.24Z" transform="translate(0 -8)"></path>
-          </svg>
+        <svg class="arrow-svg button-icon" xmlns="http://www.w3.org/2000/svg" width="14.486" height="18.412" viewBox="0 0 14.486 18.412">
+          <path d="M7.073,26.241h0L0,19.172l1.414-1.415,4.829,4.829V8h2V22.586l4.829-4.829,1.415,1.415-7.241,7.24Z" transform="translate(0 -8)"></path>
+        </svg>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ABOUT SECTION ================================================== --> 
+
+<!-- ABOUT SECTION
+================================================== --> 
 <section class="about gray-bg" id="about"  data-wow-delay=".6s">
   <div class="container">
     <div class="row">
       <!-- left text -->
       <div class="col-xl-6 wow fadeInUp">
-        <h2 class="section-title">ვისთვის არის დისქორდის არხი?</h2>
-        <h3 class="second-title">არხი ეხმარება მათ, ვინც ცდილობს ნულიდან ისწავლოს კიბერ უსაფრთხოება. მომავლის პროფესია, რომლის როლიც ძალიან მნიშვნელოვანია ტექნოლოგიის სამყაროში</h3>
-        <p>თუ თვლი, რომ გაინტერესებს ზოგადად ტექნოლოგია, ლინუქსი, პროგრამირება, კოდინგი და საინტერესო მასალებით ინფორმირება, 
-          მაშინ ეს სერვერი შენთვისაა. შემოგვიერთდი დისქორდზე და განავითარე შენი კიბერ უნარები.</p>
-
+      <h2 class="section-title">ვისთვის არის დისქორდის არხი?</h2>
+      <h3 class="second-title">არხი ეხმარება მათ, ვინც ცდილობს ნულიდან ისწავლოს კიბერ უსაფრთხოება. მომავლის პროფესია, რომლის როლიც ძალიან მნიშვნელოვანია ტექნოლოგიის სამყაროში</h3>
+      <p>თუ თვლი, რომ გაინტერესებს ზოგადად ტექნოლოგია, ლინუქსი, პროგრამირება, კოდინგი და საინტერესო მასალებით ინფორმირება, 
+        მაშინ ეს სერვერი შენთვისაა. შემოგვიერთდი დისქორდზე და განავითარე შენი კიბერ უნარები.
+      
         <h3 class="second-title">რას მოგცემს არხი?</h3>
-        <p>შენ მოხვდები არხზე, სადაც ყველა ერთმანეთს ეხმარება. გახდები გუნდის ნაწილი, რომელსაც ერთი მიზანი აქვს და ეს მიზანი თვითგანვითარებაა. ისწავლე პროფესია, რომელსაც ყველგან გამოიყენებ. ისწავლე იმისთვის, რომ შემდეგ სხვას ასწავლო და საკუთარი ქვეყანა განავითარო.</p>
-
-        <h2 class="section-title">Who is the server for:</h2>
-        <h3 class="second-title">The channel helps those who are trying to learn cyber security from scratch. The profession of the future, whose role is very important in the world of technology</h3>
-        <p>If you think you are interested in technology, programming, HackingTraining, coding in general, then this server is for you.</p>
-        
+        <br>შენ მოხვდები არხზე, სადაც ყველა ერთმანეთს ეხმარება. გახდები გუნდის ნაწილი, რომელსაც ერთი მიზანი აქვს და ეს მიზანი თვითგანვითარებაა. ისწავლე პროფესია, რომელსაც ყველგან გამოიყენებ.
+        ისწავლე იმისთვის, რომ შემდეგ სხვას ასწავლო და საკუთარი ქვეყანა განავითარო.
+      </p>
+      <h2 class="section-title">Who is the server for:</h2>
+      <h3 class="second-title">The channel helps those who are trying to learn cyber security from scratch. The profession of the future, whose role is very important in the world of technology</h3>
+      <p>If you think you are interested in technology, programming, HackingTraining, coding in general, then this server is for you.
+      
         <h3 class="second-title">What will the channel give you:</h3>
-        <p>You get on a channel where everyone helps each other, you become part of a team that has one goal, and that goal is self-development. Learn a profession that you can use everywhere, learn to then teach others and develop your own country.</p>
+        <br>You get on a channel where everyone helps each other, you become part of a team that has one goal, and that goal is self-development. Learn a profession that you can use everywhere, learn to then teach others and develop your own country.
+      </p>
       </div>
-
       <!-- right image -->
       <div class="col-xl-4 offset-xl-2 image wow fadeInUp"  data-wow-delay=".7s">
         <img src="images/HD-Anonymous-Wallpaper-for-Iphone.jpg" class="about-image" alt="">
         <img src="images/dotted.png" class="dotted" alt="">
       </div>      
-
       <a href="https://discord.gg/bsPkZEUHr8" target=".blank" class="site-btn">შეუერთდი დიქსორდის არხს</a>
 
     </div> <!-- row end -->
+
+    <div class="owl-carousel owl-theme portfolio-carousel services wow fadeInUp"  data-wow-delay="1s" data-autoplay="true" data-nav="false" data-dots="true" data-items-desktop="3" data-items-desktop-small="3" data-items-tablet="1" data-items-tablet-small="1">
+      <!-- a service -->  
+      <div class="item">
+            <i class="flaticon flaticon-024-office"></i>
+            <div class="right-content">
+              <h4 class="title">საიდან დავიწყო?</h4>
+              <p>სერვერზე დეტალურად დაგეხმარებიან და მოგცემენ მიმართულებას.</p>
+            </div>
+        </div>
+      <!-- a service -->  
+      <div class="item">
+        <i class="flaticon flaticon-046-profile"></i>
+        <div class="right-content">
+          <h4 class="title">მასალები</h4>
+          <p>სერვერზე ძალიან ბევრი მასალა იყრის თავს, გაწევრიანდი, გადმოწერე და გამოიყენე.</p>
+        </div>
+      </div>
+      <!-- a service -->  
+      <div class="item">
+        <i class="flaticon flaticon-008-person"></i>
+        <div class="right-content">
+          <h4 class="title">დეველოპმენტი</h4>
+          <p>სერვერზე შეძლებ ისწავლო და გაიღრმავო ცოდნა ვებ დეველოპმენტის მიმართულებით.</p>
+        </div>
+      </div>
+      <!-- a service -->  
+      <div class="item">
+        <i class="flaticon flaticon-030-network"></i>
+        <div class="right-content">
+          <h4 class="title">ქსელი</h4>
+          <p>ქსელის ცოდნა აუცილებელია. დისქორდზე იპოვი ღირებულ მასალებს, რომელიც დაგეხმარება.</p>
+        </div>
+      </div>
+      <!-- a service -->  
+      <div class="item">
+        <i class="flaticon flaticon-048-bulb"></i>
+        <div class="right-content">
+          <h4 class="title">აზრების მიმოცვლა</h4>
+          <p>სერვერზე თავს იყრის საერთო ინტერესების მქონე საზოგადოება, სადაც ცვლიან საკუთარ ცოდნას.</p>
+        </div>
+      </div>
+      <!-- a service -->  
+      <div class="item">
+        <i class="flaticon flaticon-018-laptop"></i>
+        <div class="right-content">
+          <h4 class="title">განსაკუთრებული მხარდაჭერა</h4>
+          <p>გაწევრიანდი და მიიღე განსაკუთრებული მხარდაჭერა შენს ნებისმიერ პრობლემაზე.</p>
+        </div>
+      </div>
+    </div>
   </div> <!-- container end -->
 </section>
 
-<!-- CONTACT ================================================== --> 
-<section class="contact gray-bg" id="contact">
+<!-- LATEST ARTICLE
+================================================== --> 
+<section class="our-news" id="news">
   <div class="container">
-    <h2 class="section-title">დაგვიკავშირდი</h2>
-    <div class="row">
-        <div class="col-xl-5 wow fadeInUp" data-wow-delay=".4s">
-            <div class="contact-info email">
-                <span>Gmail</span>
-                <a href="mailto:impatientn1@gmail.com">impatientn1@gmail.com</a>
-              </div>
+      <h2 class="video-title">90s Lofi Vibes</h2>
+    <div class="row">     
+     <div class="col-xl-12 text-center video">
+      <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/sF80I-TQiW0?si=wKZ9KW9S8jbNwMyX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-              <div class="contact-info social">
-                <span>გამოგვყევი</span>
-                <a href="https://discord.gg/mbBJZEeq6G" target=".blank">Discord</a>
-                <a href="https://linktr.ee/impatients" target=".blank">Linktree</a>
-                <a href="https://www.facebook.com/groups/unkn0wnfamiliar" target=".blank">Facebook Group</a>
-                <a href="https://www.facebook.com/Unkn0wnFamiliar" target=".blank">Facebook Page</a>
-                <a href="https://twitter.com/IMPAT13NTeLite" target=".blank">Twitter</a>
-              </div>
-        </div>
-
-      <div class="col-xl-6 offset-xl-1 wow fadeInUp" data-wow-delay=".8s">
-      <div id="contact-formular">
-          <div id="message"></div>
-          <form action="https://formspree.io/f/moqrlgyv" name="myform" id="my-form" method="post">
-              <!-- name -->
-              <div class="form-group">
-                  <div class="placeholder">სახელი</div>
-                <input class="inp" name="სახელი" type="text" id="name">
-              </div>
-              <!-- email -->
-              <div class="form-group">
-                <div class="placeholder">მეილი</div>
-                <input class="inp" name="მეილი" type="text" id="email">
-              </div>
-              <!-- about project -->
-              <div class="form-group">
-                <div class="placeholder">შენი მესიჯი</div>
-                <textarea class="inp" name="მესიჯი" id="comments" rows="1" placeholder=""></textarea>
-              </div>
-              <!-- button -->
-              <div class="form-btn">
-                <button class="site-btn" type="submit" value="გაგზავნა">გაგზავნა</button>
-              </div>
-            </form>
-            <div id="status"></div>
-            <script src="contact.js"></script>
-        </div>
-      </div>
-    </div> <!-- row end -->
+    </div> 
   </div>
 </section>
+
+<!-- CONTACT
+================================================== --> 
+<section class="contact gray-bg " id="contact">
+    <div class="container">
+      <h2 class="section-title">დაგვიკავშირდი</h2>
+      <div class="row">
+          <div class="col-xl-5 wow fadeInUp" data-wow-delay=".4s">
+              <div class="contact-info email">
+                  <span>Gmail</span>
+                  <a href="mailto:impatientn1@gmail.com">impatientn1@gmail.com</a>
+                </div>
+                
+                <div class="contact-info social">
+                  <span>გამოგვყევი</span>
+                  <a href="https://discord.gg/mbBJZEeq6G" target=".blank">Discord</a>
+                  <a href="https://linktr.ee/impatients" target=".blank">Linktree</a>
+                  <a href="https://www.facebook.com/groups/unkn0wnfamiliar" target=".blank">Facebook Group</a>
+                  <a href="https://www.facebook.com/Unkn0wnFamiliar" target=".blank">Facebook Page</a>
+                  <a href="https://twitter.com/IMPAT13NTeLite" target=".blank">Twitter</a>
+                </div>
+          </div>
+        <div class="col-xl-6 offset-xl-1 wow fadeInUp" data-wow-delay=".8s">
+        <div id="contact-formular">
+            <div id="message"></div>
+            <form action="https://formspree.io/f/moqrlgyv" name="myform" id="my-form" method="post">
+                <!-- name -->
+                <div class="form-group">
+                    <div class="placeholder">სახელი</div>
+                  <input class="inp" name="სახელი" type="text" id="name">
+                </div>
+                <!-- email -->
+                <div class="form-group">
+                  <div class="placeholder">მეილი</div>
+                  <input class="inp" name="მეილი" type="text" id="email">
+                </div>
+                <!-- about project -->
+                <div class="form-group">
+                  <div class="placeholder">შენი მესიჯი</div>
+                  <textarea class="inp" name="მესიჯი" id="comments" rows="1"   placeholder=""></textarea>
+                </div>
+                <!-- button -->
+                <div class="form-btn">
+                  <button class="site-btn" type="submit" value="გაგზავნა">გაგზავნა</button>
+                </div>
+              </form>
+              <div id="status"></div>
+              <script src="contact.js"></script>
+          </div>
+        </div>
+      </div> <!-- row end -->
+    </div>
+</section>
+
 
 </main>
 
@@ -168,34 +406,23 @@
     <div class="contact-info">
       <a href="https://discord.gg/mbBJZEeq6G" target=".blank">Discord</a>
       <a href="https://linktr.ee/impatients" target=".blank">Linktree</a>
-      <a href="https://www.facebook.com/groups/unkn0wnfamiliar" target=".blank">Facebook</a>
-      <a href="https://www.facebook.com/Unkn0wnFamiliar" target=".blank">Page</a>
+      <a href="https://www.facebook.com/groups/unkn0wnfamiliar" target=".blank">Facebook Group</a>
+      <a href="https://www.facebook.com/Unkn0wnFamiliar" target=".blank">Facebook Page</a>
+      <a href="https://twitter.com/IMP3XS" target=".blank">Twitter</a>
     </div>
-    <p>© 2025 | All Rights Reserved | Developed By: <a href="https://www.facebook.com/Unkn0wnFamiliar" target=".blank">IMPATIENT</a></p>
+    <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script>, All rights Reserved. <br>
+        Created by Netcorp</p>
 </footer>
 
-<!-- Script for Typing Effect -->
-<script>
-    const textElement = document.getElementById('element');
-    const texts = textElement.dataset.typist.split(',');
-    let currentTextIndex = 0;
-    let currentCharIndex = 0;
 
-    function typeText() {
-        const currentText = texts[currentTextIndex];
-        textElement.textContent = currentText.slice(0, currentCharIndex);
+<div id="magic-cursor">
+	<div id="ball"></div>
+</div>
 
-        currentCharIndex++;
+<!-- Javascripts -->
+<script src="js/jquery-3.5.0.min.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/main.js"></script>
 
-        if (currentCharIndex > currentText.length) {
-            currentCharIndex = 0;
-            currentTextIndex = (currentTextIndex + 1) % texts.length;
-        }
-    }
-
-    setInterval(typeText, 100);
-</script>
-
-<script src="js/script.js"></script>
 </body>
 </html>
