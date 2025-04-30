@@ -180,21 +180,25 @@
     #stars {
       background: url('https://www.transparenttextures.com/patterns/stars.png') repeat;
       animation: starsAnimation 100s linear infinite;
+      display: none;
     }
 
     #clouds {
       background: url('https://www.transparenttextures.com/patterns/clouds.png') repeat;
       animation: cloudsAnimation 80s linear infinite;
+      display: none;
     }
 
     #rain {
       background: url('https://www.transparenttextures.com/patterns/rain.png') repeat;
       animation: rainAnimation 20s linear infinite;
+      display: none;
     }
 
     #sun {
       background: url('https://www.transparenttextures.com/patterns/sun.png') repeat;
       animation: sunAnimation 60s linear infinite;
+      display: none;
     }
 
     @keyframes starsAnimation {
@@ -224,7 +228,6 @@
   <nav class="navbar">
     <div class="logo">Lo-Fi Haven</div>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#community">Community</a></li>
     </ul>
@@ -283,13 +286,17 @@
 
   <!-- Footer -->
   <footer>
-    <p>Official Lo-Fi Haven © 2025 | Built with ☕ and 🎶</p>
+    <p>Official Lo-Fi Haven © 2025</p>
+    <p>Follow us on social media!</p>
+    <a href="https://www.instagram.com/" target="_blank">Instagram</a> | <a href="https://www.twitter.com/" target="_blank">Twitter</a> | <a href="https://www.discord.com/" target="_blank">Discord</a>
   </footer>
 
+  <!-- JavaScript -->
   <script>
-    // Background effects
+    // Theme Switching Logic
     const themeSelector = document.getElementById('themeSelector');
-    themeSelector.addEventListener('change', function () {
+
+    themeSelector.addEventListener('change', function() {
       const theme = this.value;
       document.body.className = theme;
       if (theme === 'night') {
@@ -309,6 +316,17 @@
         document.getElementById('sun').style.display = 'block';
       }
     });
+
+    // Language Switching Logic
+    function switchLanguage(language) {
+      if (language === 'en') {
+        document.getElementById('welcome-text').innerHTML = 'Welcome to Lo-Fi Haven';
+        document.getElementById('welcome-paragraph').innerHTML = 'Step into a cozy digital universe where lo-fi music, peaceful vibes, and mindful communities come together...';
+      } else if (language === 'ka') {
+        document.getElementById('welcome-text').innerHTML = 'მოგესალმებით Lo-Fi Haven-ში';
+        document.getElementById('welcome-paragraph').innerHTML = 'დაეშვი მშვიდ აურზაურში, სადაც ლო-ფი მუსიკა, წყნარი ვიბები და გულწრფელი თემები ერთმანეთს აკავშირებენ...';
+      }
+    }
   </script>
 </body>
 </html>
