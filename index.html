@@ -10,6 +10,8 @@
       --bg-dark: #1e1e1e;
       --bg-light: #f0f0f0;
       --bg-night: #0d0d2b;
+      --bg-sunny: #f9e79f;
+      --bg-rain: #d5dbdb;
     }
 
     body {
@@ -192,7 +194,22 @@
     const themeSelector = document.getElementById('themeSelector');
     themeSelector.addEventListener('change', function () {
       const theme = themeSelector.value;
-      document.body.className = theme + '-mode';
+      if (theme === "night") {
+        document.body.style.backgroundColor = "var(--bg-night)";
+        document.getElementById("stars").style.display = "block";
+        document.getElementById("clouds").style.display = "none";
+        document.getElementById("rain").style.display = "none";
+      } else if (theme === "rain") {
+        document.body.style.backgroundColor = "var(--bg-rain)";
+        document.getElementById("stars").style.display = "none";
+        document.getElementById("clouds").style.display = "none";
+        document.getElementById("rain").style.display = "block";
+      } else if (theme === "sunny") {
+        document.body.style.backgroundColor = "var(--bg-sunny)";
+        document.getElementById("stars").style.display = "none";
+        document.getElementById("clouds").style.display = "block";
+        document.getElementById("rain").style.display = "none";
+      }
     });
 
     // Language switcher
