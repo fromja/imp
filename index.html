@@ -1,239 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lo-Fi Haven</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lo-Fi Haven</title>
+  <style>
+    :root {
+      --main-color: #ff4081;
+      --bg-dark: #1e1e1e;
+      --bg-light: #f0f0f0;
+      --bg-night: #0d0d2b;
+    }
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', sans-serif;
-            transition: background-color 0.5s ease, color 0.5s ease;
-            overflow-x: hidden;
-        }
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--bg-dark);
+      color: #f5f5f5;
+      overflow-x: hidden;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
 
-        .theme-rainy {
-            background: linear-gradient(to bottom, #2e2e2e, #1e1e1e);
-            color: #e0e0e0;
-        }
-        .theme-sunny {
-            background: linear-gradient(to top, #fffbd5, #b20a2c);
-            color: #1e1e1e;
-        }
-        .theme-night {
-            background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
-            color: #e0e0e0;
-        }
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      background-color: var(--bg-dark);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+    }
 
-        .container {
-            text-align: center;
-            padding: 50px 20px;
-            animation: fadeIn 1.5s ease-in-out;
-        }
+    .navbar .logo {
+      color: #fff;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+    .navbar .nav-links {
+      display: flex;
+      gap: 20px;
+    }
 
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
+    .navbar .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2em;
+    }
 
-        p {
-            font-size: 1.2em;
-            max-width: 700px;
-            margin: 20px auto;
-            line-height: 1.8;
-        }
+    .navbar .controls button {
+      background-color: var(--main-color);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
-        button {
-            background-color: #ff4081;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
+    .navbar .controls select {
+      background-color: var(--bg-dark);
+      color: white;
+      border: none;
+      font-size: 1.1em;
+      cursor: pointer;
+    }
 
-        button:hover {
-            background-color: #e73370;
-        }
+    /* Background animations */
+    #stars, #clouds, #rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
 
-        .social-links a {
-            color: #ff4081;
-            margin: 0 10px;
-            text-decoration: none;
-            font-size: 24px;
-        }
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 100px 20px;
+    }
 
-        .lofi-girl {
-            width: 300px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-        }
+    .hero img {
+      width: 250px;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
 
-        .rain, .clouds, .stars {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
 
-        .raindrop {
-            position: absolute;
-            width: 2px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.3);
-            animation: fall linear infinite;
-            opacity: 0.5;
-        }
+    p {
+      font-size: 1.2em;
+      max-width: 600px;
+      margin: 20px auto;
+      line-height: 1.6;
+    }
 
-        @keyframes fall {
-            0% { top: -60px; }
-            100% { top: 110vh; }
-        }
+    /* Gallery Section */
+    .gallery {
+      padding: 40px 20px;
+      text-align: center;
+      background-color: var(--bg-light);
+    }
 
-        .cloud {
-            position: absolute;
-            width: 200px;
-            height: 60px;
-            background: #fff;
-            border-radius: 100px;
-            top: 50px;
-            animation: cloudMove 60s linear infinite;
-            opacity: 0.3;
-        }
+    .gallery h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
 
-        @keyframes cloudMove {
-            from { left: -250px; }
-            to { left: 110%; }
-        }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
 
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 2s infinite ease-in-out alternate;
-        }
+    .gallery-grid img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
 
-        @keyframes twinkle {
-            from { opacity: 0.2; }
-            to { opacity: 1; }
-        }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--bg-dark);
+      color: white;
+    }
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.9em;
-            color: #aaa;
-        }
-    </style>
+  </style>
 </head>
-<body class="theme-night">
-    <div class="rain" id="rain"></div>
-    <div class="clouds" id="clouds"></div>
-    <div class="stars" id="stars"></div>
-
-    <audio id="background-music" autoplay loop>
-        <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_7771e7b2d5.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-
-    <div class="container">
-        <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
-
-        <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
-        <p id="welcome-paragraph">
-            Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.
-        </p>
-
-        <button onclick="setTheme('rainy')">🌧️ Rainy Day</button>
-        <button onclick="setTheme('sunny')">☀️ Sunny Day</button>
-        <button onclick="setTheme('night')">🌙 Night Sky</button>
-
-        <button onclick="switchLanguage('en')">English</button>
-        <button onclick="switchLanguage('ka')">ქართული</button>
-
-        <div class="social-links">
-            <a href="#">Facebook</a>
-            <a href="#">Instagram</a>
-            <a href="#">Twitter</a>
-        </div>
+<body class="dark-mode">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Lo-Fi Haven</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="community.html">Community</a></li>
+    </ul>
+    <div class="controls">
+      <select id="themeSelector">
+        <option value="night">Night Sky</option>
+        <option value="rain">Rainy Day</option>
+        <option value="sunny">Sunny Day</option>
+      </select>
+      <button onclick="switchLanguage('en')">EN</button>
+      <button onclick="switchLanguage('ka')">KA</button>
     </div>
+  </nav>
 
-    <footer>
-        Official Lo-Fi Haven — Stay Chill, Stay Creative 🌸
-    </footer>
+  <!-- Background Animations -->
+  <div id="stars"></div>
+  <div id="clouds"></div>
+  <div id="rain"></div>
 
-    <script>
-        const rain = document.getElementById('rain');
-        const clouds = document.getElementById('clouds');
-        const stars = document.getElementById('stars');
+  <!-- Hero Section -->
+  <header class="hero">
+    <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
+    <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
+    <p id="welcome-paragraph">
+      Step into a cozy digital universe where lo-fi music, peaceful vibes, and mindful communities come together.
+      Whether you're here to relax, study, or discover kindred spirits, Lo-Fi Haven is your calm in the chaos.
+    </p>
+  </header>
 
-        function clearEffects() {
-            rain.innerHTML = '';
-            clouds.innerHTML = '';
-            stars.innerHTML = '';
-        }
+  <!-- Gallery Section -->
+  <section class="gallery">
+    <h2>Gallery</h2>
+    <div class="gallery-grid">
+      <img src="https://i.pinimg.com/originals/6b/3a/5e/6b3a5ef9a18f72a574b7c7a2dc8f69ee.gif" alt="Lo-fi Vibe">
+      <img src="https://media.tenor.com/wxKxwG3BPqcAAAAC/lofi.gif" alt="Lofi Chill">
+      <img src="https://i.pinimg.com/originals/b5/46/0d/b5460db109d4eaf30ae53d7cb263b75c.gif" alt="Night Music">
+    </div>
+  </section>
 
-        function setTheme(theme) {
-            document.body.className = 'theme-' + theme;
-            clearEffects();
+  <!-- Footer -->
+  <footer>
+    <p>Official Lo-Fi Haven © 2025 | Built with ☕ and 🎶</p>
+  </footer>
 
-            if (theme === 'rainy') {
-                for (let i = 0; i < 80; i++) {
-                    let drop = document.createElement('div');
-                    drop.className = 'raindrop';
-                    drop.style.left = Math.random() * 100 + 'vw';
-                    drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
-                    rain.appendChild(drop);
-                }
-            } else if (theme === 'sunny') {
-                for (let i = 0; i < 5; i++) {
-                    let cloud = document.createElement('div');
-                    cloud.className = 'cloud';
-                    cloud.style.top = (i * 60) + 'px';
-                    clouds.appendChild(cloud);
-                }
-            } else if (theme === 'night') {
-                for (let i = 0; i < 100; i++) {
-                    let star = document.createElement('div');
-                    star.className = 'star';
-                    star.style.left = Math.random() * 100 + 'vw';
-                    star.style.top = Math.random() * 100 + 'vh';
-                    stars.appendChild(star);
-                }
-            }
-        }
+  <script>
+    // Background effects
+    const themeSelector = document.getElementById('themeSelector');
+    themeSelector.addEventListener('change', function () {
+      const theme = themeSelector.value;
+      document.body.className = theme + '-mode';
+    });
 
-        function switchLanguage(lang) {
-            if (lang === 'en') {
-                document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
-                document.getElementById('welcome-paragraph').innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
-            } else if (lang === 'ka') {
-                document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
-                document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. იქნება სწავლობთ, მუშაობთ თუ უბრალოდ ისვენებთ — Lo-Fi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
-            }
-        }
-
-        window.onload = () => {
-            setTheme('night');
-        }
-    </script>
+    // Language switcher
+    function switchLanguage(lang) {
+      if (lang === 'en') {
+        document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
+        document.getElementById('welcome-paragraph').innerText =
+          'Step into a cozy digital universe where lo-fi music, peaceful vibes, and mindful communities come together. Whether you\'re here to relax, study, or discover kindred spirits, Lo-Fi Haven is your calm in the chaos.';
+      } else if (lang === 'ka') {
+        document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
+        document.getElementById('welcome-paragraph').innerText =
+          'შეჩერდით კომფორტულ ციფრულ სამყაროში, სადაც ლოფი მუსიკა, მშვიდი ატმოსფერო და გაცნობიერებული საზოგადოებები ერთიანდება. გამორთეთ სტრესი, ისწავლეთ, და აღმოაჩინეთ მსგავსი ადამიანები Lo-Fi Haven-ში.';
+      }
+    }
+  </script>
 </body>
 </html>
