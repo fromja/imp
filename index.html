@@ -99,6 +99,7 @@
       padding: 40px 20px;
       background-color: var(--bg-light);
       text-align: center;
+      color: #333;
     }
 
     .about h2 {
@@ -124,6 +125,13 @@
     .community h2 {
       font-size: 2em;
       margin-bottom: 20px;
+    }
+
+    .community p {
+      font-size: 1.2em;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
     }
 
     /* Gallery Section */
@@ -159,7 +167,7 @@
     }
 
     /* Animations */
-    #stars, #clouds, #rain {
+    #stars, #clouds, #rain, #sun {
       position: fixed;
       top: 0;
       left: 0;
@@ -184,6 +192,11 @@
       animation: rainAnimation 20s linear infinite;
     }
 
+    #sun {
+      background: url('https://www.transparenttextures.com/patterns/sun.png') repeat;
+      animation: sunAnimation 60s linear infinite;
+    }
+
     @keyframes starsAnimation {
       from { background-position: 0 0; }
       to { background-position: 10000px 10000px; }
@@ -199,6 +212,11 @@
       to { background-position: 0 10000px; }
     }
 
+    @keyframes sunAnimation {
+      from { background-position: 0 0; }
+      to { background-position: 10000px 10000px; }
+    }
+
   </style>
 </head>
 <body class="dark-mode">
@@ -207,8 +225,8 @@
     <div class="logo">Lo-Fi Haven</div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="community.html">Community</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#community">Community</a></li>
     </ul>
     <div class="controls">
       <select id="themeSelector">
@@ -221,10 +239,11 @@
     </div>
   </nav>
 
-  <!-- Background Animations -->
+  <!-- Background effects -->
   <div id="stars"></div>
   <div id="clouds"></div>
   <div id="rain"></div>
+  <div id="sun"></div>
 
   <!-- Hero Section -->
   <header class="hero">
@@ -237,7 +256,7 @@
   </header>
 
   <!-- About Section -->
-  <section class="about">
+  <section id="about" class="about">
     <h2>About Us</h2>
     <p>
       Lo-Fi Haven is a sanctuary for music lovers and creative souls. Here, you can unwind, study, or relax while soaking in chill vibes through lo-fi beats. Our community is built on respect, creativity, and mindfulness, where every member adds their unique touch to the overall experience. Whether you're working, studying, or just unwinding, we welcome you to be part of our space.
@@ -245,7 +264,7 @@
   </section>
 
   <!-- Community Section -->
-  <section class="community">
+  <section id="community" class="community">
     <h2>Our Community</h2>
     <p>
       Our Discord community is full of passionate individuals who share the same love for lo-fi music, gaming, and creative discussions. We have channels for relaxation, gaming, education, and self-promotion, where everyone can share their interests and connect with others. Our goal is to foster a supportive, positive, and inclusive environment for everyone.
@@ -271,37 +290,25 @@
     // Background effects
     const themeSelector = document.getElementById('themeSelector');
     themeSelector.addEventListener('change', function () {
-      const theme = themeSelector.value;
-      if (theme === "night") {
-        document.body.style.backgroundColor = "var(--bg-night)";
-        document.getElementById("stars").style.display = "block";
-        document.getElementById("clouds").style.display = "none";
-        document.getElementById("rain").style.display = "none";
-      } else if (theme === "rain") {
-        document.body.style.backgroundColor = "var(--bg-rain)";
-        document.getElementById("stars").style.display = "none";
-        document.getElementById("clouds").style.display = "none";
-        document.getElementById("rain").style.display = "block";
-      } else if (theme === "sunny") {
-        document.body.style.backgroundColor = "var(--bg-sunny)";
-        document.getElementById("stars").style.display = "none";
-        document.getElementById("clouds").style.display = "block";
-        document.getElementById("rain").style.display = "none";
+      const theme = this.value;
+      document.body.className = theme;
+      if (theme === 'night') {
+        document.getElementById('stars').style.display = 'block';
+        document.getElementById('clouds').style.display = 'none';
+        document.getElementById('rain').style.display = 'none';
+        document.getElementById('sun').style.display = 'none';
+      } else if (theme === 'rain') {
+        document.getElementById('stars').style.display = 'none';
+        document.getElementById('clouds').style.display = 'none';
+        document.getElementById('rain').style.display = 'block';
+        document.getElementById('sun').style.display = 'none';
+      } else if (theme === 'sunny') {
+        document.getElementById('stars').style.display = 'none';
+        document.getElementById('clouds').style.display = 'none';
+        document.getElementById('rain').style.display = 'none';
+        document.getElementById('sun').style.display = 'block';
       }
     });
-
-    // Language switcher
-    function switchLanguage(lang) {
-      if (lang === 'en') {
-        document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
-        document.getElementById('welcome-paragraph').innerText =
-          'Step into a cozy digital universe where lo-fi music, peaceful vibes, and mindful communities come together. Whether you\'re here to relax, study, or discover kindred spirits, Lo-Fi Haven is your calm in the chaos.';
-      } else if (lang === 'ka') {
-        document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
-        document.getElementById('welcome-paragraph').innerText =
-          'შეჩერდით კომფორტულ ციფრულ სამყაროში, სადაც ლოფი მუსიკა, მშვიდი ატმოსფერო და გაცნობიერებული საზოგადოებები ერთიანდება. გამორთეთ სტრესი, ისწავლეთ, და აღმოაჩინეთ მსგავსი ადამიანები Lo-Fi Haven-ში.';
-      }
-    }
   </script>
 </body>
 </html>
