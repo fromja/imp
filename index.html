@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ka">
+<html lang="en">
 <head>  
   <title>Lofi Haven ✪</title>
   <meta charset="UTF-8">
@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://use.typekit.net/utg8fym.css">
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="images/logotest.png">    
-
+  
   <style>
     body.dark-mode {
       background-color: #0e0e0e;
@@ -41,10 +41,9 @@
       pointer-events: none;
       z-index: 0;
     }
-    .lang-geo .en, .lang-eng .ka { display: none; }
   </style>
 </head> 
-<body class="lang-geo"> 
+<body> 
 
 <!-- LANGUAGE AND THEME TOGGLE -->
 <button class="lang-toggle" onclick="toggleLanguage()">🌐 Geo/Eng</button>
@@ -61,7 +60,7 @@
 <!-- HEADER SECTION -->
 <header>
   <a href="index.html" class="logo">
-    <img src="images/logotest.png" alt="Lofi Haven Logo">
+    <img src="/images/logotest.png" alt="Lofi Haven Logo">
   </a>
   <div class="hamburger icon-wrap">
     <div class="button-icon">
@@ -75,9 +74,9 @@
     <div class="inner">
       <nav>
         <ul>
-          <li><a href="#hero" class="ka">მთავარი</a><a href="#hero" class="en">Home</a></li>
-          <li><a href="#about" class="ka">არხის შესახებ</a><a href="#about" class="en">About</a></li>
-          <li><a href="#contact" class="ka">კონტაქტი</a><a href="#contact" class="en">Contact</a></li>
+          <li><a href="#hero">მთავარი / Home</a></li>
+          <li><a href="#about">ჩვენს შესახებ / About</a></li>
+          <li><a href="#contact">კონტაქტი / Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -90,13 +89,10 @@
     <div class="outter">
       <div class="inner">
         <span class="hero-little">Lofi Haven Official</span>
-        <h1 class="hero-title">
-          <span class="ka">შემოგვიერთდი და<br>მშვიდი ციფრული თავშესაფარი შენთვის</span>
-          <span class="en">Join us and<br>find your calm digital sanctuary</span>
-        </h1>
+        <h1 class="hero-title">შემოგვიერთდი და<br> <span id="element">მშვიდი ციფრული თავშესაფარი შენთვის / Your Peaceful Digital Escape</span>.</h1>
         <p style="max-width: 600px; margin: 0 auto;">
-          <span class="ka">მოხვდი ციფრულ სამყაროში, სადაც სიმშვიდე, სწავლა და ლოფი ჰარმონიულად ერწყმის ერთმანეთს. შეისწავლე კიბერუსაფრთხოება, პროგრამირება, ან უბრალოდ დაისვენე ჩვენთან ერთად.</span>
-          <span class="en">Immerse yourself in a digital space where peace, learning, and lo-fi vibes harmonize. Whether you're studying cybersecurity, coding, or just relaxing — Lofi Haven is here for you.</span>
+          შეაბიჯე სიმშვიდის ციფრულ კუთხეში. თუ სწავლობ კიბერუსაფრთხოებას, კოდს ან უბრალოდ გჭირდება მოსვენება — Lofi Haven შენი ადგილი იქნება ინტერნეტში.<br>
+          — Step into your relaxing digital corner. Whether you're learning cybersecurity, coding, or just need peace — Lofi Haven is your safe haven.
         </p>
         <div class="arrow icon-wrap">
           <svg class="arrow-svg button-icon" xmlns="http://www.w3.org/2000/svg" width="14.486" height="18.412" viewBox="0 0 14.486 18.412">
@@ -117,11 +113,10 @@
   }
 
   function toggleLanguage() {
-    document.body.classList.toggle("lang-geo");
-    document.body.classList.toggle("lang-eng");
+    document.body.classList.toggle("lang-georgian");
+    document.body.classList.toggle("lang-english");
   }
 
-  // Rain effect
   const canvas = document.getElementById("rain-effect");
   const ctx = canvas.getContext("2d");
   canvas.width = window.innerWidth;
