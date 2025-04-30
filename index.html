@@ -1,182 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lo-Fi Haven</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lo-Fi Haven</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
 
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #1e1e1e;
+      color: #f5f5f5;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      overflow-x: hidden;
+    }
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', sans-serif;
-            background-color: #1e1e1e;
-            color: #f5f5f5;
-            transition: background-color 0.5s ease, color 0.5s ease;
-            overflow-x: hidden;
-        }
+    .dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    .light-mode {
+      background-color: #f0f0f0;
+      color: #1e1e1e;
+    }
 
-        /* Dark and Light Mode */
-        .dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-        .light-mode {
-            background-color: #f0f0f0;
-            color: #1e1e1e;
-        }
+    .container {
+      text-align: center;
+      padding: 50px 20px;
+    }
 
-        /* Container */
-        .container {
-            text-align: center;
-            padding: 50px 20px;
-        }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
 
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
+    p {
+      font-size: 1.2em;
+      max-width: 700px;
+      margin: 20px auto;
+      line-height: 1.8;
+    }
 
-        p {
-            font-size: 1.2em;
-            max-width: 600px;
-            margin: 20px auto;
-            line-height: 1.6;
-        }
+    button {
+      background-color: #ff4081;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
 
-        button {
-            background-color: #ff4081;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background-color: #e73370;
-        }
+    button:hover {
+      background-color: #e73370;
+    }
 
-        /* Social Media Links */
-        .social-links a {
-            color: #ff4081;
-            margin: 0 10px;
-            text-decoration: none;
-            font-size: 24px;
-        }
+    .social-links a {
+      color: #ff4081;
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 24px;
+    }
 
-        /* Lofi Girl Image */
-        .lofi-girl {
-            width: 300px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-        }
+    .lofi-girl {
+      width: 300px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    }
 
-        /* Rain Effect (Fixed) */
-        .rain {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
+    .rain {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
 
-        .raindrop {
-            position: absolute;
-            width: 2px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.3);
-            animation: fall linear infinite;
-            opacity: 0.5;
-        }
+    .raindrop {
+      position: absolute;
+      width: 2px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.3);
+      animation: fall linear infinite;
+      opacity: 0.5;
+    }
 
-        @keyframes fall {
-            0% { top: -60px; }
-            100% { top: 110vh; }
-        }
-    </style>
+    @keyframes fall {
+      0% { top: -60px; }
+      100% { top: 110vh; }
+    }
+
+    .footer {
+      margin-top: 60px;
+      padding: 20px;
+      font-size: 1.3em;
+      animation: pulse 3s infinite ease-in-out;
+      color: #ff80ab;
+      text-shadow: 0 0 10px rgba(255,128,171,0.5);
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.05);
+        opacity: 0.7;
+      }
+    }
+
+    .section {
+      margin-top: 40px;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Rain Background -->
-    <div class="rain" id="rain"></div>
+  <div class="rain" id="rain"></div>
 
-    <!-- Music -->
-    <audio id="background-music" autoplay loop>
-        <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_7771e7b2d5.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
+  <audio id="background-music" autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_7771e7b2d5.mp3" type="audio/mp3" />
+    Your browser does not support the audio element.
+  </audio>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Lofi Girl Image -->
-        <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
+  <div class="container">
+    <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl"/>
 
-        <!-- Welcome Title -->
-        <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
+    <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
 
-        <!-- Welcome Paragraph -->
-        <p id="welcome-paragraph">
-            Relax, unwind, and let the soothing sounds of lo-fi beats carry you away.  
-            Welcome to your peaceful retreat where it's always cozy and calm —  
-            whether you're studying, working, or just taking a moment for yourself.  
-        </p>
+    <p id="welcome-paragraph">
+      Here at Lo-Fi Haven, you’re always welcome to relax, study, or just chill.  
+      Our calm environment, smooth beats, and cozy visuals offer a perfect escape  
+      from daily stress. Whether you're grinding through homework, writing, coding,  
+      or simply enjoying some solitude, this is your space to find peace.
+    </p>
 
-        <!-- Mode Switch -->
-        <button onclick="toggleMode()">Switch Day/Night Mode</button>
-
-        <!-- Language Switch -->
-        <button onclick="switchLanguage('en')">English</button>
-        <button onclick="switchLanguage('ka')">ქართული</button>
-
-        <!-- Social Media Links -->
-        <div class="social-links">
-            <a href="https://facebook.com" target="_blank">Facebook</a>
-            <a href="https://instagram.com" target="_blank">Instagram</a>
-            <a href="https://twitter.com" target="_blank">Twitter</a>
-        </div>
+    <div class="section">
+      <p id="extra-paragraph">
+        Lo-Fi Haven isn't just music — it's a mood, a vibe, a place.  
+        Join our community, follow the rhythm, and let the ambiance carry you.  
+        Our Discord server is your virtual café: serene, friendly, and focused  
+        on creative flow.
+      </p>
     </div>
 
-    <script>
-        // Rain generation
-        const rain = document.getElementById('rain');
-        for (let i = 0; i < 80; i++) {
-            let drop = document.createElement('div');
-            drop.className = 'raindrop';
-            drop.style.left = Math.random() * 100 + 'vw';
-            drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
-            rain.appendChild(drop);
-        }
+    <div class="section">
+      <button onclick="toggleMode()">Switch Day/Night Mode</button>
+      <button onclick="switchLanguage('en')">English</button>
+      <button onclick="switchLanguage('ka')">ქართული</button>
+    </div>
 
-        // Dark/Light Mode
-        function toggleMode() {
-            document.body.classList.toggle('dark-mode');
-            document.body.classList.toggle('light-mode');
-        }
+    <div class="social-links section">
+      <a href="https://facebook.com" target="_blank">Facebook</a>
+      <a href="https://instagram.com" target="_blank">Instagram</a>
+      <a href="https://twitter.com" target="_blank">Twitter</a>
+    </div>
 
-        // Language Switch
-        function switchLanguage(lang) {
-            if (lang === 'en') {
-                document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
-                document.getElementById('welcome-paragraph').innerText =
-                    'Relax, unwind, and let the soothing sounds of lo-fi beats carry you away. Welcome to your peaceful retreat where it\'s always cozy and calm — whether you\'re studying, working, or just taking a moment for yourself.';
-            } else if (lang === 'ka') {
-                document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
-                document.getElementById('welcome-paragraph').innerText =
-                    'დასვენდით, მოდუნდით და მიეცით თავს ლოფი ბითების დამამშვიდებელ ჰანგებში გადაშვება. კეთილი იყოს თქვენი მობრძანება მშვიდი თავშესაფრის სივრცეში, სადაც ყოველთვის სიმშვიდე და სითბოა — იქნებ სწვალობთ, მუშაობთ ან უბრალოდ ისვენებთ.';
-            }
-        }
+    <div class="footer" id="footer-text">Official Lo-Fi Haven</div>
+  </div>
 
-        // Default dark mode
-        document.body.classList.add('dark-mode');
-    </script>
+  <script>
+    const rain = document.getElementById('rain');
+    for (let i = 0; i < 80; i++) {
+      let drop = document.createElement('div');
+      drop.className = 'raindrop';
+      drop.style.left = Math.random() * 100 + 'vw';
+      drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+      rain.appendChild(drop);
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle('dark-mode');
+      document.body.classList.toggle('light-mode');
+    }
+
+    function switchLanguage(lang) {
+      if (lang === 'en') {
+        document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
+        document.getElementById('welcome-paragraph').innerText =
+          'Here at Lo-Fi Haven, you’re always welcome to relax, study, or just chill. Our calm environment, smooth beats, and cozy visuals offer a perfect escape from daily stress. Whether you\'re grinding through homework, writing, coding, or simply enjoying some solitude, this is your space to find peace.';
+        document.getElementById('extra-paragraph').innerText =
+          'Lo-Fi Haven isn\'t just music — it\'s a mood, a vibe, a place. Join our community, follow the rhythm, and let the ambiance carry you. Our Discord server is your virtual café: serene, friendly, and focused on creative flow.';
+        document.getElementById('footer-text').innerText = 'Official Lo-Fi Haven';
+      } else if (lang === 'ka') {
+        document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
+        document.getElementById('welcome-paragraph').innerText =
+          'Lo-Fi Haven-ში ყოველთვის მისაღებია მოდუნება, სწავლა ან უბრალოდ მოსვენება. ჩვენი მშვიდი ატმოსფერო, რბილი ბითები და მყუდრო ვიზუალური სტილი იდეალურ თავშესაფარს ქმნის ყოველდღიური სტრესისგან.';
+        document.getElementById('extra-paragraph').innerText =
+          'Lo-Fi Haven მხოლოდ მუსიკა არაა — ეს არის განწყობა, აურა, ადგილი. შემოგვიერთდით, იგრძენით რიტმი და მიეცით თავს ატმოსფეროში ჩაძირვის უფლება. ჩვენი Discord სერვერი თქვენი ვირტუალური კაფეა: მშვიდი, მეგობრული და კრეატიული ფოკუსით.';
+        document.getElementById('footer-text').innerText = 'ოფიციალური Lo-Fi Haven';
+      }
+    }
+
+    document.body.classList.add('dark-mode');
+  </script>
 </body>
 </html>
