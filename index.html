@@ -6,7 +6,6 @@
     <title>Lo-Fi Haven</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
     <style>
         body {
             margin: 0;
@@ -20,7 +19,10 @@
             background: linear-gradient(to bottom, #2e2e2e, #1e1e1e);
             color: #e0e0e0;
         }
-
+        .theme-sunny {
+            background: linear-gradient(to top, #fffbd5, #b20a2c);
+            color: #1e1e1e;
+        }
         .theme-night {
             background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
             color: #e0e0e0;
@@ -103,35 +105,34 @@
             100% { top: 110vh; }
         }
 
-        .avatar-section {
-            padding: 60px 20px;
-            background-color: rgba(255,255,255,0.05);
-            border-top: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-        }
-
-        .avatar-section h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
-        .avatar-preview {
+        .cloud {
+            position: absolute;
             width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            margin: 20px auto;
-            background-color: #444;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
+            height: 60px;
+            background: #fff;
+            border-radius: 100px;
+            top: 50px;
+            animation: cloudMove 60s linear infinite;
+            opacity: 0.3;
         }
 
-        .avatar-section select {
-            padding: 10px;
-            margin: 10px;
-            font-size: 16px;
+        @keyframes cloudMove {
+            from { left: -250px; }
+            to { left: 110%; }
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out alternate;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
         }
 
         footer {
@@ -140,10 +141,48 @@
             font-size: 0.9em;
             color: #aaa;
         }
+
+        .avatar-creator {
+            margin-top: 40px;
+            background-color: #2c5364;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .avatar-creator h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .avatar-options {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .avatar-option {
+            cursor: pointer;
+        }
+
+        .avatar-option img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            transition: transform 0.3s;
+        }
+
+        .avatar-option img:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body class="theme-night">
     <div class="rain" id="rain"></div>
+    <div class="clouds" id="clouds"></div>
+    <div class="stars" id="stars"></div>
 
     <audio id="background-music" autoplay loop>
         <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_7771e7b2d5.mp3" type="audio/mp3">
@@ -159,6 +198,7 @@
         </p>
 
         <button onclick="setTheme('rainy')">🌧️ Rainy Day</button>
+        <button onclick="setTheme('sunny')">☀️ Sunny Day</button>
         <button onclick="setTheme('night')">🌙 Night Sky</button>
 
         <button onclick="switchLanguage('en')">English</button>
@@ -171,21 +211,22 @@
         </div>
     </div>
 
-    <div class="avatar-section">
+    <div class="avatar-creator">
         <h2>Create Your Lofi Avatar</h2>
-        <div class="avatar-preview" id="avatar-preview">😊</div>
-        <select id="avatar-gender">
-            <option value="😊">Neutral</option>
-            <option value="👩‍🎤">Female</option>
-            <option value="👨‍🎤">Male</option>
-        </select>
-        <select id="avatar-color">
-            <option value="#444">Dark</option>
-            <option value="#ffb6c1">Pink</option>
-            <option value="#87cefa">Sky Blue</option>
-            <option value="#90ee90">Light Green</option>
-        </select>
-        <button onclick="downloadAvatar()">Download Avatar</button>
+        <div class="avatar-options">
+            <div class="avatar-option">
+                <img src="https://example.com/hairstyle1.png" alt="Hairstyle 1">
+                <p>Hairstyle 1</p>
+            </div>
+            <div class="avatar-option">
+                <img src="https://example.com/hairstyle2.png" alt="Hairstyle 2">
+                <p>Hairstyle 2</p>
+            </div>
+            <div class="avatar-option">
+                <img src="https://example.com/hairstyle3.png" alt="Hairstyle 3">
+                <p>Hairstyle 3</p>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -194,14 +235,19 @@
 
     <script>
         const rain = document.getElementById('rain');
+        const clouds = document.getElementById('clouds');
+        const stars = document.getElementById('stars');
 
         function clearEffects() {
             rain.innerHTML = '';
+            clouds.innerHTML = '';
+            stars.innerHTML = '';
         }
 
         function setTheme(theme) {
             document.body.className = 'theme-' + theme;
             clearEffects();
+
             if (theme === 'rainy') {
                 for (let i = 0; i < 80; i++) {
                     let drop = document.createElement('div');
@@ -210,42 +256,37 @@
                     drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
                     rain.appendChild(drop);
                 }
+            } else if (theme === 'sunny') {
+                for (let i = 0; i < 5; i++) {
+                    let cloud = document.createElement('div');
+                    cloud.className = 'cloud';
+                    cloud.style.top = (i * 60) + 'px';
+                    clouds.appendChild(cloud);
+                }
+            } else if (theme === 'night') {
+                for (let i = 0; i < 100; i++) {
+                    let star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 100 + 'vh';
+                    star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    stars.appendChild(star);
+                }
             }
         }
 
-        function switchLanguage(lang) {
-            if (lang === 'en') {
-                document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
-                document.getElementById('welcome-paragraph').innerText = "Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.";
-            } else if (lang === 'ka') {
-                document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
-                document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. იქნება სწავლობთ, მუშაობთ თუ უბრალოდ ისვენებთ — Lo-Fi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
+        function switchLanguage(language) {
+            const welcomeText = document.getElementById('welcome-text');
+            const welcomeParagraph = document.getElementById('welcome-paragraph');
+
+            if (language === 'ka') {
+                welcomeText.innerText = 'კარგი ბრძანდებით, ლო-ფაი ჰეივენში';
+                welcomeParagraph.innerText = 'შეხვდით მშვიდობას. როცა სწავლობთ, მუშაობთ ან უბრალოდ ისვენებთ — ლო-ფაი ჰეივენი აქ არის, რომ მოიტანოს სიმშვიდე მშვიდი რითმებით, კომფორტული ვიზუალებით და ატმოსფეროთი, რომელიც სახლად გრძნობს.';
+            } else {
+                welcomeText.innerText = 'Welcome to Lo-Fi Haven';
+                welcomeParagraph.innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
             }
-        }
-
-        setTheme('night');
-
-        // Avatar Section
-        const avatarPreview = document.getElementById('avatar-preview');
-        document.getElementById('avatar-gender').addEventListener('change', updateAvatar);
-        document.getElementById('avatar-color').addEventListener('change', updateAvatar);
-
-        function updateAvatar() {
-            const emoji = document.getElementById('avatar-gender').value;
-            const color = document.getElementById('avatar-color').value;
-            avatarPreview.innerText = emoji;
-            avatarPreview.style.backgroundColor = color;
-        }
-
-        function downloadAvatar() {
-            html2canvas(avatarPreview).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'lofi_avatar.png';
-                link.href = canvas.toDataURL();
-                link.click();
-            });
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </body>
 </html>
