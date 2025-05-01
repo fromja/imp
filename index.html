@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,46 +7,48 @@
     <title>Lo-Fi Haven</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #111;
-            color: #fff;
+            box-sizing: border-box;
         }
 
-        .container {
-            padding: 2rem;
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #111;
+            color: #fff;
+            overflow-x: hidden;
+            margin: 0;
         }
 
         header {
+            padding: 2rem;
             text-align: center;
-            margin-bottom: 3rem;
+            background: #222;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            color: #d1cfcf;
-        }
-
-        .theme-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
+        header h1 {
+            font-size: 3rem;
+            color: #ff6b6b;
         }
 
         .theme-buttons button {
-            background-color: #555;
-            color: #fff;
-            border: 1px solid #333;
             padding: 10px 20px;
-            margin: 0 10px;
+            margin: 10px;
             cursor: pointer;
-            transition: all 0.3s;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            transition: background 0.3s ease;
         }
 
         .theme-buttons button:hover {
-            background-color: #888;
+            background-color: #f77f7f;
+        }
+
+        .container {
+            padding: 3rem 10%;
         }
 
         .welcome {
@@ -55,24 +56,31 @@
             margin-bottom: 2rem;
         }
 
-        .about,
-        .community {
-            padding: 1rem;
-            background-color: rgba(255, 255, 255, 0.1);
+        .about, .community, .gallery {
+            padding: 2rem;
             margin: 1rem 0;
-            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .about h2,
-        .community h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+        .about h2, .community h2 {
+            font-size: 2rem;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+
+        .about p, .community p {
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
         .gallery img {
             max-width: 100%;
-            border-radius: 8px;
-            margin: 0 5px;
+            height: auto;
+            border-radius: 10px;
+            margin: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease;
         }
 
@@ -82,24 +90,24 @@
 
         .footer {
             text-align: center;
-            margin-top: 2rem;
+            padding: 1rem;
+            background: #222;
             color: #888;
         }
 
         .socials a {
-            margin: 0 10px;
-            color: #fff;
+            margin: 0 15px;
             text-decoration: none;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            transition: color 0.3s ease;
         }
 
         .socials a:hover {
-            color: #ff6b6b;
+            color: #fff;
         }
 
-        .rain,
-        .clouds,
-        .stars {
+        .rain, .clouds, .stars {
             position: fixed;
             width: 100%;
             height: 100%;
@@ -119,13 +127,8 @@
         }
 
         @keyframes fall {
-            0% {
-                top: -60px;
-            }
-
-            100% {
-                top: 110vh;
-            }
+            0% { top: -60px; }
+            100% { top: 110vh; }
         }
 
         .cloud {
@@ -140,13 +143,8 @@
         }
 
         @keyframes cloudMove {
-            from {
-                left: -250px;
-            }
-
-            to {
-                left: 110%;
-            }
+            from { left: -250px; }
+            to { left: 110%; }
         }
 
         .star {
@@ -159,60 +157,49 @@
         }
 
         @keyframes twinkle {
-            0% {
-                opacity: 0.5;
-            }
-
-            100% {
-                opacity: 1;
-            }
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
-        .night-sky {
-            background: #111;
-        }
-
-        .rainy-day {
-            background: #1e2a3a;
-        }
-
-        .sunny-day {
-            background: #fdd835;
-        }
+        .night-sky { background: #111; }
+        .rainy-day { background: #1e2a3a; }
+        .sunny-day { background: #fdd835; }
+        .cloudy-day { background: #aab0b7; }
     </style>
 </head>
 
-<body>
+<body class="night-sky">
     <header>
         <h1>Welcome to Lo-Fi Haven</h1>
         <div class="theme-buttons">
             <button onclick="changeTheme('night-sky')">Night Sky</button>
             <button onclick="changeTheme('rainy-day')">Rainy Day</button>
             <button onclick="changeTheme('sunny-day')">Sunny Day</button>
+            <button onclick="changeTheme('cloudy-day')">Cloudy Day</button>
         </div>
     </header>
 
     <div class="container">
         <div class="welcome">
             <h2>Welcome to the most relaxing place on the internet!</h2>
-            <p>Find your peace, enjoy music, and let your stress melt away.</p>
+            <p>Find your peace, enjoy music, and let your stress melt away with our chill Lo-Fi beats.</p>
         </div>
 
         <div class="about">
             <h2>About Us</h2>
-            <p>Lo-Fi Haven is a community for those who appreciate chill beats, good vibes, and everything Lo-Fi. Whether you are here to study, relax, or just vibe out, we welcome you!</p>
+            <p>Lo-Fi Haven is a community dedicated to those who love relaxing, chill music, great vibes, and creating a positive space for everyone to unwind.</p>
         </div>
 
         <div class="community">
             <h2>Our Community</h2>
-            <p>Join our amazing community on Discord! It's a place for friendly conversations, music sharing, gaming, and relaxation. We believe in creating a positive, welcoming environment where everyone can feel at home.</p>
+            <p>Join our community on Discord, where we share music, relax, and chat about everything from gaming to study tips. It's all about good vibes!</p>
         </div>
 
         <div class="gallery">
             <h2>Lo-Fi Vibe Gallery</h2>
-            <img src="https://example.com/lofi-girl1.jpg" alt="Lo-Fi Girl" />
-            <img src="https://example.com/lofi-girl2.jpg" alt="Lo-Fi Girl" />
-            <img src="https://example.com/lofi-girl3.jpg" alt="Lo-Fi Girl" />
+            <img src="https://example.com/lofi-girl1.jpg" alt="Lo-Fi Girl">
+            <img src="https://example.com/lofi-girl2.jpg" alt="Lo-Fi Girl">
+            <img src="https://example.com/lofi-girl3.jpg" alt="Lo-Fi Girl">
         </div>
     </div>
 
@@ -239,6 +226,8 @@
             if (theme === 'rainy-day') {
                 generateRain();
             } else if (theme === 'sunny-day') {
+                generateClouds();
+            } else if (theme === 'cloudy-day') {
                 generateClouds();
             } else {
                 generateStars();
@@ -283,5 +272,4 @@
         audio.play();
     </script>
 </body>
-
 </html>
