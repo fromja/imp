@@ -278,7 +278,7 @@
     </div>
 
     <div class="chatbox" id="chatbox">
-        <div class="chat-header" onclick="toggleChat()">☕ Lofi Café Chat</div>
+        <div class="chat-header" onclick="toggleChat()">Chat</div>
         <div class="chat-messages" id="chat-messages"></div>
         <div class="chat-input">
             <input type="text" id="chat-input" placeholder="Type a message...">
@@ -287,48 +287,18 @@
     </div>
 
     <footer>
-        Official Lo-Fi Haven — Stay Chill, Stay Creative 🌸
+        <p>Created with ❤️ by Lo-Fi Haven Team</p>
     </footer>
 
     <script>
-        let currentUsername = null;
-
-        const rain = document.getElementById('rain');
-        const clouds = document.getElementById('clouds');
-        const stars = document.getElementById('stars');
-
-        function clearEffects() {
-            rain.innerHTML = '';
-            clouds.innerHTML = '';
-            stars.innerHTML = '';
-        }
+        let currentUsername = '';
 
         function setTheme(theme) {
-            document.body.className = 'theme-' + theme;
-            clearEffects();
-
-            if (theme === 'rainy') {
-                for (let i = 0; i < 80; i++) {
-                    let drop = document.createElement('div');
-                    drop.classList.add('raindrop');
-                    drop.style.left = Math.random() * 100 + 'vw';
-                    drop.style.animationDuration = Math.random() * 0.5 + 1 + 's';
-                    rain.appendChild(drop);
-                }
-            } else if (theme === 'sunny') {
-                let cloud = document.createElement('div');
-                cloud.classList.add('cloud');
-                cloud.style.top = Math.random() * 100 + 'px';
-                clouds.appendChild(cloud);
-            } else if (theme === 'night') {
-                for (let i = 0; i < 150; i++) {
-                    let star = document.createElement('div');
-                    star.classList.add('star');
-                    star.style.left = Math.random() * 100 + 'vw';
-                    star.style.top = Math.random() * 100 + 'vh';
-                    stars.appendChild(star);
-                }
-            }
+            const body = document.body;
+            body.classList.remove('theme-rainy', 'theme-sunny', 'theme-night');
+            if (theme === 'rainy') body.classList.add('theme-rainy');
+            else if (theme === 'sunny') body.classList.add('theme-sunny');
+            else if (theme === 'night') body.classList.add('theme-night');
         }
 
         function switchLanguage(language) {
