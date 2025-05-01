@@ -41,7 +41,7 @@
         }
 
         h1 {
-            font-size: 3em;
+            font-size: 2.5em;
             margin-bottom: 20px;
         }
 
@@ -148,7 +148,7 @@
             top: 20px;
             left: 20px;
             color: #ff4081;
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: 700;
             font-family: 'Roboto', sans-serif;
             opacity: 0;
@@ -241,7 +241,7 @@
 
     <!-- Logo -->
     <div class="logo">
-        <h2>Lofi Haven Official</h2>
+        <h2>Lofi Haven Official ✅</h2>
     </div>
 
     <div class="container">
@@ -272,64 +272,19 @@
 
     <!-- Chatbox -->
     <div class="chat-container" id="chat-container">
-        <button class="chat-toggle" onclick="toggleChat()">💬 Open Chat</button>
         <div class="chat-box" id="chat-box">
-            <!-- Chat messages will go here -->
+            <!-- Messages will be dynamically added here -->
         </div>
-        <input type="text" id="chat-input" class="chat-input" placeholder="Type your message...">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Type your message here...">
         <button class="chat-send" onclick="sendMessage()">Send</button>
+        <button class="chat-toggle" onclick="toggleChat()">Toggle Chat</button>
     </div>
 
     <script>
-        const rain = document.getElementById('rain');
-        const clouds = document.getElementById('clouds');
-        const stars = document.getElementById('stars');
-        const chatContainer = document.getElementById('chat-container');
-        const chatBox = document.getElementById('chat-box');
-        const chatInput = document.getElementById('chat-input');
-
-        function clearEffects() {
-            rain.innerHTML = '';
-            clouds.innerHTML = '';
-            stars.innerHTML = '';
-        }
-
-        function setTheme(theme) {
-            clearEffects();
-
-            if (theme === 'rainy') {
-                document.body.className = 'theme-rainy';
-                for (let i = 0; i < 100; i++) {
-                    const raindrop = document.createElement('div');
-                    raindrop.className = 'raindrop';
-                    raindrop.style.left = `${Math.random() * 100}vw`;
-                    raindrop.style.animationDuration = `${Math.random() * 2 + 2}s`;
-                    rain.appendChild(raindrop);
-                }
-            } else if (theme === 'sunny') {
-                document.body.className = 'theme-sunny';
-            } else if (theme === 'night') {
-                document.body.className = 'theme-night';
-                for (let i = 0; i < 200; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    star.style.left = `${Math.random() * 100}vw`;
-                    star.style.top = `${Math.random() * 100}vh`;
-                    stars.appendChild(star);
-                }
-            }
-        }
-
-        function switchLanguage(lang) {
-            if (lang === 'en') {
-                document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
-                document.getElementById('welcome-paragraph').innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
-            } else if (lang === 'ka') {
-                document.getElementById('welcome-text').innerText = 'მოგესალმებით Lofi Haven-ში';
-                document.getElementById('welcome-paragraph').innerText = 'გადაიხედეთ მშვიდობის სამყაროში. იქნება ეს სწავლა, მუშაობა თუ უბრალოდ დასვენება - Lofi Haven აქ არის, რომ შემოიტანოს მშვიდობა მშვიდი რიტმებით, კომფორტული ვიზუალებით და სიმშვიდე, რომელიც გრძნობს თავს სახლში.';
-            }
-        }
-
+        let chatContainer = document.getElementById('chat-container');
+        let chatInput = document.getElementById('chat-input');
+        let chatBox = document.getElementById('chat-box');
+        
         function toggleChat() {
             if (chatContainer.style.display === 'none') {
                 chatContainer.style.display = 'flex';
@@ -349,6 +304,9 @@
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
+
+        // Initially hide chat
+        chatContainer.style.display = 'none';
     </script>
 </body>
 </html>
