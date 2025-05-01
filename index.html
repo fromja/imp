@@ -307,6 +307,28 @@
 
         // Initially hide chat
         chatContainer.style.display = 'none';
+
+        // Theme switching functions
+        function setTheme(theme) {
+            if (theme === 'rainy') {
+                document.body.className = 'theme-rainy';
+            } else if (theme === 'sunny') {
+                document.body.className = 'theme-sunny';
+            } else {
+                document.body.className = 'theme-night';
+            }
+        }
+
+        // Language switching functions
+        function switchLanguage(lang) {
+            if (lang === 'ka') {
+                document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
+                document.getElementById('welcome-paragraph').innerText = 'გაგყვეთ მშვიდობაში და ატარეთ დრო ერთად.';
+            } else {
+                document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
+                document.getElementById('welcome-paragraph').innerText = 'Dive into a world of calm...';
+            }
+        }
     </script>
 </body>
 </html>
