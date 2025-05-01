@@ -201,7 +201,7 @@
     <div class="clouds" id="clouds"></div>
     <div class="stars" id="stars"></div>
 
-    <!-- YouTube Music Embed -->
+    <!-- YouTube Music Embed (Now Fixed) -->
     <iframe id="lofi-music" width="0" height="0" src="https://www.youtube.com/embed/sF80I-TQiW0?autoplay=1&mute=0&loop=1&playlist=sF80I-TQiW0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
     <div class="container">
@@ -272,7 +272,7 @@
                     star.className = 'star';
                     star.style.left = Math.random() * 100 + 'vw';
                     star.style.top = Math.random() * 100 + 'vh';
-                    star.style.animationDuration = (Math.random() * 1 + 1) + 's';
+                    star.style.animationDuration = Math.random() * 3 + 's';
                     stars.appendChild(star);
                 }
             }
@@ -280,51 +280,48 @@
 
         function switchLanguage(language) {
             if (language === 'en') {
-                document.getElementById("welcome-text").innerText = "Welcome to Lo-Fi Haven";
-                document.getElementById("welcome-paragraph").innerText = "Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.";
-            } else if (language === 'ka') {
-                document.getElementById("welcome-text").innerText = "კარგი ლოფი სამყაროში";
-                document.getElementById("welcome-paragraph").innerText = "ჩახედეთ მშვიდ სამყაროში, სადაც ლოფი მუსიკები, მშვიდი ატმოსფერო და რბილი ვიზუალები თქვენს დახმარებას გთავაზობთ.";
+                document.getElementById('welcome-text').textContent = 'Welcome to Lo-Fi Haven';
+                document.getElementById('welcome-paragraph').textContent = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
+            } else {
+                document.getElementById('welcome-text').textContent = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
+                document.getElementById('welcome-paragraph').textContent = 'შევიდეთ წყნარ სამყაროში. მიუხედავად იმისა, სწავლობთ, მუშაობთ თუ უბრალოდ ვისვენებთ - Lo-Fi Haven აქ არის, რათა მოგაწოდოთ სიმშვიდე ნაზი ბიტებით, კომფორტული ვიზუალებითა და მშვიდი ატმოსფეროთი, რომელიც გრძნობა სახლს შეგიქმნით.';
             }
         }
 
-        // Lofi Game
         function startLofiGame() {
+            // Simple game mechanic
             const canvas = document.getElementById('gameCanvas');
             const ctx = canvas.getContext('2d');
+            const ball = { x: 150, y: 150, radius: 15, dx: 2, dy: -2, color: 'rgb(255, 255, 255)' };
             
-            let x = canvas.width / 2;
-            let y = canvas.height - 30;
-            let dx = 2;
-            let dy = -2;
-            let ballRadius = 10;
-
             function drawBall() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.beginPath();
-                ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-                ctx.fillStyle = "#ff4081";
+                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                ctx.fillStyle = ball.color;
                 ctx.fill();
                 ctx.closePath();
             }
-
-            function updateGame() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                drawBall();
-
-                if(x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-                    dx = -dx;
+            
+            function moveBall() {
+                if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
+                    ball.dx = -ball.dx;
                 }
-                if(y + dy < ballRadius) {
-                    dy = -dy;
-                } else if(y + dy > canvas.height - ballRadius) {
-                    dy = -dy;
+                if (ball.y + ball.dy > canvas.height - ball.radius || ball.y + ball.dy < ball.radius) {
+                    ball.dy = -ball.dy;
                 }
 
-                x += dx;
-                y += dy;
+                ball.x += ball.dx;
+                ball.y += ball.dy;
             }
 
-            setInterval(updateGame, 10);
+            function gameLoop() {
+                drawBall();
+                moveBall();
+                requestAnimationFrame(gameLoop);
+            }
+
+            gameLoop(); 
         }
     </script>
 </body>
