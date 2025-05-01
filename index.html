@@ -148,7 +148,7 @@
             top: 20px;
             left: 20px;
             color: #ff4081;
-            font-size: 2em;
+            font-size: 1.5em;
             font-weight: 700;
             font-family: 'Roboto', sans-serif;
             opacity: 0;
@@ -163,19 +163,19 @@
         /* Chatbox styles */
         .chat-container {
             position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 600px;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
             background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px 15px 0 0;
-            box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.3);
-            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
         }
 
         .chat-box {
-            height: 300px;
+            height: 250px;
             overflow-y: scroll;
             margin-bottom: 10px;
             padding: 10px;
@@ -205,6 +205,21 @@
         }
 
         .chat-send:hover {
+            background-color: #e73370;
+        }
+
+        .chat-toggle {
+            background-color: #ff4081;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .chat-toggle:hover {
             background-color: #e73370;
         }
     </style>
@@ -251,7 +266,8 @@
     </footer>
 
     <!-- Chatbox -->
-    <div class="chat-container">
+    <div class="chat-container" id="chat-container">
+        <button class="chat-toggle" onclick="toggleChat()">💬 Open Chat</button>
         <div class="chat-box" id="chat-box">
             <!-- Chat messages will go here -->
         </div>
@@ -263,6 +279,7 @@
         const rain = document.getElementById('rain');
         const clouds = document.getElementById('clouds');
         const stars = document.getElementById('stars');
+        const chatContainer = document.getElementById('chat-container');
         const chatBox = document.getElementById('chat-box');
         const chatInput = document.getElementById('chat-input');
 
@@ -307,24 +324,29 @@
                 document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
                 document.getElementById('welcome-paragraph').innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
             } else if (lang === 'ka') {
-                document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
-                document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. იქნება სწავლობთ, მუშაობთ თუ უბრალოდ ისვენებთ — Lo-Fi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
+                document.getElementById('welcome-text').innerText = 'მოგესალმებით Lofi Haven-ში';
+                document.getElementById('welcome-paragraph').innerText = 'გადაიხედეთ მშვიდობის სამყაროში. იქნება ეს სწავლა, მუშაობა თუ უბრალოდ დასვენება - Lofi Haven აქ არის, რომ შემოიტანოს მშვიდობა მშვიდი რიტმებით, კომფორტული ვიზუალებით და სიმშვიდე, რომელიც გრძნობს თავს სახლში.';
+            }
+        }
+
+        function toggleChat() {
+            if (chatContainer.style.display === 'none') {
+                chatContainer.style.display = 'flex';
+            } else {
+                chatContainer.style.display = 'none';
             }
         }
 
         function sendMessage() {
-            const message = chatInput.value.trim();
-            if (message) {
-                const messageElement = document.createElement('div');
-                messageElement.innerText = message;
-                chatBox.appendChild(messageElement);
+            const message = chatInput.value;
+            if (message.trim() !== '') {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message';
+                messageDiv.innerText = message;
+                chatBox.appendChild(messageDiv);
                 chatInput.value = '';
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
-        }
-
-        window.onload = () => {
-            setTheme('night');
         }
     </script>
 </body>
