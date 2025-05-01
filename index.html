@@ -1,210 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lo-Fi Haven</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #1e1e2f;
-      color: white;
-      overflow-x: hidden;
-      transition: background-color 1s ease;
-    }
-    header {
-      text-align: center;
-      padding: 2rem;
-      font-size: 2rem;
-    }
-    .section {
-      padding: 2rem;
-      max-width: 900px;
-      margin: auto;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-    .gallery img {
-      width: 100%;
-      border-radius: 10px;
-    }
-    .controls {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
-    button {
-      background-color: #444;
-      border: none;
-      padding: 0.5rem 1rem;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background-color: #666;
-    }
-    .rain, .clouds, .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: -1;
-    }
-    .raindrop {
-      position: absolute;
-      width: 2px;
-      height: 50px;
-      background: rgba(255, 255, 255, 0.3);
-      animation: fall linear infinite;
-      opacity: 0.5;
-    }
-    @keyframes fall {
-      0% { top: -60px; }
-      100% { top: 110vh; }
-    }
-    .cloud {
-      position: absolute;
-      width: 200px;
-      height: 60px;
-      background: #fff;
-      border-radius: 100px;
-      top: 50px;
-      animation: cloudMove 60s linear infinite;
-      opacity: 0.3;
-    }
-    @keyframes cloudMove {
-      from { left: -250px; }
-      to { left: 110%; }
-    }
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle 2s infinite ease-in-out alternate;
-    }
-    @keyframes twinkle {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: #ccc;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lo-Fi Haven</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        /* Your CSS here */
+    </style>
 </head>
 <body>
-  <header>
-    <span id="welcome-text">Welcome to Lo-Fi Haven</span>
-    <div class="controls">
-      <button onclick="setTheme('sunny')">Sunny Day ☀️</button>
-      <button onclick="setTheme('rainy')">Rainy Day 🌧️</button>
-      <button onclick="setTheme('night')">Night Sky 🌌</button>
-      <button onclick="toggleLanguage()">ENG / GEO 🌐</button>
+    <div id="languageSwitcher">
+        <button id="enButton">EN</button>
+        <button id="geButton">GE</button>
     </div>
-  </header>
 
-  <div id="weather-effects"></div>
+    <header>
+        <h1>Welcome to Lo-Fi Haven</h1>
+        <nav>
+            <ul>
+                <li><a href="#about" id="about-link">About Us</a></li>
+                <li><a href="#community" id="community-link">Our Community</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <div class="section" id="about">
-    <h2>About Us</h2>
-    <p id="about-text">Lo-Fi Haven is a peaceful digital oasis where you can relax, enjoy ambient music, and be part of a welcoming online community. Our Discord server brings together chill vibes, aesthetic content, and kind souls from around the world.</p>
-  </div>
+    <main>
+        <section id="about">
+            <h2 id="about-title">About Us</h2>
+            <p id="about-text">We are a community of lo-fi music enthusiasts, creating a peaceful space for everyone to enjoy. We gather here to listen to music, relax, and share good vibes.</p>
+        </section>
 
-  <div class="section" id="community">
-    <h2>Our Community</h2>
-    <p id="community-text">We have a diverse community of music lovers, gamers, creatives, and calm souls who share and grow together. Whether you're vibing with lo-fi beats or sharing art, you're always welcome here.</p>
-  </div>
+        <section id="community">
+            <h2 id="community-title">Our Community</h2>
+            <p id="community-text">Our Discord community is vibrant, friendly, and always welcoming new members. Join us to relax, chat, and enjoy the chillest lo-fi music.</p>
+        </section>
 
-  <div class="section">
-    <h2>Gallery</h2>
-    <div class="gallery">
-      <img src="https://i.imgur.com/8Km9tLL.jpg" alt="Lo-fi image 1">
-      <img src="https://i.imgur.com/H0Z6cK6.jpg" alt="Lo-fi image 2">
-      <img src="https://i.imgur.com/Y4z5EJf.jpg" alt="Lo-fi image 3">
-    </div>
-  </div>
+        <section id="gallery">
+            <h2>Gallery</h2>
+            <div class="gallery-container">
+                <img src="image1.jpg" alt="Image 1">
+                <img src="image2.jpg" alt="Image 2">
+                <img src="image3.jpg" alt="Image 3">
+            </div>
+        </section>
+    </main>
 
-  <footer>
-    Official Lo-Fi Haven ✨ | Follow us on <a href="#" style="color:#89CFF0">Discord</a>, <a href="#" style="color:#89CFF0">Instagram</a>, <a href="#" style="color:#89CFF0">YouTube</a>
-  </footer>
+    <footer>
+        <p>&copy; 2025 Lo-Fi Haven</p>
+        <div class="social-links">
+            <a href="https://twitter.com" target="_blank">Twitter</a>
+            <a href="https://discord.com" target="_blank">Discord</a>
+        </div>
+    </footer>
 
-  <script>
-    const translations = {
-      geo: {
-        welcome: "მოგესალმებით Lo-Fi Haven-ში",
-        about: "Lo-Fi Haven არის მშვიდობიანი ციფრული ოაზისი, სადაც შეგიძლიათ დაისვენოთ, მოუსმინოთ ლოფი მუსიკას და გახდეთ მშვიდი ონლაინ საზოგადოების ნაწილი.",
-        community: "ჩვენი დისქორდის წევრები მოიცავენ მუსიკის მოყვარულებს, გეიმერებს და კრეატიულ ადამიანებს, რომლებიც ერთად იზრდებიან და ინაწილებენ ვაიბს."
-      },
-      eng: {
-        welcome: "Welcome to Lo-Fi Haven",
-        about: "Lo-Fi Haven is a peaceful digital oasis where you can relax, enjoy ambient music, and be part of a welcoming online community.",
-        community: "We have a diverse community of music lovers, gamers, creatives, and calm souls who share and grow together."
-      }
-    };
+    <div class="rain"></div>
+    <div class="clouds"></div>
+    <div class="stars"></div>
 
-    let currentLang = 'eng';
+    <script>
+        // Language switcher functionality
+        $('#enButton').click(function() {
+            $('#about-title').text('About Us');
+            $('#about-text').text('We are a community of lo-fi music enthusiasts, creating a peaceful space for everyone to enjoy. We gather here to listen to music, relax, and share good vibes.');
+            $('#community-title').text('Our Community');
+            $('#community-text').text('Our Discord community is vibrant, friendly, and always welcoming new members. Join us to relax, chat, and enjoy the chillest lo-fi music.');
+        });
 
-    function toggleLanguage() {
-      currentLang = currentLang === 'eng' ? 'geo' : 'eng';
-      document.getElementById('welcome-text').innerText = translations[currentLang].welcome;
-      document.getElementById('about-text').innerText = translations[currentLang].about;
-      document.getElementById('community-text').innerText = translations[currentLang].community;
-    }
+        $('#geButton').click(function() {
+            $('#about-title').text('ჩვენს შესახებ');
+            $('#about-text').text('ჩვენ ვართ ლო-ფაი მუსიკის მოყვარულთა საზოგადოება, რომელიც ქმნის მშვიდობიან გარემოს ყველასთვის. აქ ვიკრიბებით მუსიკის მოსასმენად, დასასვენებლად და კარგი ვიბების გასაზიარებლად.');
+            $('#community-title').text('ჩვენი საზოგადოების');
+            $('#community-text').text('ჩვენი დისქორდის საზოგადოება მრავალფეროვანია, მეგობრული და ყოველთვის მზადაა ახალ წევრებთან შეხვედრაზე. შემოგვიერთდით, რომ დავისვენოთ, ვისაუბროთ და გავაგრძელოთ ყველაზე მშვიდი ლო-ფაი მუსიკა.');
+        });
 
-    function setTheme(theme) {
-      const weather = document.getElementById('weather-effects');
-      weather.innerHTML = '';
-      document.body.style.backgroundColor = '#1e1e2f';
-
-      if (theme === 'sunny') {
-        for (let i = 0; i < 5; i++) {
-          const cloud = document.createElement('div');
-          cloud.className = 'cloud';
-          cloud.style.top = `${Math.random() * 200}px`;
-          cloud.style.left = `${Math.random() * 100}%`;
-          document.getElementById('weather-effects').appendChild(cloud);
+        // Animation for rain, clouds, and stars
+        function toggleWeatherAnimation(theme) {
+            if (theme === 'rain') {
+                // Add rain animation
+                $('.rain').css('display', 'block');
+                $('.clouds').css('display', 'none');
+                $('.stars').css('display', 'none');
+            } else if (theme === 'sun') {
+                // Add sun animation
+                $('.rain').css('display', 'none');
+                $('.clouds').css('display', 'none');
+                $('.stars').css('display', 'none');
+            } else if (theme === 'night') {
+                // Add stars animation
+                $('.rain').css('display', 'none');
+                $('.clouds').css('display', 'none');
+                $('.stars').css('display', 'block');
+            }
         }
-        document.body.style.backgroundColor = '#87CEFA';
-      }
-      else if (theme === 'rainy') {
-        for (let i = 0; i < 50; i++) {
-          const drop = document.createElement('div');
-          drop.className = 'raindrop';
-          drop.style.left = `${Math.random() * 100}vw`;
-          drop.style.top = `${Math.random() * -100}vh`;
-          drop.style.animationDuration = `${Math.random() * 2 + 1}s`;
-          document.getElementById('weather-effects').appendChild(drop);
+
+        // Handling theme changes
+        $('#themeSwitcher button').click(function() {
+            const theme = $(this).data('theme');
+            toggleWeatherAnimation(theme);
+        });
+    </script>
+
+    <style>
+        /* Add necessary CSS */
+        .rain, .clouds, .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
         }
-        document.body.style.backgroundColor = '#5f7c8a';
-      }
-      else if (theme === 'night') {
-        for (let i = 0; i < 100; i++) {
-          const star = document.createElement('div');
-          star.className = 'star';
-          star.style.left = `${Math.random() * 100}vw`;
-          star.style.top = `${Math.random() * 100}vh`;
-          star.style.animationDelay = `${Math.random() * 5}s`;
-          star.style.animationDuration = `${Math.random() * 2 + 1}s`;
-          document.getElementById('weather-effects').appendChild(star);
+
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.3);
+            animation: fall linear infinite;
+            opacity: 0.5;
         }
-        document.body.style.backgroundColor = '#0d1b2a';
-      }
-    }
-  </script>
+
+        @keyframes fall {
+            0% { top: -60px; }
+            100% { top: 110vh; }
+        }
+
+        .cloud {
+            position: absolute;
+            width: 200px;
+            height: 60px;
+            background: #fff;
+            border-radius: 100px;
+            top: 50px;
+            animation: cloudMove 60s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes cloudMove {
+            from { left: -250px; }
+            to { left: 110%; }
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
 </body>
 </html>
