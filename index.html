@@ -168,33 +168,31 @@
             color: #aaa;
         }
 
-        /* Lofi Game Styles */
-        .game-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
+        /* Animation Styles for Lofi Game */
+        .lofi-game-container {
+            margin-top: 50px;
+            text-align: center;
         }
 
-        .game-button {
+        .lofi-game-button {
+            padding: 20px 40px;
+            font-size: 18px;
             background-color: #ff4081;
-            padding: 15px;
-            border-radius: 12px;
             color: white;
-            font-size: 1.2em;
+            border-radius: 12px;
+            border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
 
-        .game-button:hover {
+        .lofi-game-button:hover {
             background-color: #e73370;
         }
 
-        .game-output {
-            margin-top: 30px;
-            font-size: 1.5em;
-            color: #fff;
+        /* Style for game canvas */
+        #gameCanvas {
+            border: 2px solid #ff4081;
+            margin-top: 20px;
         }
-
     </style>
 </head>
 <body class="theme-night">
@@ -203,10 +201,8 @@
     <div class="clouds" id="clouds"></div>
     <div class="stars" id="stars"></div>
 
-    <audio id="background-music" autoplay loop>
-        <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_7771e7b2d5.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
+    <!-- YouTube Music Embed -->
+    <iframe id="lofi-music" width="0" height="0" src="https://www.youtube.com/embed/sF80I-TQiW0?autoplay=1&mute=0&loop=1&playlist=sF80I-TQiW0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
     <div class="container">
         <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
@@ -229,12 +225,10 @@
             <a href="#">Twitter</a>
         </div>
 
-        <!-- Lofi Game Section -->
-        <div class="game-container">
-            <button class="game-button" onclick="startLofiGame()">Start Lofi Game</button>
+        <div class="lofi-game-container">
+            <button class="lofi-game-button" onclick="startLofiGame()">Play Lofi Game</button>
+            <canvas id="gameCanvas" width="300" height="300"></canvas>
         </div>
-
-        <div class="game-output" id="game-output"></div>
     </div>
 
     <footer>
@@ -269,31 +263,68 @@
                     let cloud = document.createElement('div');
                     cloud.className = 'cloud';
                     cloud.style.top = Math.random() * 50 + 'px';
+                    cloud.style.animationDuration = (Math.random() * 10 + 40) + 's';
                     clouds.appendChild(cloud);
                 }
             } else if (theme === 'night') {
                 for (let i = 0; i < 100; i++) {
                     let star = document.createElement('div');
                     star.className = 'star';
-                    star.style.top = Math.random() * 100 + 'vh';
                     star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 100 + 'vh';
+                    star.style.animationDuration = (Math.random() * 1 + 1) + 's';
                     stars.appendChild(star);
                 }
             }
         }
 
-        function switchLanguage(lang) {
-            if (lang === 'ka') {
-                document.getElementById('welcome-text').innerText = "კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში";
-                document.getElementById('welcome-paragraph').innerText = "დაიხრჩე მშვიდობაში. იყავი მშვიდი...!";
-            } else {
-                document.getElementById('welcome-text').innerText = "Welcome to Lo-Fi Haven";
-                document.getElementById('welcome-paragraph').innerText = "Dive into a world of calm. Whether you're studying, working, or just relaxing, Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.";
+        function switchLanguage(language) {
+            if (language === 'en') {
+                document.getElementById("welcome-text").innerText = "Welcome to Lo-Fi Haven";
+                document.getElementById("welcome-paragraph").innerText = "Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.";
+            } else if (language === 'ka') {
+                document.getElementById("welcome-text").innerText = "კარგი ლოფი სამყაროში";
+                document.getElementById("welcome-paragraph").innerText = "ჩახედეთ მშვიდ სამყაროში, სადაც ლოფი მუსიკები, მშვიდი ატმოსფერო და რბილი ვიზუალები თქვენს დახმარებას გთავაზობთ.";
             }
         }
 
+        // Lofi Game
         function startLofiGame() {
-            document.getElementById('game-output').innerText = "Game Starting... You hear the gentle rain and soft lo-fi beats in the background. Focus and enjoy!";
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            let x = canvas.width / 2;
+            let y = canvas.height - 30;
+            let dx = 2;
+            let dy = -2;
+            let ballRadius = 10;
+
+            function drawBall() {
+                ctx.beginPath();
+                ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+                ctx.fillStyle = "#ff4081";
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            function updateGame() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawBall();
+
+                if(x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                    dx = -dx;
+                }
+                if(y + dy < ballRadius) {
+                    dy = -dy;
+                } else if(y + dy > canvas.height - ballRadius) {
+                    dy = -dy;
+                }
+
+                x += dx;
+                y += dy;
+            }
+
+            setInterval(updateGame, 10);
         }
     </script>
 </body>
