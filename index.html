@@ -3,207 +3,234 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lo-Fi Haven</title>
+  <title>Lofi Haven</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    /* Reset & base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       background: #1e1e2f;
       color: #fff;
       overflow-x: hidden;
     }
-
-    .header {
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 1.2rem;
+      font-weight: bold;
       display: flex;
       align-items: center;
-      padding: 15px 20px;
-      font-size: 18px;
-      background: transparent;
+      gap: 0.5rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    .logo i {
+      color: #4dabf7;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    .lang-switch {
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    main {
+      padding: 6rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+      transition: transform 0.3s;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+    .about, .community {
+      background: rgba(255,255,255,0.05);
+      padding: 1rem;
+      border-radius: 12px;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+
+    /* Weather animations */
+    .stars, .rain, .clouds {
       position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      animation: fadeIn 2s ease;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .stars::after {
+      content: '';
+      background: url('https://raw.githubusercontent.com/marcbruederlin/particles.js/master/demo/img/stars.png') repeat;
+      width: 100%; height: 100%;
+      display: block;
+      animation: starMove 60s linear infinite;
+    }
+    @keyframes starMove {
+      from { background-position: 0 0; }
+      to { background-position: 1000px 1000px; }
+    }
+    .rain::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: url('https://i.ibb.co/3rDh5cY/rain.gif');
+      background-size: cover;
+      opacity: 0.5;
+    }
+    .clouds::after {
+      content: '';
+      background: url('https://i.ibb.co/PGv8ZzG/clouds.png') repeat-x;
+      width: 100%; height: 100%;
+      display: block;
+      animation: cloudMove 120s linear infinite;
+    }
+    @keyframes cloudMove {
+      from { background-position: 0 0; }
+      to { background-position: 1000px 0; }
     }
 
-    .header span {
-      margin-left: 10px;
-      font-weight: bold;
-      color: #ffcad4;
-      font-size: 20px;
-      animation: glow 3s infinite ease-in-out;
-    }
-
-    .verify {
-      margin-left: 8px;
-      font-size: 20px;
-      color: #00aaff;
-    }
-
-    @keyframes glow {
-      0% { text-shadow: 0 0 5px #ffcad4; }
-      50% { text-shadow: 0 0 20px #ffcad4; }
-      100% { text-shadow: 0 0 5px #ffcad4; }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
+    /* Chat */
     .chatbox-toggle {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #ffcad4;
-      color: #333;
+      bottom: 1rem;
+      right: 1rem;
+      background: #4dabf7;
+      color: white;
       border: none;
-      padding: 10px 15px;
-      border-radius: 30px;
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
       cursor: pointer;
       z-index: 999;
-      font-weight: bold;
     }
-
     .chatbox {
       position: fixed;
-      bottom: 80px;
-      right: 20px;
+      bottom: 4rem;
+      right: 1rem;
       width: 300px;
       height: 400px;
-      background: #2e2e3e;
-      border-radius: 10px;
-      overflow: hidden;
+      background: #2b2b3c;
+      border-radius: 12px;
       display: none;
       flex-direction: column;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      z-index: 999;
+      z-index: 998;
     }
-
     .chat-messages {
       flex: 1;
-      padding: 10px;
       overflow-y: auto;
+      padding: 0.5rem;
     }
-
     .chat-input {
       display: flex;
-      padding: 10px;
-      background: #3e3e50;
+      border-top: 1px solid #444;
     }
-
     .chat-input input {
       flex: 1;
-      padding: 8px;
+      padding: 0.5rem;
       border: none;
-      border-radius: 5px;
-      margin-right: 10px;
+      background: #1e1e2f;
+      color: white;
     }
-
     .chat-input button {
-      padding: 8px 12px;
-      background: #ffcad4;
+      background: #4dabf7;
       border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .chat-message {
-      margin-bottom: 10px;
-    }
-
-    .chat-message span {
-      font-weight: bold;
-      color: #00aaff;
-    }
-
-    #usernameModal {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-    }
-
-    #usernameModal input {
-      padding: 10px;
-      font-size: 16px;
-      width: 250px;
-    }
-
-    #usernameModal button {
-      padding: 10px 20px;
-      margin-left: 10px;
-      background-color: #ffcad4;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
+      color: white;
+      padding: 0 1rem;
     }
   </style>
 </head>
 <body>
+  <div class="stars"></div>
+  <div class="rain"></div>
+  <div class="clouds"></div>
 
-  <div class="header">
-    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" width="24" height="24" />
-    <span>Lofi Haven Official</span>
-    <span class="verify">✔️</span>
-  </div>
+  <header>
+    <div class="logo"><i class="fas fa-circle-check"></i> Lofi Haven Official</div>
+    <div class="lang-switch" onclick="toggleLang()">🌐 KA | EN</div>
+  </header>
 
-  <!-- Username Modal -->
-  <div id="usernameModal">
-    <input type="text" id="usernameInput" placeholder="Enter your name" />
-    <button onclick="setUsername()">Join</button>
-  </div>
+  <main>
+    <div class="about" data-en="Welcome to Lofi Haven! A peaceful place for music, chill and connection."
+         data-ka="მოგესალმებით LoFi Haven-ში! მშვიდი სივრცე მუსიკისთვის, გართობისთვის და კავშირისათვის.">
+      Welcome to Lofi Haven! A peaceful place for music, chill and connection.
+    </div>
+    <div class="gallery">
+      <img src="https://loficafe.imgix.net/wallpapers/w1.webp" alt="LoFi 1">
+      <img src="https://loficafe.imgix.net/wallpapers/w2.webp" alt="LoFi 2">
+      <img src="https://loficafe.imgix.net/wallpapers/w3.webp" alt="LoFi 3">
+    </div>
+    <div class="community" data-en="Join our lo-fi community and express yourself." data-ka="შემოგვიერთდი ლო-ფაი საზოგადოებაში და გამოავლინე თავი.">
+      Join our lo-fi community and express yourself.
+    </div>
+  </main>
 
-  <!-- Chat Button -->
+  <footer>
+    Official Lo-Fi Haven &copy; 2025
+  </footer>
+
+  <audio autoplay loop>
+    <source src="https://www.youtube.com/watch?v=sF80I-TQiW0" type="audio/mpeg">
+  </audio>
+
   <button class="chatbox-toggle" onclick="toggleChat()">💬 Chat</button>
-
-  <!-- Chatbox -->
   <div class="chatbox" id="chatbox">
-    <div class="chat-messages" id="messages"></div>
+    <div class="chat-messages" id="chatMessages"></div>
     <div class="chat-input">
-      <input type="text" id="messageInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter'){sendMessage()}" />
-      <button onclick="sendMessage()">Send</button>
+      <input type="text" id="chatInput" placeholder="Type your message...">
+      <button onclick="sendMessage()">➤</button>
     </div>
   </div>
 
   <script>
-    let username = "";
-
-    function setUsername() {
-      const input = document.getElementById("usernameInput");
-      if (input.value.trim() !== "") {
-        username = input.value.trim();
-        document.getElementById("usernameModal").style.display = "none";
-      }
-    }
-
-    function toggleChat() {
-      const chatbox = document.getElementById("chatbox");
-      chatbox.style.display = chatbox.style.display === "none" ? "flex" : "none";
-    }
-
-    function sendMessage() {
-      const input = document.getElementById("messageInput");
-      const message = input.value.trim();
-      if (message !== "") {
-        const messages = document.getElementById("messages");
-        const msgDiv = document.createElement("div");
-        msgDiv.classList.add("chat-message");
-        msgDiv.innerHTML = `<span>${username}:</span> ${formatEmojis(message)}`;
-        messages.appendChild(msgDiv);
-        input.value = "";
-        messages.scrollTop = messages.scrollHeight;
-      }
-    }
-
-    function formatEmojis(text) {
-      return text.replace(/:([a-zA-Z0-9_+-]+):/g, (match, p1) => {
-        return `😊`;
+    let currentLang = 'en';
+    function toggleLang() {
+      currentLang = currentLang === 'en' ? 'ka' : 'en';
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.innerText = el.dataset[currentLang];
       });
+    }
+
+    let chatVisible = false;
+    function toggleChat() {
+      const chat = document.getElementById('chatbox');
+      chatVisible = !chatVisible;
+      chat.style.display = chatVisible ? 'flex' : 'none';
+    }
+
+    let username = prompt("Enter your display name:") || 'Guest';
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const msg = input.value.trim();
+      if (msg) {
+        const msgBox = document.createElement('div');
+        msgBox.innerHTML = `<strong>${username}:</strong> ${msg}`;
+        document.getElementById('chatMessages').appendChild(msgBox);
+        input.value = '';
+        msgBox.scrollIntoView();
+      }
     }
   </script>
 </body>
