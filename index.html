@@ -4,310 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lo-Fi Haven</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
+            background-color: #121212;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Roboto', sans-serif;
-            transition: background-color 0.5s ease, color 0.5s ease;
-            overflow-x: hidden;
+            overflow: hidden;
+            color: #ffffff;
         }
-
-        .theme-rainy {
-            background: linear-gradient(to bottom, #2e2e2e, #1e1e1e);
-            color: #e0e0e0;
-        }
-        .theme-sunny {
-            background: linear-gradient(to top, #fffbd5, #b20a2c);
-            color: #1e1e1e;
-        }
-        .theme-night {
-            background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
-            color: #e0e0e0;
-        }
-
-        .container {
-            text-align: center;
-            padding: 50px 20px;
-            animation: fadeIn 1.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
-
-        p {
-            font-size: 1.2em;
-            max-width: 700px;
-            margin: 20px auto;
-            line-height: 1.8;
-        }
-
-        button {
-            background-color: #ff4081;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background-color: #e73370;
-        }
-
-        .social-links a {
-            color: #ff4081;
-            margin: 0 10px;
-            text-decoration: none;
-            font-size: 24px;
-        }
-
-        .lofi-girl {
-            width: 300px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-        }
-
-        .rain, .clouds, .stars {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
+        #gameCanvas {
+            position: absolute;
+            bottom: 0;
             left: 0;
-            pointer-events: none;
-            z-index: -1;
+            border: 2px solid #fff;
+            display: block;
+            background-color: #222;
         }
-
+        .raindrop, .cloud, .star {
+            position: absolute;
+            background-color: #fff;
+        }
         .raindrop {
-            position: absolute;
             width: 2px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.3);
-            animation: fall linear infinite;
-            opacity: 0.5;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.6);
+            animation: rain 2s infinite linear;
         }
-
-        @keyframes fall {
-            0% { top: -60px; }
-            100% { top: 110vh; }
-        }
-
         .cloud {
-            position: absolute;
-            width: 200px;
-            height: 60px;
-            background: #fff;
-            border-radius: 100px;
-            top: 50px;
-            animation: cloudMove 60s linear infinite;
-            opacity: 0.3;
+            width: 80px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: cloudMove 10s linear infinite;
         }
-
-        @keyframes cloudMove {
-            from { left: -250px; }
-            to { left: 110%; }
-        }
-
         .star {
-            position: absolute;
             width: 2px;
             height: 2px;
-            background: white;
+            background-color: white;
             border-radius: 50%;
-            animation: twinkle 2s infinite ease-in-out alternate;
+            animation: twinkle 1s infinite alternate;
         }
-
+        @keyframes rain {
+            from { transform: translateY(-100vh); }
+            to { transform: translateY(100vh); }
+        }
+        @keyframes cloudMove {
+            from { transform: translateX(-100vw); }
+            to { transform: translateX(100vw); }
+        }
         @keyframes twinkle {
-            from { opacity: 0.2; }
-            to { opacity: 1; }
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
         }
-
-        .official-badge {
+        #score {
             position: absolute;
             top: 10px;
-            left: 20px;
-            font-size: 1.1em;
-            color: #ff4081;
-            font-weight: bold;
-            background: rgba(0,0,0,0.4);
-            padding: 6px 12px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        .official-badge::after {
-            content: '\2714';
-            background: #3aa3e3;
-            color: white;
-            font-size: 0.9em;
-            border-radius: 50%;
-            padding: 2px 6px;
-            margin-left: 5px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.9em;
-            color: #aaa;
-        }
-
-        /* Animation Styles for Lofi Game */
-        .lofi-game-container {
-            margin-top: 50px;
-            text-align: center;
-        }
-
-        .lofi-game-button {
-            padding: 20px 40px;
-            font-size: 18px;
-            background-color: #ff4081;
-            color: white;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .lofi-game-button:hover {
-            background-color: #e73370;
-        }
-
-        /* Style for game canvas */
-        #gameCanvas {
-            border: 2px solid #ff4081;
-            margin-top: 20px;
-            background-color: #000;
-        }
-
-        /* Adjust style for score display */
-        .score {
-            color: #fff;
-            font-size: 1.5em;
-            margin-top: 10px;
+            left: 10px;
+            font-size: 20px;
         }
     </style>
 </head>
-<body class="theme-night">
-    <div class="official-badge">Lofi Haven Official</div>
-    <div class="rain" id="rain"></div>
-    <div class="clouds" id="clouds"></div>
-    <div class="stars" id="stars"></div>
+<body>
+    <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
+    <p id="welcome-paragraph">Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.</p>
 
-    <!-- YouTube Music Embed (Now Fixed) -->
-    <iframe id="lofi-music" width="0" height="0" src="https://www.youtube.com/embed/sF80I-TQiW0?autoplay=1&mute=0&loop=1&playlist=sF80I-TQiW0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <!-- Canvas for game -->
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
 
-    <div class="container">
-        <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
+    <!-- Score -->
+    <div id="score">Score: 0</div>
 
-        <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
-        <p id="welcome-paragraph">
-            Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.
-        </p>
+    <!-- Weather effects -->
+    <div id="rain"></div>
+    <div id="clouds"></div>
+    <div id="stars"></div>
 
-        <button onclick="setTheme('rainy')">🌧️ Rainy Day</button>
-        <button onclick="setTheme('sunny')">☀️ Sunny Day</button>
-        <button onclick="setTheme('night')">🌙 Night Sky</button>
-
-        <button onclick="switchLanguage('en')">English</button>
-        <button onclick="switchLanguage('ka')">ქართული</button>
-
-        <div class="social-links">
-            <a href="#">Facebook</a>
-            <a href="#">Instagram</a>
-            <a href="#">Twitter</a>
-        </div>
-
-        <div class="lofi-game-container">
-            <button class="lofi-game-button" onclick="startLofiGame()">Play Lofi Game</button>
-            <canvas id="gameCanvas" width="400" height="400"></canvas>
-            <div class="score" id="score">Score: 0</div>
-        </div>
-    </div>
-
-    <footer>
-        Official Lo-Fi Haven — Stay Chill, Stay Creative 🌸
-    </footer>
+    <!-- Music -->
+    <iframe id="music" src="https://www.youtube.com/embed/sF80I-TQiW0?autoplay=1&loop=1&playlist=sF80I-TQiW0" style="display:none;"></iframe>
 
     <script>
-        const rain = document.getElementById('rain');
-        const clouds = document.getElementById('clouds');
-        const stars = document.getElementById('stars');
         let score = 0;
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const ball = { x: 150, y: 150, radius: 15, dx: 0, dy: 0, color: 'rgb(255, 255, 255)' };
+        const paddle = { width: 75, height: 10, x: 150, y: 380, speed: 7, dx: 0 };
+        let leftPressed = false, rightPressed = false;
 
-        function clearEffects() {
-            rain.innerHTML = '';
-            clouds.innerHTML = '';
-            stars.innerHTML = '';
+        // Function to play music
+        function playMusic() {
+            const musicFrame = document.getElementById('music');
+            if (musicFrame) musicFrame.src = musicFrame.src; // Reload to start autoplay
         }
 
-        function setTheme(theme) {
-            document.body.classList.remove('theme-rainy', 'theme-sunny', 'theme-night');
-            clearEffects();
-
-            if (theme === 'rainy') {
-                document.body.classList.add('theme-rainy');
-                for (let i = 0; i < 100; i++) {
-                    let raindrop = document.createElement('div');
-                    raindrop.className = 'raindrop';
-                    raindrop.style.left = Math.random() * 100 + 'vw';
-                    raindrop.style.animationDuration = Math.random() * 2 + 2 + 's';
-                    rain.appendChild(raindrop);
-                }
-            }
-            if (theme === 'sunny') {
-                document.body.classList.add('theme-sunny');
-                for (let i = 0; i < 2; i++) {
-                    let cloud = document.createElement('div');
-                    cloud.className = 'cloud';
-                    cloud.style.left = Math.random() * 100 + 'vw';
-                    clouds.appendChild(cloud);
-                }
-            }
-            if (theme === 'night') {
-                document.body.classList.add('theme-night');
-                for (let i = 0; i < 100; i++) {
-                    let star = document.createElement('div');
-                    star.className = 'star';
-                    star.style.left = Math.random() * 100 + 'vw';
-                    star.style.top = Math.random() * 100 + 'vh';
-                    star.style.animationDuration = Math.random() * 3 + 's';
-                    stars.appendChild(star);
-                }
-            }
-        }
-
-        function switchLanguage(language) {
-            if (language === 'en') {
-                document.getElementById('welcome-text').textContent = 'Welcome to Lo-Fi Haven';
-                document.getElementById('welcome-paragraph').textContent = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
-            } else {
-                document.getElementById('welcome-text').textContent = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
-                document.getElementById('welcome-paragraph').textContent = 'შევიდეთ წყნარ სამყაროში. მიუხედავად იმისა, სწავლობთ, მუშაობთ თუ უბრალოდ ვისვენებთ - Lo-Fi Haven აქ არის, რათა მოგაწოდოთ სიმშვიდე ნაზი ბიტებით, კომფორტული ვიზუალებითა და მშვიდი ატმოსფეროთი, რომელიც გრძნობა სახლს შეგიქმნით.';
-            }
-        }
-
+        // Start the game
         function startLofiGame() {
-            const canvas = document.getElementById('gameCanvas');
-            const ctx = canvas.getContext('2d');
-            const ball = { x: 150, y: 150, radius: 15, dx: 2, dy: -2, color: 'rgb(255, 255, 255)' };
-            const paddle = { width: 75, height: 10, x: 150, y: 380, speed: 7, dx: 0 };
-
             function drawBall() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.beginPath();
@@ -326,41 +117,39 @@
             }
 
             function moveBall() {
+                ball.x += ball.dx;
+                ball.y += ball.dy;
+
+                // Wall collisions
                 if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
                     ball.dx = -ball.dx;
                 }
-                if (ball.y + ball.dy > canvas.height - ball.radius || ball.y + ball.dy < ball.radius) {
+                if (ball.y + ball.dy < ball.radius) {
                     ball.dy = -ball.dy;
                 }
-
-                ball.x += ball.dx;
-                ball.y += ball.dy;
-            }
-
-            function movePaddle() {
-                if (paddle.dx === -paddle.speed && paddle.x > 0) {
-                    paddle.x -= paddle.speed;
-                }
-                if (paddle.dx === paddle.speed && paddle.x < canvas.width - paddle.width) {
-                    paddle.x += paddle.speed;
-                }
-            }
-
-            function collisionDetection() {
                 if (ball.y + ball.dy > canvas.height - ball.radius) {
                     if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
                         ball.dy = -ball.dy;
                         score++;
                         document.getElementById('score').textContent = 'Score: ' + score;
-                    } else if (ball.y + ball.dy > canvas.height) {
+                    } else {
                         alert('Game Over!');
                         score = 0;
                         document.getElementById('score').textContent = 'Score: ' + score;
                         ball.x = 150;
                         ball.y = 150;
-                        ball.dx = 2;
-                        ball.dy = -2;
+                        ball.dx = 0;
+                        ball.dy = 0;
                     }
+                }
+            }
+
+            function movePaddle() {
+                if (leftPressed && paddle.x > 0) {
+                    paddle.x -= paddle.speed;
+                }
+                if (rightPressed && paddle.x < canvas.width - paddle.width) {
+                    paddle.x += paddle.speed;
                 }
             }
 
@@ -369,27 +158,63 @@
                 drawPaddle();
                 moveBall();
                 movePaddle();
-                collisionDetection();
                 requestAnimationFrame(gameLoop);
             }
 
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'ArrowLeft') {
-                    paddle.dx = -paddle.speed;
-                }
-                if (event.key === 'ArrowRight') {
-                    paddle.dx = paddle.speed;
-                }
-            });
-
-            document.addEventListener('keyup', function(event) {
-                if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-                    paddle.dx = 0;
-                }
-            });
-
             gameLoop();
         }
+
+        // Event listeners for paddle movement
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') leftPressed = true;
+            if (event.key === 'ArrowRight') rightPressed = true;
+        });
+
+        document.addEventListener('keyup', function(event) {
+            if (event.key === 'ArrowLeft') leftPressed = false;
+            if (event.key === 'ArrowRight') rightPressed = false;
+        });
+
+        // Weather effects: Rain, Clouds, Stars
+        function createWeatherEffect() {
+            const rain = document.getElementById('rain');
+            const clouds = document.getElementById('clouds');
+            const stars = document.getElementById('stars');
+
+            // Clear previous effects
+            rain.innerHTML = '';
+            clouds.innerHTML = '';
+            stars.innerHTML = '';
+
+            for (let i = 0; i < 100; i++) {
+                const raindrop = document.createElement('div');
+                raindrop.className = 'raindrop';
+                raindrop.style.left = Math.random() * 100 + 'vw';
+                raindrop.style.animationDuration = Math.random() * 2 + 2 + 's';
+                rain.appendChild(raindrop);
+            }
+
+            for (let i = 0; i < 2; i++) {
+                const cloud = document.createElement('div');
+                cloud.className = 'cloud';
+                cloud.style.left = Math.random() * 100 + 'vw';
+                clouds.appendChild(cloud);
+            }
+
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDuration = Math.random() * 3 + 's';
+                stars.appendChild(star);
+            }
+        }
+
+        // Call functions to start everything
+        playMusic();
+        createWeatherEffect();
+        startLofiGame();
     </script>
 </body>
 </html>
