@@ -5,193 +5,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lo-Fi Haven</title>
     <style>
+        /* Base Styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: white;
-            text-align: center;
-            padding: 30px;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
 
-        #avatarCanvas {
-            border: 2px solid #fff;
-            border-radius: 20px;
+        header {
             background-color: #333;
-            margin-bottom: 20px;
-        }
-
-        .avatar-option {
-            display: inline-block;
-            cursor: pointer;
-            margin: 10px;
-        }
-
-        .avatar-option img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 2px solid #fff;
-            transition: transform 0.3s ease;
-        }
-
-        .avatar-option img:hover {
-            transform: scale(1.1);
-        }
-
-        .avatar-options {
-            margin: 20px 0;
-        }
-
-        button {
-            background-color: #ff4081;
-            border: none;
             color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #about, #community, #gallery, #create-avatar {
+            padding: 20px;
+            margin: 20px;
+            background-color: #fff;
             border-radius: 8px;
-            transition: background-color 0.3s ease;
         }
 
-        button:hover {
-            background-color: #e73370;
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
         }
 
-        .content {
-            margin-top: 30px;
+        p {
+            font-size: 16px;
+            line-height: 1.5;
         }
 
-        h1 {
-            font-size: 3em;
-            color: #ff4081;
+        #gallery .gallery-images img {
+            width: 30%;
+            margin: 10px;
+            border-radius: 8px;
         }
 
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+        /* Theme Colors */
+        body.rainy {
+            background: url('rainy_background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
+
+        body.sunny {
+            background: url('sunny_background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+
+        body.night {
+            background: url('night_background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
+
+        .theme-switcher {
+            text-align: center;
             margin-top: 20px;
         }
 
-        .gallery img {
+        .theme-button {
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .theme-button:hover {
+            background-color: #555;
+        }
+
+        .language-toggle {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .language-toggle button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
             width: 100%;
-            border-radius: 10px;
-            border: 2px solid #fff;
+            bottom: 0;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to Lo-Fi Haven</h1>
 
-    <!-- Avatar Creation Section -->
-    <h2>Create Your Lo-Fi Avatar</h2>
-    <canvas id="avatarCanvas" width="300" height="300"></canvas>
+    <!-- Background Music -->
+    <audio id="backgroundMusic" autoplay loop>
+        <source src="https://www.youtube.com/watch?v=sF80I-TQiW0" type="audio/mpeg">
+    </audio>
 
-    <div class="avatar-options">
-        <h3>Select Hairstyle</h3>
-        <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle1')">
-            <img src="https://cdn.pixabay.com/photo/2016/06/29/12/30/girl-1481422_960_720.png" alt="Hairstyle 1">
-        </div>
-        <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle2')">
-            <img src="https://cdn.pixabay.com/photo/2017/11/07/10/16/girl-2928922_960_720.jpg" alt="Hairstyle 2">
-        </div>
-        <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle3')">
-            <img src="https://cdn.pixabay.com/photo/2016/06/22/01/36/woman-1463151_960_720.jpg" alt="Hairstyle 3">
-        </div>
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <button class="theme-button" onclick="switchTheme('rainy')">Rainy Day</button>
+        <button class="theme-button" onclick="switchTheme('sunny')">Sunny Day</button>
+        <button class="theme-button" onclick="switchTheme('night')">Night Sky</button>
     </div>
 
-    <div class="avatar-options">
-        <h3>Select Outfit</h3>
-        <div class="avatar-option" onclick="changeAvatar('outfit', 'outfit1')">
-            <img src="https://cdn.pixabay.com/photo/2017/10/27/21/52/woman-2894390_960_720.jpg" alt="Outfit 1">
-        </div>
-        <div class="avatar-option" onclick="changeAvatar('outfit', 'outfit2')">
-            <img src="https://cdn.pixabay.com/photo/2015/12/16/06/54/woman-1092346_960_720.jpg" alt="Outfit 2">
-        </div>
-        <div class="avatar-option" onclick="changeAvatar('outfit', 'outfit3')">
-            <img src="https://cdn.pixabay.com/photo/2017/07/30/03/15/girl-2553731_960_720.jpg" alt="Outfit 3">
-        </div>
+    <!-- Language Toggle -->
+    <div class="language-toggle">
+        <button onclick="toggleLanguage()">EN / GE</button>
     </div>
 
-    <div class="avatar-options">
-        <h3>Select Face Style</h3>
-        <div class="avatar-option" onclick="changeAvatar('face', 'face1')">
-            <img src="https://cdn.pixabay.com/photo/2017/10/10/17/39/woman-2832295_960_720.jpg" alt="Face 1">
+    <!-- Header Section -->
+    <header>
+        <div class="title">
+            <h1 id="mainTitle">Lo-Fi Haven</h1>
+            <p id="subTitle">A peaceful place to relax and vibe</p>
         </div>
-        <div class="avatar-option" onclick="changeAvatar('face', 'face2')">
-            <img src="https://cdn.pixabay.com/photo/2017/10/10/16/39/girl-2832293_960_720.jpg" alt="Face 2">
-        </div>
-        <div class="avatar-option" onclick="changeAvatar('face', 'face3')">
-            <img src="https://cdn.pixabay.com/photo/2017/10/10/15/57/face-2832292_960_720.jpg" alt="Face 3">
-        </div>
-    </div>
+    </header>
 
-    <button onclick="downloadAvatar()">Download Avatar</button>
+    <!-- About Us Section -->
+    <section id="about">
+        <h2 id="aboutTitle">About Us</h2>
+        <p id="aboutText">Welcome to Lo-Fi Haven, your peaceful retreat. Our goal is to provide a calm atmosphere where you can relax, listen to music, and find comfort.</p>
+    </section>
 
-    <!-- Image Gallery Section -->
-    <div class="content">
-        <h2>Lo-Fi Image Gallery</h2>
-        <div class="gallery">
-            <img src="https://cdn.pixabay.com/photo/2017/02/20/18/09/woman-2084536_960_720.jpg" alt="Lo-Fi Image 1">
-            <img src="https://cdn.pixabay.com/photo/2017/10/09/11/16/woman-2830041_960_720.jpg" alt="Lo-Fi Image 2">
-            <img src="https://cdn.pixabay.com/photo/2016/09/01/23/14/girl-1631292_960_720.jpg" alt="Lo-Fi Image 3">
+    <!-- Community Section -->
+    <section id="community">
+        <h2 id="communityTitle">Our Community</h2>
+        <p id="communityText">Join our friendly community! We offer spaces for discussion, music, and relaxation. Whether you're looking for peace or new friends, Lo-Fi Haven is the place for you.</p>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <h2>Gallery</h2>
+        <div class="gallery-images">
+            <img src="image1.jpg" alt="Lo-Fi 1">
+            <img src="image2.jpg" alt="Lo-Fi 2">
+            <img src="image3.jpg" alt="Lo-Fi 3">
         </div>
-    </div>
+    </section>
+
+    <!-- Create Your Avatar Section -->
+    <section id="create-avatar">
+        <h2>Create Your Lofi Avatar</h2>
+        <div class="avatar-creator">
+            <!-- Placeholder for avatar creation tool -->
+            <p>Customize your very own lo-fi avatar here!</p>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p id="footerText">Official Lo-Fi Haven</p>
+    </footer>
 
     <script>
-        const canvas = document.getElementById("avatarCanvas");
-        const ctx = canvas.getContext("2d");
-
-        let avatar = {
-            hairstyle: null,
-            outfit: null,
-            face: null
-        };
-
-        // Change avatar parts
-        function changeAvatar(type, part) {
-            avatar[type] = part;
-            updateAvatar();
+        // Theme Switcher
+        function switchTheme(theme) {
+            document.body.classList.remove('rainy', 'sunny', 'night');
+            document.body.classList.add(theme);
         }
 
-        // Update the avatar on the canvas
-        function updateAvatar() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before redrawing
-
-            // Draw hairstyle
-            if (avatar.hairstyle) {
-                let img = new Image();
-                img.src = `https://cdn.pixabay.com/photo/2016/06/29/12/30/girl-1481422_960_720.png`;
-                img.onload = function() {
-                    ctx.drawImage(img, 50, 20, 200, 150); // Adjust positioning and size
-                };
+        // Language Toggle
+        function toggleLanguage() {
+            const lang = document.body.classList.contains('georgian') ? 'english' : 'georgian';
+            document.body.classList.toggle('georgian', lang === 'georgian');
+            
+            // Update text content for language change
+            if (lang === 'georgian') {
+                document.getElementById('mainTitle').textContent = 'ლო-ფი ჰეივენი';
+                document.getElementById('subTitle').textContent = 'მშვიდი ადგილი დასვენებისთვის და ატმოსფეროსთვის';
+                document.getElementById('aboutTitle').textContent = 'ჩვენს შესახებ';
+                document.getElementById('aboutText').textContent = 'ლო-ფი ჰეივენი, თქვენი მშვიდი დასვენების ადგილი. ჩვენი მიზანია მშვიდი ატმოსფეროს შექმნა, სადაც შეგიძლიათ მოისმინოთ მუსიკა და გაკმაყოფილდეთ.';
+                document.getElementById('communityTitle').textContent = 'ჩვენი საზოგადოება';
+                document.getElementById('communityText').textContent = 'დამუერთდით ჩვენს მეგობრულ საზოგადოებას! ჩვენ გვაქვს სივრცეები დისკუსიებისთვის, მუსიკისთვის და დასვენებისთვის. ლო-ფი ჰეივენი - ადგილი მშვიდობისა და ახალი მეგობრებისათვის.';
+                document.getElementById('footerText').textContent = 'ოფიციალური ლო-ფი ჰეივენი';
+            } else {
+                document.getElementById('mainTitle').textContent = 'Lo-Fi Haven';
+                document.getElementById('subTitle').textContent = 'A peaceful place to relax and vibe';
+                document.getElementById('aboutTitle').textContent = 'About Us';
+                document.getElementById('aboutText').textContent = 'Welcome to Lo-Fi Haven, your peaceful retreat. Our goal is to provide a calm atmosphere where you can relax, listen to music, and find comfort.';
+                document.getElementById('communityTitle').textContent = 'Our Community';
+                document.getElementById('communityText').textContent = 'Join our friendly community! We offer spaces for discussion, music, and relaxation. Whether you\'re looking for peace or new friends, Lo-Fi Haven is the place for you.';
+                document.getElementById('footerText').textContent = 'Official Lo-Fi Haven';
             }
-
-            // Draw outfit
-            if (avatar.outfit) {
-                let img = new Image();
-                img.src = `https://cdn.pixabay.com/photo/2017/10/27/21/52/woman-2894390_960_720.jpg`;
-                img.onload = function() {
-                    ctx.drawImage(img, 50, 150, 200, 150); // Adjust positioning and size
-                };
-            }
-
-            // Draw face
-            if (avatar.face) {
-                let img = new Image();
-                img.src = `https://cdn.pixabay.com/photo/2017/10/10/17/39/woman-2832295_960_720.jpg`;
-                img.onload = function() {
-                    ctx.drawImage(img, 50, 100, 200, 150); // Adjust positioning and size
-                };
-            }
-        }
-
-        // Download the avatar as an image
-        function downloadAvatar() {
-            const link = document.createElement("a");
-            link.download = "lofi-avatar.png";
-            link.href = canvas.toDataURL();
-            link.click();
         }
     </script>
 </body>
