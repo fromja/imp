@@ -148,16 +148,21 @@
             top: 20px;
             left: 20px;
             color: #ff4081;
-            font-size: 1.5em;
+            font-size: 2em;
             font-weight: 700;
             font-family: 'Roboto', sans-serif;
             opacity: 0;
-            animation: slideIn 2s ease-out forwards;
+            animation: slideIn 2s ease-out forwards, glow 1s ease-in-out infinite alternate;
         }
 
         @keyframes slideIn {
             0% { left: -200px; opacity: 0; }
             100% { left: 20px; opacity: 1; }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #ff4081, 0 0 20px #ff4081; }
+            100% { text-shadow: 0 0 20px #ff4081, 0 0 30px #ff4081; }
         }
 
         /* Chatbox styles */
@@ -290,30 +295,26 @@
         }
 
         function setTheme(theme) {
-            document.body.className = 'theme-' + theme;
             clearEffects();
 
             if (theme === 'rainy') {
-                for (let i = 0; i < 80; i++) {
-                    let drop = document.createElement('div');
-                    drop.className = 'raindrop';
-                    drop.style.left = Math.random() * 100 + 'vw';
-                    drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
-                    rain.appendChild(drop);
+                document.body.className = 'theme-rainy';
+                for (let i = 0; i < 100; i++) {
+                    const raindrop = document.createElement('div');
+                    raindrop.className = 'raindrop';
+                    raindrop.style.left = `${Math.random() * 100}vw`;
+                    raindrop.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                    rain.appendChild(raindrop);
                 }
             } else if (theme === 'sunny') {
-                for (let i = 0; i < 5; i++) {
-                    let cloud = document.createElement('div');
-                    cloud.className = 'cloud';
-                    cloud.style.top = (i * 60) + 'px';
-                    clouds.appendChild(cloud);
-                }
+                document.body.className = 'theme-sunny';
             } else if (theme === 'night') {
-                for (let i = 0; i < 100; i++) {
-                    let star = document.createElement('div');
+                document.body.className = 'theme-night';
+                for (let i = 0; i < 200; i++) {
+                    const star = document.createElement('div');
                     star.className = 'star';
-                    star.style.left = Math.random() * 100 + 'vw';
-                    star.style.top = Math.random() * 100 + 'vh';
+                    star.style.left = `${Math.random() * 100}vw`;
+                    star.style.top = `${Math.random() * 100}vh`;
                     stars.appendChild(star);
                 }
             }
