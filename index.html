@@ -272,99 +272,42 @@
             <!-- Example of how users can choose items for their avatar -->
             <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle1')">
                 <img src="https://example.com/hairstyle1.png" alt="Hairstyle 1">
-                <p>Hairstyle 1</p>
             </div>
             <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle2')">
                 <img src="https://example.com/hairstyle2.png" alt="Hairstyle 2">
-                <p>Hairstyle 2</p>
             </div>
             <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle3')">
                 <img src="https://example.com/hairstyle3.png" alt="Hairstyle 3">
-                <p>Hairstyle 3</p>
             </div>
         </div>
 
-        <!-- Canvas to display and modify the avatar -->
         <canvas id="avatarCanvas" width="300" height="300"></canvas>
+
         <button class="download-btn" onclick="downloadAvatar()">Download Avatar</button>
     </div>
 
     <!-- Gallery Section -->
     <div class="gallery-section">
-        <h2 class="gallery-title">Lo-Fi Image Gallery</h2>
+        <h2 class="gallery-title">Lo-Fi Art Gallery</h2>
         <div class="gallery-images">
+            <!-- Gallery images go here -->
             <div class="gallery-image">
-                <img src="https://example.com/gallery-image1.jpg" alt="Gallery Image 1">
+                <img src="https://example.com/art1.jpg" alt="Lofi Art 1">
             </div>
             <div class="gallery-image">
-                <img src="https://example.com/gallery-image2.jpg" alt="Gallery Image 2">
+                <img src="https://example.com/art2.jpg" alt="Lofi Art 2">
             </div>
             <div class="gallery-image">
-                <img src="https://example.com/gallery-image3.jpg" alt="Gallery Image 3">
+                <img src="https://example.com/art3.jpg" alt="Lofi Art 3">
             </div>
         </div>
     </div>
 
     <footer>
-        Official Lo-Fi Haven — Stay Chill, Stay Creative 🌸
+        <p>&copy; 2025 Lo-Fi Haven. All Rights Reserved.</p>
     </footer>
 
     <script>
-        const rain = document.getElementById('rain');
-        const clouds = document.getElementById('clouds');
-        const stars = document.getElementById('stars');
-
-        function clearEffects() {
-            rain.innerHTML = '';
-            clouds.innerHTML = '';
-            stars.innerHTML = '';
-        }
-
-        function setTheme(theme) {
-            document.body.className = 'theme-' + theme;
-            clearEffects();
-
-            if (theme === 'rainy') {
-                for (let i = 0; i < 80; i++) {
-                    let drop = document.createElement('div');
-                    drop.className = 'raindrop';
-                    drop.style.left = Math.random() * 100 + 'vw';
-                    drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
-                    rain.appendChild(drop);
-                }
-            } else if (theme === 'sunny') {
-                for (let i = 0; i < 5; i++) {
-                    let cloud = document.createElement('div');
-                    cloud.className = 'cloud';
-                    cloud.style.top = (i * 60) + 'px';
-                    clouds.appendChild(cloud);
-                }
-            } else if (theme === 'night') {
-                for (let i = 0; i < 100; i++) {
-                    let star = document.createElement('div');
-                    star.className = 'star';
-                    star.style.left = Math.random() * 100 + 'vw';
-                    star.style.top = Math.random() * 100 + 'vh';
-                    star.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    stars.appendChild(star);
-                }
-            }
-        }
-
-        function switchLanguage(language) {
-            const welcomeText = document.getElementById('welcome-text');
-            const welcomeParagraph = document.getElementById('welcome-paragraph');
-
-            if (language === 'ka') {
-                welcomeText.innerText = 'კარგი ბრძანდებით, ლო-ფაი ჰეივენში';
-                welcomeParagraph.innerText = 'შეხვდით მშვიდობას. როცა სწავლობთ, მუშაობთ ან უბრალოდ ისვენებთ — ლო-ფაი ჰეივენი აქ არის, რომ მოიტანოს სიმშვიდე მშვიდი რითმებით, კომფორტული ვიზუალებით და ატმოსფეროთი, რომელიც სახლად გრძნობს.';
-            } else {
-                welcomeText.innerText = 'Welcome to Lo-Fi Haven';
-                welcomeParagraph.innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
-            }
-        }
-
-        // Avatar creation and download functions
         function changeAvatar(type, style) {
             const canvas = document.getElementById('avatarCanvas');
             const ctx = canvas.getContext('2d');
