@@ -261,29 +261,21 @@
         <button onclick="setTheme('sunny')">☀️ Sunny Day</button>
         <button onclick="setTheme('night')">🌙 Night Sky</button>
 
-        <button onclick="switchLanguage('en')">English</button>
-        <button onclick="switchLanguage('ka')">ქართული</button>
-
-        <div class="social-links">
-            <a href="#">Facebook</a>
-            <a href="#">Instagram</a>
-            <a href="#">Twitter</a>
+        <button onclick="toggleChat()">Open Chat</button>
+        <div id="chatbox" class="chatbox collapsed">
+            <div class="chat-header" onclick="toggleChat()">Chat</div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Type a message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
         </div>
 
         <div class="register-form">
-            <h2>Create Account</h2>
-            <input type="text" id="username" placeholder="Enter your username" required>
+            <input type="text" id="username" placeholder="Enter your username">
             <button onclick="registerUser()">Register</button>
         </div>
-    </div>
 
-    <div class="chatbox" id="chatbox">
-        <div class="chat-header" onclick="toggleChat()">Chat</div>
-        <div class="chat-messages" id="chat-messages"></div>
-        <div class="chat-input">
-            <input type="text" id="chat-input" placeholder="Type a message...">
-            <button onclick="sendMessage()">Send</button>
-        </div>
     </div>
 
     <footer>
@@ -299,22 +291,6 @@
             if (theme === 'rainy') body.classList.add('theme-rainy');
             else if (theme === 'sunny') body.classList.add('theme-sunny');
             else if (theme === 'night') body.classList.add('theme-night');
-        }
-
-        function switchLanguage(language) {
-            const text = {
-                en: {
-                    welcomeText: 'Welcome to Lo-Fi Haven',
-                    welcomeParagraph: 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.',
-                },
-                ka: {
-                    welcomeText: 'მოგესალმებით Lo-Fi Haven-ში',
-                    welcomeParagraph: 'შევიდეთ სიმშვიდეში. თუ სწავლობთ, მუშაობთ თუ უბრალოდ ისვენებთ — Lo-Fi Haven აქ არის, რათა მოიტანოს მშვიდობა სიმრავლე ბიტებით, კომფორტული ვიზუალებით და მომთაბარე ატმოსფეროთი, რომელიც გრძნობას აძლევს, როგორც სახლში.',
-                }
-            };
-
-            document.getElementById('welcome-text').innerText = text[language].welcomeText;
-            document.getElementById('welcome-paragraph').innerText = text[language].welcomeParagraph;
         }
 
         function toggleChat() {
