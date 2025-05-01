@@ -4,106 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lo-Fi Haven</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        /* Your CSS here */
-    </style>
-</head>
-<body>
-    <div id="languageSwitcher">
-        <button id="enButton">EN</button>
-        <button id="geButton">GE</button>
-    </div>
-
-    <header>
-        <h1>Welcome to Lo-Fi Haven</h1>
-        <nav>
-            <ul>
-                <li><a href="#about" id="about-link">About Us</a></li>
-                <li><a href="#community" id="community-link">Our Community</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section id="about">
-            <h2 id="about-title">About Us</h2>
-            <p id="about-text">We are a community of lo-fi music enthusiasts, creating a peaceful space for everyone to enjoy. We gather here to listen to music, relax, and share good vibes.</p>
-        </section>
-
-        <section id="community">
-            <h2 id="community-title">Our Community</h2>
-            <p id="community-text">Our Discord community is vibrant, friendly, and always welcoming new members. Join us to relax, chat, and enjoy the chillest lo-fi music.</p>
-        </section>
-
-        <section id="gallery">
-            <h2>Gallery</h2>
-            <div class="gallery-container">
-                <img src="image1.jpg" alt="Image 1">
-                <img src="image2.jpg" alt="Image 2">
-                <img src="image3.jpg" alt="Image 3">
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Lo-Fi Haven</p>
-        <div class="social-links">
-            <a href="https://twitter.com" target="_blank">Twitter</a>
-            <a href="https://discord.com" target="_blank">Discord</a>
-        </div>
-    </footer>
-
-    <div class="rain"></div>
-    <div class="clouds"></div>
-    <div class="stars"></div>
-
-    <script>
-        // Language switcher functionality
-        $('#enButton').click(function() {
-            $('#about-title').text('About Us');
-            $('#about-text').text('We are a community of lo-fi music enthusiasts, creating a peaceful space for everyone to enjoy. We gather here to listen to music, relax, and share good vibes.');
-            $('#community-title').text('Our Community');
-            $('#community-text').text('Our Discord community is vibrant, friendly, and always welcoming new members. Join us to relax, chat, and enjoy the chillest lo-fi music.');
-        });
-
-        $('#geButton').click(function() {
-            $('#about-title').text('ჩვენს შესახებ');
-            $('#about-text').text('ჩვენ ვართ ლო-ფაი მუსიკის მოყვარულთა საზოგადოება, რომელიც ქმნის მშვიდობიან გარემოს ყველასთვის. აქ ვიკრიბებით მუსიკის მოსასმენად, დასასვენებლად და კარგი ვიბების გასაზიარებლად.');
-            $('#community-title').text('ჩვენი საზოგადოების');
-            $('#community-text').text('ჩვენი დისქორდის საზოგადოება მრავალფეროვანია, მეგობრული და ყოველთვის მზადაა ახალ წევრებთან შეხვედრაზე. შემოგვიერთდით, რომ დავისვენოთ, ვისაუბროთ და გავაგრძელოთ ყველაზე მშვიდი ლო-ფაი მუსიკა.');
-        });
-
-        // Animation for rain, clouds, and stars
-        function toggleWeatherAnimation(theme) {
-            if (theme === 'rain') {
-                // Add rain animation
-                $('.rain').css('display', 'block');
-                $('.clouds').css('display', 'none');
-                $('.stars').css('display', 'none');
-            } else if (theme === 'sun') {
-                // Add sun animation
-                $('.rain').css('display', 'none');
-                $('.clouds').css('display', 'none');
-                $('.stars').css('display', 'none');
-            } else if (theme === 'night') {
-                // Add stars animation
-                $('.rain').css('display', 'none');
-                $('.clouds').css('display', 'none');
-                $('.stars').css('display', 'block');
-            }
+        /* Basic styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1d1f21;
+            color: #fff;
         }
 
-        // Handling theme changes
-        $('#themeSwitcher button').click(function() {
-            const theme = $(this).data('theme');
-            toggleWeatherAnimation(theme);
-        });
-    </script>
+        header {
+            background: #2c2f33;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            color: #a8d08d;
+        }
+        header nav {
+            margin-top: 10px;
+        }
+        header nav a {
+            margin: 0 15px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .content h2 {
+            font-size: 36px;
+            margin: 20px 0;
+        }
+        .about, .community {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .about h3, .community h3 {
+            font-size: 28px;
+        }
+        .gallery {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+        .gallery img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .footer {
+            background: #2c2f33;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
 
-    <style>
-        /* Add necessary CSS */
+        /* Weather Animations */
         .rain, .clouds, .stars {
             position: fixed;
             width: 100%;
@@ -113,7 +86,6 @@
             pointer-events: none;
             z-index: -1;
         }
-
         .raindrop {
             position: absolute;
             width: 2px;
@@ -122,12 +94,10 @@
             animation: fall linear infinite;
             opacity: 0.5;
         }
-
         @keyframes fall {
             0% { top: -60px; }
             100% { top: 110vh; }
         }
-
         .cloud {
             position: absolute;
             width: 200px;
@@ -138,12 +108,10 @@
             animation: cloudMove 60s linear infinite;
             opacity: 0.3;
         }
-
         @keyframes cloudMove {
             from { left: -250px; }
             to { left: 110%; }
         }
-
         .star {
             position: absolute;
             width: 2px;
@@ -152,12 +120,102 @@
             border-radius: 50%;
             animation: twinkle 2s infinite ease-in-out alternate;
         }
-
         @keyframes twinkle {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Language Toggle */
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
     </style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Lo-Fi Haven</h1>
+    <nav>
+        <a href="#about">About Us</a>
+        <a href="#community">Community</a>
+        <a href="#gallery">Gallery</a>
+    </nav>
+</header>
+
+<div class="content">
+    <h2>Lo-Fi Music, Relaxation, and Peaceful Vibes</h2>
+    <p>Relax and unwind with Lo-Fi music while engaging with our vibrant community.</p>
+</div>
+
+<div class="about" id="about">
+    <h3>About Us</h3>
+    <p>Lo-Fi Haven is a space for all things relaxing. Whether you're a fan of ambient music, meditation, or just want to hang out with a cool community, Lo-Fi Haven has something for you.</p>
+</div>
+
+<div class="community" id="community">
+    <h3>Our Community</h3>
+    <p>Join a group of passionate members who share an interest in peaceful living and Lo-Fi music. Connect, share your favorite tracks, and unwind with like-minded individuals!</p>
+</div>
+
+<div class="gallery" id="gallery">
+    <img src="https://via.placeholder.com/150" alt="Gallery 1">
+    <img src="https://via.placeholder.com/150" alt="Gallery 2">
+    <img src="https://via.placeholder.com/150" alt="Gallery 3">
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 Lo-Fi Haven. All rights reserved.</p>
+    <a href="https://www.instagram.com" target="_blank">Instagram</a>
+    <a href="https://www.twitter.com" target="_blank">Twitter</a>
+    <a href="https://www.discord.com" target="_blank">Discord</a>
+</div>
+
+<!-- Language toggle script -->
+<div class="language-selector">
+    <button onclick="toggleLanguage()">EN | GE</button>
+</div>
+
+<!-- Weather Effect JavaScript (Rain, Cloud, Stars) -->
+<script>
+    const weatherType = 'rain';  // 'rain', 'sun', 'cloud', 'stars'
+
+    function generateWeather() {
+        if (weatherType === 'rain') {
+            let raindrops = [];
+            for (let i = 0; i < 100; i++) {
+                let raindrop = document.createElement('div');
+                raindrop.classList.add('raindrop');
+                raindrop.style.left = `${Math.random() * 100}vw`;
+                raindrop.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                document.querySelector('.rain').appendChild(raindrop);
+            }
+        } else if (weatherType === 'cloud') {
+            for (let i = 0; i < 5; i++) {
+                let cloud = document.createElement('div');
+                cloud.classList.add('cloud');
+                cloud.style.top = `${Math.random() * 50}px`;
+                document.querySelector('.clouds').appendChild(cloud);
+            }
+        } else if (weatherType === 'stars') {
+            for (let i = 0; i < 200; i++) {
+                let star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                document.querySelector('.stars').appendChild(star);
+            }
+        }
+    }
+
+    generateWeather();
+
+    function toggleLanguage() {
+        // Add functionality for switching languages here
+        alert("Language toggle clicked!");
+    }
+</script>
+
 </body>
 </html>
