@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lo-Fi Avatar Creation</title>
+    <title>Lo-Fi Haven</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,53 +56,87 @@
         button:hover {
             background-color: #e73370;
         }
+
+        .content {
+            margin-top: 30px;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #ff4081;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid #fff;
+        }
     </style>
 </head>
 <body>
-    <h1>Create Your Lo-Fi Avatar</h1>
+    <h1>Welcome to Lo-Fi Haven</h1>
 
+    <!-- Avatar Creation Section -->
+    <h2>Create Your Lo-Fi Avatar</h2>
     <canvas id="avatarCanvas" width="300" height="300"></canvas>
 
     <div class="avatar-options">
         <h3>Select Hairstyle</h3>
         <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle1')">
-            <img src="https://example.com/hairstyle1.png" alt="Hairstyle 1">
+            <img src="https://cdn.pixabay.com/photo/2016/06/29/12/30/girl-1481422_960_720.png" alt="Hairstyle 1">
         </div>
         <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle2')">
-            <img src="https://example.com/hairstyle2.png" alt="Hairstyle 2">
+            <img src="https://cdn.pixabay.com/photo/2017/11/07/10/16/girl-2928922_960_720.jpg" alt="Hairstyle 2">
         </div>
         <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle3')">
-            <img src="https://example.com/hairstyle3.png" alt="Hairstyle 3">
+            <img src="https://cdn.pixabay.com/photo/2016/06/22/01/36/woman-1463151_960_720.jpg" alt="Hairstyle 3">
         </div>
     </div>
 
     <div class="avatar-options">
         <h3>Select Outfit</h3>
         <div class="avatar-option" onclick="changeAvatar('outfit', 'outfit1')">
-            <img src="https://example.com/outfit1.png" alt="Outfit 1">
+            <img src="https://cdn.pixabay.com/photo/2017/10/27/21/52/woman-2894390_960_720.jpg" alt="Outfit 1">
         </div>
         <div class="avatar-option" onclick="changeAvatar('outfit', 'outfit2')">
-            <img src="https://example.com/outfit2.png" alt="Outfit 2">
+            <img src="https://cdn.pixabay.com/photo/2015/12/16/06/54/woman-1092346_960_720.jpg" alt="Outfit 2">
         </div>
         <div class="avatar-option" onclick="changeAvatar('outfit', 'outfit3')">
-            <img src="https://example.com/outfit3.png" alt="Outfit 3">
+            <img src="https://cdn.pixabay.com/photo/2017/07/30/03/15/girl-2553731_960_720.jpg" alt="Outfit 3">
         </div>
     </div>
 
     <div class="avatar-options">
         <h3>Select Face Style</h3>
         <div class="avatar-option" onclick="changeAvatar('face', 'face1')">
-            <img src="https://example.com/face1.png" alt="Face 1">
+            <img src="https://cdn.pixabay.com/photo/2017/10/10/17/39/woman-2832295_960_720.jpg" alt="Face 1">
         </div>
         <div class="avatar-option" onclick="changeAvatar('face', 'face2')">
-            <img src="https://example.com/face2.png" alt="Face 2">
+            <img src="https://cdn.pixabay.com/photo/2017/10/10/16/39/girl-2832293_960_720.jpg" alt="Face 2">
         </div>
         <div class="avatar-option" onclick="changeAvatar('face', 'face3')">
-            <img src="https://example.com/face3.png" alt="Face 3">
+            <img src="https://cdn.pixabay.com/photo/2017/10/10/15/57/face-2832292_960_720.jpg" alt="Face 3">
         </div>
     </div>
 
     <button onclick="downloadAvatar()">Download Avatar</button>
+
+    <!-- Image Gallery Section -->
+    <div class="content">
+        <h2>Lo-Fi Image Gallery</h2>
+        <div class="gallery">
+            <img src="https://cdn.pixabay.com/photo/2017/02/20/18/09/woman-2084536_960_720.jpg" alt="Lo-Fi Image 1">
+            <img src="https://cdn.pixabay.com/photo/2017/10/09/11/16/woman-2830041_960_720.jpg" alt="Lo-Fi Image 2">
+            <img src="https://cdn.pixabay.com/photo/2016/09/01/23/14/girl-1631292_960_720.jpg" alt="Lo-Fi Image 3">
+        </div>
+    </div>
 
     <script>
         const canvas = document.getElementById("avatarCanvas");
@@ -127,7 +161,7 @@
             // Draw hairstyle
             if (avatar.hairstyle) {
                 let img = new Image();
-                img.src = `https://example.com/${avatar.hairstyle}.png`;
+                img.src = `https://cdn.pixabay.com/photo/2016/06/29/12/30/girl-1481422_960_720.png`;
                 img.onload = function() {
                     ctx.drawImage(img, 50, 20, 200, 150); // Adjust positioning and size
                 };
@@ -136,7 +170,7 @@
             // Draw outfit
             if (avatar.outfit) {
                 let img = new Image();
-                img.src = `https://example.com/${avatar.outfit}.png`;
+                img.src = `https://cdn.pixabay.com/photo/2017/10/27/21/52/woman-2894390_960_720.jpg`;
                 img.onload = function() {
                     ctx.drawImage(img, 50, 150, 200, 150); // Adjust positioning and size
                 };
@@ -145,7 +179,7 @@
             // Draw face
             if (avatar.face) {
                 let img = new Image();
-                img.src = `https://example.com/${avatar.face}.png`;
+                img.src = `https://cdn.pixabay.com/photo/2017/10/10/17/39/woman-2832295_960_720.jpg`;
                 img.onload = function() {
                     ctx.drawImage(img, 50, 100, 200, 150); // Adjust positioning and size
                 };
