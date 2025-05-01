@@ -192,6 +192,14 @@
         #gameCanvas {
             border: 2px solid #ff4081;
             margin-top: 20px;
+            background-color: #000;
+        }
+
+        /* Adjust style for score display */
+        .score {
+            color: #fff;
+            font-size: 1.5em;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -227,7 +235,8 @@
 
         <div class="lofi-game-container">
             <button class="lofi-game-button" onclick="startLofiGame()">Play Lofi Game</button>
-            <canvas id="gameCanvas" width="300" height="300"></canvas>
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            <div class="score" id="score">Score: 0</div>
         </div>
     </div>
 
@@ -239,6 +248,7 @@
         const rain = document.getElementById('rain');
         const clouds = document.getElementById('clouds');
         const stars = document.getElementById('stars');
+        let score = 0;
 
         function clearEffects() {
             rain.innerHTML = '';
@@ -247,26 +257,30 @@
         }
 
         function setTheme(theme) {
-            document.body.className = 'theme-' + theme;
+            document.body.classList.remove('theme-rainy', 'theme-sunny', 'theme-night');
             clearEffects();
 
             if (theme === 'rainy') {
-                for (let i = 0; i < 80; i++) {
-                    let drop = document.createElement('div');
-                    drop.className = 'raindrop';
-                    drop.style.left = Math.random() * 100 + 'vw';
-                    drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
-                    rain.appendChild(drop);
+                document.body.classList.add('theme-rainy');
+                for (let i = 0; i < 100; i++) {
+                    let raindrop = document.createElement('div');
+                    raindrop.className = 'raindrop';
+                    raindrop.style.left = Math.random() * 100 + 'vw';
+                    raindrop.style.animationDuration = Math.random() * 2 + 2 + 's';
+                    rain.appendChild(raindrop);
                 }
-            } else if (theme === 'sunny') {
-                for (let i = 0; i < 5; i++) {
+            }
+            if (theme === 'sunny') {
+                document.body.classList.add('theme-sunny');
+                for (let i = 0; i < 2; i++) {
                     let cloud = document.createElement('div');
                     cloud.className = 'cloud';
-                    cloud.style.top = Math.random() * 50 + 'px';
-                    cloud.style.animationDuration = (Math.random() * 10 + 40) + 's';
+                    cloud.style.left = Math.random() * 100 + 'vw';
                     clouds.appendChild(cloud);
                 }
-            } else if (theme === 'night') {
+            }
+            if (theme === 'night') {
+                document.body.classList.add('theme-night');
                 for (let i = 0; i < 100; i++) {
                     let star = document.createElement('div');
                     star.className = 'star';
@@ -289,11 +303,11 @@
         }
 
         function startLofiGame() {
-            // Simple game mechanic
             const canvas = document.getElementById('gameCanvas');
             const ctx = canvas.getContext('2d');
             const ball = { x: 150, y: 150, radius: 15, dx: 2, dy: -2, color: 'rgb(255, 255, 255)' };
-            
+            const paddle = { width: 75, height: 10, x: 150, y: 380, speed: 7, dx: 0 };
+
             function drawBall() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.beginPath();
@@ -302,7 +316,15 @@
                 ctx.fill();
                 ctx.closePath();
             }
-            
+
+            function drawPaddle() {
+                ctx.beginPath();
+                ctx.rect(paddle.x, paddle.y, paddle.width, paddle.height);
+                ctx.fillStyle = "#ff4081";
+                ctx.fill();
+                ctx.closePath();
+            }
+
             function moveBall() {
                 if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
                     ball.dx = -ball.dx;
@@ -315,13 +337,58 @@
                 ball.y += ball.dy;
             }
 
+            function movePaddle() {
+                if (paddle.dx === -paddle.speed && paddle.x > 0) {
+                    paddle.x -= paddle.speed;
+                }
+                if (paddle.dx === paddle.speed && paddle.x < canvas.width - paddle.width) {
+                    paddle.x += paddle.speed;
+                }
+            }
+
+            function collisionDetection() {
+                if (ball.y + ball.dy > canvas.height - ball.radius) {
+                    if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
+                        ball.dy = -ball.dy;
+                        score++;
+                        document.getElementById('score').textContent = 'Score: ' + score;
+                    } else if (ball.y + ball.dy > canvas.height) {
+                        alert('Game Over!');
+                        score = 0;
+                        document.getElementById('score').textContent = 'Score: ' + score;
+                        ball.x = 150;
+                        ball.y = 150;
+                        ball.dx = 2;
+                        ball.dy = -2;
+                    }
+                }
+            }
+
             function gameLoop() {
                 drawBall();
+                drawPaddle();
                 moveBall();
+                movePaddle();
+                collisionDetection();
                 requestAnimationFrame(gameLoop);
             }
 
-            gameLoop(); 
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'ArrowLeft') {
+                    paddle.dx = -paddle.speed;
+                }
+                if (event.key === 'ArrowRight') {
+                    paddle.dx = paddle.speed;
+                }
+            });
+
+            document.addEventListener('keyup', function(event) {
+                if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                    paddle.dx = 0;
+                }
+            });
+
+            gameLoop();
         }
     </script>
 </body>
