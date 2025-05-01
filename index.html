@@ -10,209 +10,59 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            color: #fff;
             overflow: hidden;
-            color: #ffffff;
         }
-        #gameCanvas {
+        .container {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            border: 2px solid #fff;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .header {
+            font-size: 48px;
+            font-weight: bold;
+        }
+        .subheader {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .gif-container {
+            position: relative;
+            margin-top: 20px;
+        }
+        .cat-gif, .fireplace-gif {
+            width: 500px;
+            height: auto;
             display: block;
-            background-color: #222;
+            margin: 0 auto;
         }
-        #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 20px;
-        }
-        /* Simple rain, cloud and star effects */
-        .raindrop, .cloud, .star {
-            position: absolute;
-            background-color: #fff;
-        }
-        .raindrop {
-            width: 2px;
-            height: 10px;
-            background-color: rgba(255, 255, 255, 0.6);
-            animation: rain 2s infinite linear;
-        }
-        .cloud {
-            width: 80px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.4);
-            border-radius: 50%;
-            animation: cloudMove 10s linear infinite;
-        }
-        .star {
-            width: 2px;
-            height: 2px;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 1s infinite alternate;
-        }
-        @keyframes rain {
-            from { transform: translateY(-100vh); }
-            to { transform: translateY(100vh); }
-        }
-        @keyframes cloudMove {
-            from { transform: translateX(-100vw); }
-            to { transform: translateX(100vw); }
-        }
-        @keyframes twinkle {
-            0% { opacity: 0.3; }
-            100% { opacity: 1; }
+        #music {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Game Canvas -->
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
-
-    <!-- Score -->
-    <div id="score">Score: 0</div>
-
-    <!-- Weather effects -->
-    <div id="rain"></div>
-    <div id="clouds"></div>
-    <div id="stars"></div>
+    <div class="container">
+        <div class="header">Welcome to Lo-Fi Haven</div>
+        <div class="subheader">Relax, enjoy the vibes, and chill.</div>
+        
+        <div class="gif-container">
+            <img class="cat-gif" src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="cat">
+            <img class="fireplace-gif" src="https://media.giphy.com/media/QDOowSyehlN5K/giphy.gif" alt="fireplace">
+        </div>
+    </div>
 
     <!-- Music -->
     <iframe id="music" src="https://www.youtube.com/embed/sF80I-TQiW0?autoplay=1&loop=1&playlist=sF80I-TQiW0" style="display:none;"></iframe>
 
     <script>
-        let score = 0;
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const ball = { x: 150, y: 150, radius: 15, dx: 2, dy: 2, color: 'rgb(255, 255, 255)' };
-        const paddle = { width: 75, height: 10, x: 150, y: 380, speed: 7, dx: 0 };
-        let leftPressed = false, rightPressed = false;
-
-        // Play music
-        function playMusic() {
+        // Play music automatically when the page loads
+        window.onload = function() {
             const musicFrame = document.getElementById('music');
             if (musicFrame) musicFrame.src = musicFrame.src; // Reload to start autoplay
         }
-
-        // Start game
-        function startLofiGame() {
-            function drawBall() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.beginPath();
-                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-                ctx.fillStyle = ball.color;
-                ctx.fill();
-                ctx.closePath();
-            }
-
-            function drawPaddle() {
-                ctx.beginPath();
-                ctx.rect(paddle.x, paddle.y, paddle.width, paddle.height);
-                ctx.fillStyle = "#ff4081";
-                ctx.fill();
-                ctx.closePath();
-            }
-
-            function moveBall() {
-                ball.x += ball.dx;
-                ball.y += ball.dy;
-
-                // Wall collisions
-                if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
-                    ball.dx = -ball.dx;
-                }
-                if (ball.y + ball.dy < ball.radius) {
-                    ball.dy = -ball.dy;
-                }
-                if (ball.y + ball.dy > canvas.height - ball.radius) {
-                    if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
-                        ball.dy = -ball.dy;
-                        score++;
-                        document.getElementById('score').textContent = 'Score: ' + score;
-                    } else {
-                        alert('Game Over!');
-                        score = 0;
-                        document.getElementById('score').textContent = 'Score: ' + score;
-                        ball.x = 150;
-                        ball.y = 150;
-                        ball.dx = 0;
-                        ball.dy = 0;
-                    }
-                }
-            }
-
-            function movePaddle() {
-                if (leftPressed && paddle.x > 0) {
-                    paddle.x -= paddle.speed;
-                }
-                if (rightPressed && paddle.x < canvas.width - paddle.width) {
-                    paddle.x += paddle.speed;
-                }
-            }
-
-            function gameLoop() {
-                drawBall();
-                drawPaddle();
-                moveBall();
-                movePaddle();
-                requestAnimationFrame(gameLoop);
-            }
-
-            gameLoop();
-        }
-
-        // Paddle movement events
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'ArrowLeft') leftPressed = true;
-            if (event.key === 'ArrowRight') rightPressed = true;
-        });
-
-        document.addEventListener('keyup', function(event) {
-            if (event.key === 'ArrowLeft') leftPressed = false;
-            if (event.key === 'ArrowRight') rightPressed = false;
-        });
-
-        // Weather effects (Rain, Clouds, Stars)
-        function createWeatherEffect() {
-            const rain = document.getElementById('rain');
-            const clouds = document.getElementById('clouds');
-            const stars = document.getElementById('stars');
-
-            // Clear previous effects
-            rain.innerHTML = '';
-            clouds.innerHTML = '';
-            stars.innerHTML = '';
-
-            for (let i = 0; i < 100; i++) {
-                const raindrop = document.createElement('div');
-                raindrop.className = 'raindrop';
-                raindrop.style.left = Math.random() * 100 + 'vw';
-                raindrop.style.animationDuration = Math.random() * 2 + 2 + 's';
-                rain.appendChild(raindrop);
-            }
-
-            for (let i = 0; i < 2; i++) {
-                const cloud = document.createElement('div');
-                cloud.className = 'cloud';
-                cloud.style.left = Math.random() * 100 + 'vw';
-                clouds.appendChild(cloud);
-            }
-
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + 'vw';
-                star.style.top = Math.random() * 100 + 'vh';
-                star.style.animationDuration = Math.random() * 3 + 's';
-                stars.appendChild(star);
-            }
-        }
-
-        // Call functions
-        playMusic();
-        createWeatherEffect();
-        startLofiGame();
     </script>
 </body>
 </html>
