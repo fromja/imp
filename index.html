@@ -3,52 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lo-Fi Haven</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Lo-Fi Avatar Creation</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', sans-serif;
-            transition: background-color 0.5s ease, color 0.5s ease;
-            overflow-x: hidden;
-        }
-
-        .theme-rainy {
-            background: linear-gradient(to bottom, #2e2e2e, #1e1e1e);
-            color: #e0e0e0;
-        }
-        .theme-sunny {
-            background: linear-gradient(to top, #fffbd5, #b20a2c);
-            color: #1e1e1e;
-        }
-        .theme-night {
-            background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
-            color: #e0e0e0;
-        }
-
-        .container {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
             text-align: center;
-            padding: 50px 20px;
-            animation: fadeIn 1.5s ease-in-out;
+            padding: 30px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        h1 {
-            font-size: 3em;
+        #avatarCanvas {
+            border: 2px solid #fff;
+            border-radius: 20px;
+            background-color: #333;
             margin-bottom: 20px;
         }
 
-        p {
-            font-size: 1.2em;
-            max-width: 700px;
-            margin: 20px auto;
-            line-height: 1.8;
+        .avatar-option {
+            display: inline-block;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .avatar-option img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar-option img:hover {
+            transform: scale(1.1);
+        }
+
+        .avatar-options {
+            margin: 20px 0;
         }
 
         button {
@@ -56,277 +47,115 @@
             border: none;
             color: white;
             padding: 10px 20px;
-            margin: 10px;
             font-size: 16px;
             cursor: pointer;
             border-radius: 8px;
-            transition: background 0.3s;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
             background-color: #e73370;
         }
-
-        .social-links a {
-            color: #ff4081;
-            margin: 0 10px;
-            text-decoration: none;
-            font-size: 24px;
-        }
-
-        .lofi-girl {
-            width: 300px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-        }
-
-        .rain, .clouds, .stars {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .raindrop {
-            position: absolute;
-            width: 2px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.3);
-            animation: fall linear infinite;
-            opacity: 0.5;
-        }
-
-        @keyframes fall {
-            0% { top: -60px; }
-            100% { top: 110vh; }
-        }
-
-        .cloud {
-            position: absolute;
-            width: 200px;
-            height: 60px;
-            background: #fff;
-            border-radius: 100px;
-            top: 50px;
-            animation: cloudMove 60s linear infinite;
-            opacity: 0.3;
-        }
-
-        @keyframes cloudMove {
-            from { left: -250px; }
-            to { left: 110%; }
-        }
-
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 2s infinite ease-in-out alternate;
-        }
-
-        @keyframes twinkle {
-            from { opacity: 0.2; }
-            to { opacity: 1; }
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.9em;
-            color: #aaa;
-        }
-
-        .avatar-creator {
-            margin-top: 40px;
-            background-color: #2c5364;
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-        }
-
-        .avatar-creator h2 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .avatar-options {
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .avatar-option {
-            cursor: pointer;
-        }
-
-        .avatar-option img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid #fff;
-            transition: transform 0.3s;
-        }
-
-        .avatar-option img:hover {
-            transform: scale(1.1);
-        }
-
-        #avatarCanvas {
-            border: 2px solid #fff;
-            border-radius: 15px;
-            margin-top: 20px;
-        }
-
-        .gallery-section {
-            margin-top: 60px;
-            padding: 40px;
-            background: #1e1e1e;
-        }
-
-        .gallery-title {
-            font-size: 2.5em;
-            color: #ff4081;
-            margin-bottom: 20px;
-        }
-
-        .gallery-images {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .gallery-image {
-            margin: 15px;
-            width: 200px;
-            height: 200px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .gallery-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 15px;
-        }
-
-        .download-btn {
-            background-color: #ff4081;
-            padding: 10px 20px;
-            border: none;
-            color: white;
-            border-radius: 8px;
-            margin-top: 20px;
-            cursor: pointer;
-        }
-
-        .download-btn:hover {
-            background-color: #e73370;
-        }
     </style>
 </head>
-<body class="theme-night">
-    <div class="rain" id="rain"></div>
-    <div class="clouds" id="clouds"></div>
-    <div class="stars" id="stars"></div>
+<body>
+    <h1>Create Your Lo-Fi Avatar</h1>
 
-    <audio id="background-music" autoplay loop>
-        <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_7771e7b2d5.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
+    <canvas id="avatarCanvas" width="300" height="300"></canvas>
 
-    <div class="container">
-        <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
-
-        <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
-        <p id="welcome-paragraph">
-            Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.
-        </p>
-
-        <button onclick="setTheme('rainy')">🌧️ Rainy Day</button>
-        <button onclick="setTheme('sunny')">☀️ Sunny Day</button>
-        <button onclick="setTheme('night')">🌙 Night Sky</button>
-
-        <button onclick="switchLanguage('en')">English</button>
-        <button onclick="switchLanguage('ka')">ქართული</button>
-
-        <div class="social-links">
-            <a href="#">Facebook</a>
-            <a href="#">Instagram</a>
-            <a href="#">Twitter</a>
+    <div class="avatar-options">
+        <h3>Select Hairstyle</h3>
+        <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle1')">
+            <img src="https://example.com/hairstyle1.png" alt="Hairstyle 1">
+        </div>
+        <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle2')">
+            <img src="https://example.com/hairstyle2.png" alt="Hairstyle 2">
+        </div>
+        <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle3')">
+            <img src="https://example.com/hairstyle3.png" alt="Hairstyle 3">
         </div>
     </div>
 
-    <!-- Avatar Creator Section -->
-    <div class="avatar-creator">
-        <h2>Create Your Lofi Avatar</h2>
-
-        <div class="avatar-options">
-            <!-- Example of how users can choose items for their avatar -->
-            <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle1')">
-                <img src="https://example.com/hairstyle1.png" alt="Hairstyle 1">
-            </div>
-            <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle2')">
-                <img src="https://example.com/hairstyle2.png" alt="Hairstyle 2">
-            </div>
-            <div class="avatar-option" onclick="changeAvatar('hairstyle', 'hairstyle3')">
-                <img src="https://example.com/hairstyle3.png" alt="Hairstyle 3">
-            </div>
+    <div class="avatar-options">
+        <h3>Select Outfit</h3>
+        <div class="avatar-option" onclick="changeAvatar('outfit', 'outfit1')">
+            <img src="https://example.com/outfit1.png" alt="Outfit 1">
         </div>
-
-        <canvas id="avatarCanvas" width="300" height="300"></canvas>
-
-        <button class="download-btn" onclick="downloadAvatar()">Download Avatar</button>
-    </div>
-
-    <!-- Gallery Section -->
-    <div class="gallery-section">
-        <h2 class="gallery-title">Lo-Fi Art Gallery</h2>
-        <div class="gallery-images">
-            <!-- Gallery images go here -->
-            <div class="gallery-image">
-                <img src="https://example.com/art1.jpg" alt="Lofi Art 1">
-            </div>
-            <div class="gallery-image">
-                <img src="https://example.com/art2.jpg" alt="Lofi Art 2">
-            </div>
-            <div class="gallery-image">
-                <img src="https://example.com/art3.jpg" alt="Lofi Art 3">
-            </div>
+        <div class="avatar-option" onclick="changeAvatar('outfit', 'outfit2')">
+            <img src="https://example.com/outfit2.png" alt="Outfit 2">
+        </div>
+        <div class="avatar-option" onclick="changeAvatar('outfit', 'outfit3')">
+            <img src="https://example.com/outfit3.png" alt="Outfit 3">
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2025 Lo-Fi Haven. All Rights Reserved.</p>
-    </footer>
+    <div class="avatar-options">
+        <h3>Select Face Style</h3>
+        <div class="avatar-option" onclick="changeAvatar('face', 'face1')">
+            <img src="https://example.com/face1.png" alt="Face 1">
+        </div>
+        <div class="avatar-option" onclick="changeAvatar('face', 'face2')">
+            <img src="https://example.com/face2.png" alt="Face 2">
+        </div>
+        <div class="avatar-option" onclick="changeAvatar('face', 'face3')">
+            <img src="https://example.com/face3.png" alt="Face 3">
+        </div>
+    </div>
+
+    <button onclick="downloadAvatar()">Download Avatar</button>
 
     <script>
-        function changeAvatar(type, style) {
-            const canvas = document.getElementById('avatarCanvas');
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const canvas = document.getElementById("avatarCanvas");
+        const ctx = canvas.getContext("2d");
 
-            // Change avatar parts depending on type (hairstyle, face, etc.)
-            if (type === 'hairstyle') {
+        let avatar = {
+            hairstyle: null,
+            outfit: null,
+            face: null
+        };
+
+        // Change avatar parts
+        function changeAvatar(type, part) {
+            avatar[type] = part;
+            updateAvatar();
+        }
+
+        // Update the avatar on the canvas
+        function updateAvatar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before redrawing
+
+            // Draw hairstyle
+            if (avatar.hairstyle) {
                 let img = new Image();
+                img.src = `https://example.com/${avatar.hairstyle}.png`;
                 img.onload = function() {
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 50, 20, 200, 150); // Adjust positioning and size
                 };
-                img.src = 'https://example.com/' + style + '.png';  // Replace with actual image URLs
+            }
+
+            // Draw outfit
+            if (avatar.outfit) {
+                let img = new Image();
+                img.src = `https://example.com/${avatar.outfit}.png`;
+                img.onload = function() {
+                    ctx.drawImage(img, 50, 150, 200, 150); // Adjust positioning and size
+                };
+            }
+
+            // Draw face
+            if (avatar.face) {
+                let img = new Image();
+                img.src = `https://example.com/${avatar.face}.png`;
+                img.onload = function() {
+                    ctx.drawImage(img, 50, 100, 200, 150); // Adjust positioning and size
+                };
             }
         }
 
+        // Download the avatar as an image
         function downloadAvatar() {
-            const canvas = document.getElementById('avatarCanvas');
-            const link = document.createElement('a');
-            link.download = 'lofi-avatar.png';
+            const link = document.createElement("a");
+            link.download = "lofi-avatar.png";
             link.href = canvas.toDataURL();
             link.click();
         }
