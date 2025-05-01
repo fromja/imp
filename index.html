@@ -175,30 +175,27 @@
       height: 100%;
       pointer-events: none;
       z-index: -1;
+      display: none;
     }
 
     #stars {
       background: url('https://www.transparenttextures.com/patterns/stars.png') repeat;
       animation: starsAnimation 100s linear infinite;
-      display: none;
     }
 
     #clouds {
       background: url('https://www.transparenttextures.com/patterns/clouds.png') repeat;
       animation: cloudsAnimation 80s linear infinite;
-      display: none;
     }
 
     #rain {
       background: url('https://www.transparenttextures.com/patterns/rain.png') repeat;
       animation: rainAnimation 20s linear infinite;
-      display: none;
     }
 
     #sun {
       background: url('https://www.transparenttextures.com/patterns/sun.png') repeat;
       animation: sunAnimation 60s linear infinite;
-      display: none;
     }
 
     @keyframes starsAnimation {
@@ -262,7 +259,7 @@
   <section id="about" class="about">
     <h2 id="about-title">About Us</h2>
     <p id="about-text">
-      Lo-Fi Haven is a sanctuary for music lovers and creative souls. Here, you can unwind, study, or relax while soaking in chill vibes through lo-fi beats. Our community is built on respect, creativity, and mindfulness, where every member adds their unique touch to the overall experience. Whether you're working, studying, or just unwinding, we welcome you to be part of our space.
+      Lo-Fi Haven is a sanctuary for music lovers and creative souls. Here, you can unwind, study, or relax while soaking in chill vibes through lo-fi beats. Our community is built on respect, creativity, and mindfulness, where every member adds their unique touch to the overall experience. Whether you're working, studying, or just unwinding, we welcome you to enjoy the warmth of our community.
     </p>
   </section>
 
@@ -270,18 +267,8 @@
   <section id="community" class="community">
     <h2 id="community-title">Our Community</h2>
     <p id="community-text">
-      Lo-Fi Haven is more than just a place to listen to music; it's a place where people from all over the world come together to connect. Our community is filled with passionate individuals who share a love for music, creativity, and relaxation. Join our Discord server and meet like-minded individuals who are here to support, inspire, and create a peaceful environment for everyone.
+      Lo-Fi Haven is more than just a place to listen to music. It's a space where like-minded individuals come together to connect, share, and support one another. Whether you're a fan of lo-fi beats, a gamer, a creative spirit, or simply someone looking for peace, our community embraces everyone. We encourage creativity, self-expression, and making connections that matter.
     </p>
-  </section>
-
-  <!-- Gallery Section -->
-  <section class="gallery">
-    <h2>Gallery</h2>
-    <div class="gallery-grid">
-      <img src="https://www.transparenttextures.com/patterns/stars.png" alt="star pattern">
-      <img src="https://www.transparenttextures.com/patterns/clouds.png" alt="cloud pattern">
-      <img src="https://www.transparenttextures.com/patterns/rain.png" alt="rain pattern">
-    </div>
   </section>
 
   <!-- Footer -->
@@ -291,7 +278,6 @@
     <a href="https://www.instagram.com/" target="_blank">Instagram</a> | <a href="https://www.twitter.com/" target="_blank">Twitter</a> | <a href="https://www.discord.com/" target="_blank">Discord</a>
   </footer>
 
-  <!-- JavaScript -->
   <script>
     // Theme Switching Logic
     const themeSelector = document.getElementById('themeSelector');
