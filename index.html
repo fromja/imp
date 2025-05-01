@@ -21,6 +21,13 @@
             display: block;
             background-color: #222;
         }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+        }
+        /* Simple rain, cloud and star effects */
         .raindrop, .cloud, .star {
             position: absolute;
             background-color: #fff;
@@ -57,19 +64,10 @@
             0% { opacity: 0.3; }
             100% { opacity: 1; }
         }
-        #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 20px;
-        }
     </style>
 </head>
 <body>
-    <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
-    <p id="welcome-paragraph">Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.</p>
-
-    <!-- Canvas for game -->
+    <!-- Game Canvas -->
     <canvas id="gameCanvas" width="400" height="400"></canvas>
 
     <!-- Score -->
@@ -87,17 +85,17 @@
         let score = 0;
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const ball = { x: 150, y: 150, radius: 15, dx: 0, dy: 0, color: 'rgb(255, 255, 255)' };
+        const ball = { x: 150, y: 150, radius: 15, dx: 2, dy: 2, color: 'rgb(255, 255, 255)' };
         const paddle = { width: 75, height: 10, x: 150, y: 380, speed: 7, dx: 0 };
         let leftPressed = false, rightPressed = false;
 
-        // Function to play music
+        // Play music
         function playMusic() {
             const musicFrame = document.getElementById('music');
             if (musicFrame) musicFrame.src = musicFrame.src; // Reload to start autoplay
         }
 
-        // Start the game
+        // Start game
         function startLofiGame() {
             function drawBall() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -164,7 +162,7 @@
             gameLoop();
         }
 
-        // Event listeners for paddle movement
+        // Paddle movement events
         document.addEventListener('keydown', function(event) {
             if (event.key === 'ArrowLeft') leftPressed = true;
             if (event.key === 'ArrowRight') rightPressed = true;
@@ -175,7 +173,7 @@
             if (event.key === 'ArrowRight') rightPressed = false;
         });
 
-        // Weather effects: Rain, Clouds, Stars
+        // Weather effects (Rain, Clouds, Stars)
         function createWeatherEffect() {
             const rain = document.getElementById('rain');
             const clouds = document.getElementById('clouds');
@@ -211,7 +209,7 @@
             }
         }
 
-        // Call functions to start everything
+        // Call functions
         playMusic();
         createWeatherEffect();
         startLofiGame();
