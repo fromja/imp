@@ -14,9 +14,153 @@
             transition: background-color 0.5s ease, color 0.5s ease;
             overflow-x: hidden;
         }
-        /* ... (your existing styles) ... */
 
-        /* Chat styles */
+        .theme-rainy {
+            background: linear-gradient(to bottom, #2e2e2e, #1e1e1e);
+            color: #e0e0e0;
+        }
+        .theme-sunny {
+            background: linear-gradient(to top, #fffbd5, #b20a2c);
+            color: #1e1e1e;
+        }
+        .theme-night {
+            background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+            color: #e0e0e0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 50px 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            max-width: 700px;
+            margin: 20px auto;
+            line-height: 1.8;
+        }
+
+        button {
+            background-color: #ff4081;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #e73370;
+        }
+
+        .social-links a {
+            color: #ff4081;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .lofi-girl {
+            width: 300px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+        }
+
+        .rain, .clouds, .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.3);
+            animation: fall linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes fall {
+            0% { top: -60px; }
+            100% { top: 110vh; }
+        }
+
+        .cloud {
+            position: absolute;
+            width: 200px;
+            height: 60px;
+            background: #fff;
+            border-radius: 100px;
+            top: 50px;
+            animation: cloudMove 60s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes cloudMove {
+            from { left: -250px; }
+            to { left: 110%; }
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out alternate;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
+        }
+
+        .official-badge {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 1.1em;
+            color: #ff4081;
+            font-weight: bold;
+            background: rgba(0,0,0,0.4);
+            padding: 6px 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .official-badge::after {
+            content: '\2714';
+            background: #3aa3e3;
+            color: white;
+            font-size: 0.9em;
+            border-radius: 50%;
+            padding: 2px 6px;
+            margin-left: 5px;
+        }
+
         .chatbox {
             position: fixed;
             bottom: 20px;
@@ -43,8 +187,6 @@
             flex: 1;
             overflow-y: auto;
             padding: 10px;
-            display: flex;
-            flex-direction: column;
         }
 
         .chat-input {
@@ -84,10 +226,27 @@
     </audio>
 
     <div class="container">
-        <!-- (Your existing site content) -->
+        <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
+
+        <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
+        <p id="welcome-paragraph">
+            Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.
+        </p>
+
+        <button onclick="setTheme('rainy')">🌧️ Rainy Day</button>
+        <button onclick="setTheme('sunny')">☀️ Sunny Day</button>
+        <button onclick="setTheme('night')">🌙 Night Sky</button>
+
+        <button onclick="switchLanguage('en')">English</button>
+        <button onclick="switchLanguage('ka')">ქართული</button>
+
+        <div class="social-links">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+        </div>
     </div>
 
-    <!-- Chat box -->
     <div class="chatbox" id="chatbox">
         <div class="chat-header" onclick="toggleChat()">☕ Lofi Café Chat</div>
         <div class="chat-messages" id="chat-messages"></div>
@@ -119,27 +278,41 @@
             if (theme === 'rainy') {
                 for (let i = 0; i < 80; i++) {
                     let drop = document.createElement('div');
-                    drop.className = 'raindrop';
+                    drop.classList.add('raindrop');
                     drop.style.left = Math.random() * 100 + 'vw';
-                    drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+                    drop.style.animationDuration = Math.random() * 0.5 + 1 + 's';
                     rain.appendChild(drop);
                 }
             } else if (theme === 'sunny') {
-                for (let i = 0; i < 5; i++) {
-                    let cloud = document.createElement('div');
-                    cloud.className = 'cloud';
-                    cloud.style.top = (i * 60) + 'px';
-                    clouds.appendChild(cloud);
-                }
+                let cloud = document.createElement('div');
+                cloud.classList.add('cloud');
+                cloud.style.top = Math.random() * 100 + 'px';
+                clouds.appendChild(cloud);
             } else if (theme === 'night') {
-                for (let i = 0; i < 100; i++) {
+                for (let i = 0; i < 150; i++) {
                     let star = document.createElement('div');
-                    star.className = 'star';
+                    star.classList.add('star');
                     star.style.left = Math.random() * 100 + 'vw';
                     star.style.top = Math.random() * 100 + 'vh';
                     stars.appendChild(star);
                 }
             }
+        }
+
+        function switchLanguage(language) {
+            const text = {
+                en: {
+                    welcomeText: 'Welcome to Lo-Fi Haven',
+                    welcomeParagraph: 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.',
+                },
+                ka: {
+                    welcomeText: 'მოგესალმებით Lo-Fi Haven-ში',
+                    welcomeParagraph: 'შევიდეთ სიმშვიდეში. თუ სწავლობთ, მუშაობთ თუ უბრალოდ ისვენებთ — Lo-Fi Haven აქ არის, რათა მოიტანოს მშვიდობა სიმრავლე ბიტებით, კომფორტული ვიზუალებით და მომთაბარე ატმოსფეროთი, რომელიც გრძნობას აძლევს, როგორც სახლში.',
+                }
+            };
+
+            document.getElementById('welcome-text').innerText = text[language].welcomeText;
+            document.getElementById('welcome-paragraph').innerText = text[language].welcomeParagraph;
         }
 
         function toggleChat() {
@@ -157,15 +330,11 @@
             const messages = document.getElementById('chat-messages');
             if (input.value.trim() !== '') {
                 const msg = document.createElement('div');
-                msg.textContent = input.value;
+                msg.textContent = '🗣️ ' + input.value;
                 messages.appendChild(msg);
                 input.value = '';
                 messages.scrollTop = messages.scrollHeight;
             }
-        }
-
-        window.onload = () => {
-            setTheme('night');
         }
     </script>
 </body>
