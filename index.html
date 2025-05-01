@@ -3,138 +3,158 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lo-Fi Haven</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;600;900&display=swap" rel="stylesheet">
+  <title>Lofi Haven Official</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: 'Nunito', sans-serif;
-      background: linear-gradient(to bottom, #1e1e2f, #2d2d44);
-      color: white;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+    body {
+      background: #1e1e2f;
+      color: #f4f4f4;
       overflow-x: hidden;
     }
     header {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
       display: flex;
       align-items: center;
-      padding: 1rem;
-      font-size: 1.2rem;
+      font-size: 18px;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 14px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      animation: float 3s ease-in-out infinite;
     }
-    .logo {
-      font-weight: 900;
-      font-size: 1.2rem;
-      animation: pulse 2s infinite;
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 0.5rem 1rem;
-      border-radius: 12px;
+    header img {
+      width: 20px;
+      height: 20px;
+      margin-left: 8px;
     }
-    .logo::after {
-      content: ' ✔️';
-      color: #4ecdc4;
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
     }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
+    main {
+      padding: 100px 20px 60px;
+      text-align: center;
     }
-    #chatbox-toggle {
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      z-index: 1000;
-      background-color: #4ecdc4;
-      color: black;
-      padding: 0.5rem 1rem;
-      border-radius: 10px;
-      cursor: pointer;
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      padding: 20px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     #chatbox {
-      display: none;
       position: fixed;
-      bottom: 3rem;
-      right: 1rem;
+      bottom: 20px;
+      right: 20px;
       width: 300px;
       max-height: 400px;
-      background: #333;
+      background: rgba(0, 0, 0, 0.8);
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      overflow: hidden;
-      z-index: 999;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+      z-index: 999;
     }
-    #chat-messages {
-      flex-grow: 1;
-      overflow-y: auto;
-      padding: 0.5rem;
-      font-size: 0.9rem;
-    }
-    #chat-input {
-      display: flex;
-      border-top: 1px solid #444;
-    }
-    #chat-input input {
-      flex-grow: 1;
-      padding: 0.5rem;
-      background: #222;
-      border: none;
-      color: white;
-    }
-    #chat-input button {
-      padding: 0.5rem 1rem;
-      background: #4ecdc4;
-      border: none;
+    #chatbox-header {
+      background: #333;
+      padding: 10px;
       cursor: pointer;
+      font-weight: bold;
+      text-align: center;
+    }
+    #chatbox-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+    #chatbox-input {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      background: #222;
+    }
+    #chatbox-input input, #chatbox-input button {
+      margin-top: 5px;
+      padding: 8px;
+      border: none;
+      border-radius: 6px;
+    }
+    #username {
+      margin-bottom: 5px;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">Lofi Haven Official</div>
+    Lofi Haven Official <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Twitter_Verified_Badge.svg" alt="verified" />
   </header>
 
-  <!-- Chat -->
-  <div id="chatbox-toggle">💬 Chat</div>
-  <div id="chatbox">
-    <div id="chat-messages"></div>
-    <div id="chat-input">
-      <input type="text" id="chat-username" placeholder="Your name" />
+  <main>
+    <h1>Welcome to Lofi Haven</h1>
+    <p>Relax, chill, and connect with the community.</p>
+    <div class="gallery">
+      <img src="https://i.pinimg.com/originals/e6/f5/89/e6f589e1f239312a574754e8a6be832b.jpg" alt="lofi1">
+      <img src="https://wallpapers.com/images/featured/lofi-pictures-q0p8zv0uj1bzb1xl.jpg" alt="lofi2">
+      <img src="https://images6.alphacoders.com/133/thumb-1920-1330609.png" alt="lofi3">
     </div>
-    <div id="chat-input">
-      <input type="text" id="chat-message" placeholder="Type a message..." />
+  </main>
+
+  <div id="chatbox">
+    <div id="chatbox-header" onclick="toggleChat()">💬 Community Chat</div>
+    <div id="chatbox-messages"></div>
+    <div id="chatbox-input">
+      <input type="text" id="username" placeholder="Enter your name" />
+      <input type="text" id="message" placeholder="Type a message (use emojis!)" />
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
 
   <script>
-    const toggleBtn = document.getElementById('chatbox-toggle');
-    const chatBox = document.getElementById('chatbox');
-    const chatMessages = document.getElementById('chat-messages');
-    const usernameInput = document.getElementById('chat-username');
-    const messageInput = document.getElementById('chat-message');
+    let chatVisible = true;
+    const toggleChat = () => {
+      chatVisible = !chatVisible;
+      document.getElementById('chatbox-messages').style.display = chatVisible ? 'block' : 'none';
+      document.getElementById('chatbox-input').style.display = chatVisible ? 'flex' : 'none';
+    };
 
-    toggleBtn.addEventListener('click', () => {
-      chatBox.style.display = chatBox.style.display === 'flex' ? 'none' : 'flex';
-    });
+    const messages = [];
 
     function sendMessage() {
-      const username = usernameInput.value.trim();
-      const message = messageInput.value.trim();
+      const username = document.getElementById('username').value.trim();
+      const message = document.getElementById('message').value.trim();
       if (!username || !message) return;
-      const msg = document.createElement('div');
-      msg.innerHTML = `<strong>${username}:</strong> ${message}`;
-      chatMessages.appendChild(msg);
-      messageInput.value = '';
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      const fullMessage = `<b>${username}:</b> ${message}`;
+      messages.push(fullMessage);
+      document.getElementById('message').value = '';
+      renderMessages();
     }
 
-    messageInput.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        sendMessage();
-      }
-    });
+    function renderMessages() {
+      const container = document.getElementById('chatbox-messages');
+      container.innerHTML = messages.map(msg => `<div>${msg}</div>`).join('');
+      container.scrollTop = container.scrollHeight;
+    }
   </script>
 </body>
 </html>
