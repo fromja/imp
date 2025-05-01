@@ -4,163 +4,248 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lo-Fi Haven</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+        }
+
+        .theme-rainy {
+            background: linear-gradient(to bottom, #2e2e2e, #1e1e1e);
+            color: #e0e0e0;
+        }
+
+        .theme-night {
+            background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+            color: #e0e0e0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 50px 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            max-width: 700px;
+            margin: 20px auto;
+            line-height: 1.8;
+        }
+
+        button {
+            background-color: #ff4081;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #e73370;
+        }
+
+        .social-links a {
+            color: #ff4081;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .lofi-girl {
+            width: 300px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+        }
+
+        .rain, .clouds, .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.3);
+            animation: fall linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes fall {
+            0% { top: -60px; }
+            100% { top: 110vh; }
+        }
+
+        .avatar-section {
+            padding: 60px 20px;
+            background-color: rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .avatar-section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .avatar-preview {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 20px auto;
+            background-color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .avatar-section select {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+    </style>
 </head>
-<body>
-    <div class="background">
-        <div class="weather-effects" id="weather-effects"></div>
-        <div class="header">
-            <h1 class="title">Welcome to Lo-Fi Haven</h1>
-            <div class="lang-toggle">
-                <button onclick="changeLanguage('en')">English</button>
-                <button onclick="changeLanguage('ka')">ქართული</button>
-            </div>
-        </div>
+<body class="theme-night">
+    <div class="rain" id="rain"></div>
 
-        <div class="content">
-            <section id="about">
-                <h2 data-en="About Us" data-ka="ჩვენს შესახებ">About Us</h2>
-                <p data-en="Welcome to Lo-Fi Haven, a peaceful place to relax, learn, and connect through lo-fi music." data-ka="ლო-ფი ჰევენი არის მშვიდი ადგილი, სადაც შეგიძლიათ დაისვენოთ, ისწავლოთ და გაიცნოთ სხვები ლო-ფი მუსიკის მეშვეობით.">
-                    Welcome to Lo-Fi Haven, a peaceful place to relax, learn, and connect through lo-fi music.
-                </p>
-            </section>
+    <audio id="background-music" autoplay loop>
+        <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_7771e7b2d5.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
 
-            <section id="community">
-                <h2 data-en="Our Community" data-ka="ჩვენი კომუნიტეტი">Our Community</h2>
-                <p data-en="Join our amazing community of people who love lo-fi beats, gaming, education, and more." data-ka="მოერთით ჩვენს საოცარ კომუნიტეტს, სადაც ადამიანები გიყვართ ლო-ფი ბითები, თამაშები, განათლება და სხვა.">
-                    Join our amazing community of people who love lo-fi beats, gaming, education, and more.
-                </p>
-            </section>
+    <div class="container">
+        <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
 
-            <section id="gallery">
-                <h2 data-en="Gallery" data-ka="გალერეა">Gallery</h2>
-                <div class="gallery">
-                    <img src="https://via.placeholder.com/300" alt="Lo-fi Girl" class="lofi-image">
-                    <img src="https://via.placeholder.com/300" alt="Lo-fi Landscape" class="lofi-image">
-                    <!-- Add more lo-fi images here -->
-                </div>
-            </section>
+        <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
+        <p id="welcome-paragraph">
+            Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.
+        </p>
 
-            <section id="music">
-                <h2 data-en="Lo-Fi Music" data-ka="ლო-ფი მუსიკა">Lo-Fi Music</h2>
-                <iframe id="lofi-music" width="100%" height="90" src="https://www.youtube.com/embed/sF80I-TQiW0?autoplay=1&loop=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </section>
+        <button onclick="setTheme('rainy')">🌧️ Rainy Day</button>
+        <button onclick="setTheme('night')">🌙 Night Sky</button>
+
+        <button onclick="switchLanguage('en')">English</button>
+        <button onclick="switchLanguage('ka')">ქართული</button>
+
+        <div class="social-links">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
         </div>
     </div>
+
+    <div class="avatar-section">
+        <h2>Create Your Lofi Avatar</h2>
+        <div class="avatar-preview" id="avatar-preview">😊</div>
+        <select id="avatar-gender">
+            <option value="😊">Neutral</option>
+            <option value="👩‍🎤">Female</option>
+            <option value="👨‍🎤">Male</option>
+        </select>
+        <select id="avatar-color">
+            <option value="#444">Dark</option>
+            <option value="#ffb6c1">Pink</option>
+            <option value="#87cefa">Sky Blue</option>
+            <option value="#90ee90">Light Green</option>
+        </select>
+        <button onclick="downloadAvatar()">Download Avatar</button>
+    </div>
+
+    <footer>
+        Official Lo-Fi Haven — Stay Chill, Stay Creative 🌸
+    </footer>
+
+    <script>
+        const rain = document.getElementById('rain');
+
+        function clearEffects() {
+            rain.innerHTML = '';
+        }
+
+        function setTheme(theme) {
+            document.body.className = 'theme-' + theme;
+            clearEffects();
+            if (theme === 'rainy') {
+                for (let i = 0; i < 80; i++) {
+                    let drop = document.createElement('div');
+                    drop.className = 'raindrop';
+                    drop.style.left = Math.random() * 100 + 'vw';
+                    drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+                    rain.appendChild(drop);
+                }
+            }
+        }
+
+        function switchLanguage(lang) {
+            if (lang === 'en') {
+                document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
+                document.getElementById('welcome-paragraph').innerText = "Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.";
+            } else if (lang === 'ka') {
+                document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
+                document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. იქნება სწავლობთ, მუშაობთ თუ უბრალოდ ისვენებთ — Lo-Fi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
+            }
+        }
+
+        setTheme('night');
+
+        // Avatar Section
+        const avatarPreview = document.getElementById('avatar-preview');
+        document.getElementById('avatar-gender').addEventListener('change', updateAvatar);
+        document.getElementById('avatar-color').addEventListener('change', updateAvatar);
+
+        function updateAvatar() {
+            const emoji = document.getElementById('avatar-gender').value;
+            const color = document.getElementById('avatar-color').value;
+            avatarPreview.innerText = emoji;
+            avatarPreview.style.backgroundColor = color;
+        }
+
+        function downloadAvatar() {
+            html2canvas(avatarPreview).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'lofi_avatar.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </body>
 </html>
-
-<style>
-    /* Main page layout */
-    body {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #1e1e1e;
-        color: white;
-    }
-
-    .background {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    .header {
-        text-align: center;
-        padding: 50px;
-    }
-
-    .header .title {
-        font-size: 3em;
-        margin-bottom: 20px;
-    }
-
-    .lang-toggle button {
-        background-color: rgba(255, 255, 255, 0.3);
-        border: none;
-        padding: 10px;
-        margin: 5px;
-        cursor: pointer;
-    }
-
-    .lang-toggle button:hover {
-        background-color: rgba(255, 255, 255, 0.6);
-    }
-
-    .content {
-        padding: 20px;
-        text-align: center;
-    }
-
-    .content section {
-        margin-bottom: 50px;
-    }
-
-    .gallery {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-    }
-
-    .gallery img {
-        border-radius: 10px;
-        width: 300px;
-        height: 200px;
-        object-fit: cover;
-    }
-
-    /* Weather Effects */
-    .weather-effects {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-    }
-
-    .raindrop {
-        position: absolute;
-        width: 2px;
-        height: 50px;
-        background: rgba(255, 255, 255, 0.3);
-        animation: fall linear infinite;
-        opacity: 0.5;
-    }
-
-    @keyframes fall {
-        0% { top: -60px; }
-        100% { top: 110vh; }
-    }
-</style>
-
-<script>
-    // Change Language
-    function changeLanguage(lang) {
-        const elements = document.querySelectorAll("[data-en], [data-ka]");
-        elements.forEach(element => {
-            const langText = element.getAttribute(`data-${lang}`);
-            element.innerText = langText;
-        });
-    }
-
-    // Generate Rainy Day Effect
-    function generateRainEffect() {
-        const container = document.getElementById('weather-effects');
-        for (let i = 0; i < 100; i++) {
-            const raindrop = document.createElement('div');
-            raindrop.classList.add('raindrop');
-            raindrop.style.left = `${Math.random() * 100}vw`;
-            raindrop.style.animationDuration = `${Math.random() * 2 + 2}s`;
-            container.appendChild(raindrop);
-        }
-    }
-
-    // Initialize Weather Effects
-    window.onload = function () {
-        generateRainEffect();
-    };
-</script>
