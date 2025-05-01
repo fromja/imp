@@ -142,6 +142,71 @@
             font-size: 0.9em;
             color: #aaa;
         }
+
+        .logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: #ff4081;
+            font-size: 2em;
+            font-weight: 700;
+            font-family: 'Roboto', sans-serif;
+            opacity: 0;
+            animation: slideIn 2s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            0% { left: -200px; opacity: 0; }
+            100% { left: 20px; opacity: 1; }
+        }
+
+        /* Chatbox styles */
+        .chat-container {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+        }
+
+        .chat-box {
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .chat-send {
+            background-color: #ff4081;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .chat-send:hover {
+            background-color: #e73370;
+        }
     </style>
 </head>
 <body class="theme-night">
@@ -153,6 +218,11 @@
         <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_7771e7b2d5.mp3" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>
+
+    <!-- Logo -->
+    <div class="logo">
+        <h2>Lofi Haven Official</h2>
+    </div>
 
     <div class="container">
         <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
@@ -180,10 +250,21 @@
         Official Lo-Fi Haven — Stay Chill, Stay Creative 🌸
     </footer>
 
+    <!-- Chatbox -->
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <!-- Chat messages will go here -->
+        </div>
+        <input type="text" id="chat-input" class="chat-input" placeholder="Type your message...">
+        <button class="chat-send" onclick="sendMessage()">Send</button>
+    </div>
+
     <script>
         const rain = document.getElementById('rain');
         const clouds = document.getElementById('clouds');
         const stars = document.getElementById('stars');
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-input');
 
         function clearEffects() {
             rain.innerHTML = '';
@@ -228,6 +309,17 @@
             } else if (lang === 'ka') {
                 document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
                 document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. იქნება სწავლობთ, მუშაობთ თუ უბრალოდ ისვენებთ — Lo-Fi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
+            }
+        }
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message) {
+                const messageElement = document.createElement('div');
+                messageElement.innerText = message;
+                chatBox.appendChild(messageElement);
+                chatInput.value = '';
+                chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
 
