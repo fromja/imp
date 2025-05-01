@@ -212,6 +212,30 @@
             font-size: 0.9em;
             color: #aaa;
         }
+
+        .register-form {
+            margin: 20px 0;
+        }
+
+        .register-form input {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            width: 250px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .register-form button {
+            padding: 10px 20px;
+            background-color: #ff4081;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
     </style>
 </head>
 <body class="theme-night">
@@ -245,6 +269,12 @@
             <a href="#">Instagram</a>
             <a href="#">Twitter</a>
         </div>
+
+        <div class="register-form">
+            <h2>Create Account</h2>
+            <input type="text" id="username" placeholder="Enter your username" required>
+            <button onclick="registerUser()">Register</button>
+        </div>
     </div>
 
     <div class="chatbox" id="chatbox">
@@ -261,6 +291,8 @@
     </footer>
 
     <script>
+        let currentUsername = null;
+
         const rain = document.getElementById('rain');
         const clouds = document.getElementById('clouds');
         const stars = document.getElementById('stars');
@@ -330,10 +362,20 @@
             const messages = document.getElementById('chat-messages');
             if (input.value.trim() !== '') {
                 const msg = document.createElement('div');
-                msg.textContent = '🗣️ ' + input.value;
+                msg.textContent = (currentUsername ? currentUsername + ': ' : '🗣️ ') + input.value;
                 messages.appendChild(msg);
                 input.value = '';
                 messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function registerUser() {
+            const username = document.getElementById('username').value;
+            if (username.trim() !== '') {
+                currentUsername = username.trim();
+                alert('Welcome, ' + currentUsername + '!');
+            } else {
+                alert('Please enter a valid username.');
             }
         }
     </script>
