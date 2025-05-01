@@ -4,200 +4,235 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lo-Fi Haven</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Base Styles */
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            font-family: 'Roboto', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
             overflow-x: hidden;
         }
 
-        header {
-            background-color: #333;
-            color: white;
-            padding: 20px;
+        .theme-rainy {
+            background: linear-gradient(to bottom, #2e2e2e, #1e1e1e);
+            color: #e0e0e0;
+        }
+        .theme-sunny {
+            background: linear-gradient(to top, #fffbd5, #b20a2c);
+            color: #1e1e1e;
+        }
+        .theme-night {
+            background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+            color: #e0e0e0;
+        }
+
+        .container {
             text-align: center;
+            padding: 50px 20px;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
-        #about, #community, #gallery, #create-avatar {
-            padding: 20px;
-            margin: 20px;
-            background-color: #fff;
-            border-radius: 8px;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
         }
 
         p {
-            font-size: 16px;
-            line-height: 1.5;
+            font-size: 1.2em;
+            max-width: 700px;
+            margin: 20px auto;
+            line-height: 1.8;
         }
 
-        #gallery .gallery-images img {
-            width: 30%;
+        button {
+            background-color: #ff4081;
+            border: none;
+            color: white;
+            padding: 10px 20px;
             margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
             border-radius: 8px;
+            transition: background 0.3s;
         }
 
-        /* Theme Colors */
-        body.rainy {
-            background: url('rainy_background.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
+        button:hover {
+            background-color: #e73370;
         }
 
-        body.sunny {
-            background: url('sunny_background.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #333;
+        .social-links a {
+            color: #ff4081;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 24px;
         }
 
-        body.night {
-            background: url('night_background.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
+        .lofi-girl {
+            width: 300px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
         }
 
-        .theme-switcher {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .theme-button {
-            margin: 5px;
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .theme-button:hover {
-            background-color: #555;
-        }
-
-        .language-toggle {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .language-toggle button {
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px;
+        .rain, .clouds, .stars {
             position: fixed;
             width: 100%;
-            bottom: 0;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.3);
+            animation: fall linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes fall {
+            0% { top: -60px; }
+            100% { top: 110vh; }
+        }
+
+        .cloud {
+            position: absolute;
+            width: 200px;
+            height: 60px;
+            background: #fff;
+            border-radius: 100px;
+            top: 50px;
+            animation: cloudMove 60s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes cloudMove {
+            from { left: -250px; }
+            to { left: 110%; }
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out alternate;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            color: #aaa;
         }
     </style>
 </head>
-<body>
+<body class="theme-night">
+    <div class="rain" id="rain"></div>
+    <div class="clouds" id="clouds"></div>
+    <div class="stars" id="stars"></div>
 
-    <!-- Background Music -->
-    <audio id="backgroundMusic" autoplay loop>
-        <source src="https://www.youtube.com/watch?v=sF80I-TQiW0" type="audio/mpeg">
+    <audio id="background-music" autoplay loop>
+        <source src="https://cdn.pixabay.com/audio/2022/07/26/audio_7771e7b2d5.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
     </audio>
 
-    <!-- Theme Switcher -->
-    <div class="theme-switcher">
-        <button class="theme-button" onclick="switchTheme('rainy')">Rainy Day</button>
-        <button class="theme-button" onclick="switchTheme('sunny')">Sunny Day</button>
-        <button class="theme-button" onclick="switchTheme('night')">Night Sky</button>
+    <div class="container">
+        <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
+
+        <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
+        <p id="welcome-paragraph">
+            Dive into a world of calm. Whether you're studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.
+        </p>
+
+        <button onclick="setTheme('rainy')">🌧️ Rainy Day</button>
+        <button onclick="setTheme('sunny')">☀️ Sunny Day</button>
+        <button onclick="setTheme('night')">🌙 Night Sky</button>
+
+        <button onclick="switchLanguage('en')">English</button>
+        <button onclick="switchLanguage('ka')">ქართული</button>
+
+        <div class="social-links">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+        </div>
     </div>
 
-    <!-- Language Toggle -->
-    <div class="language-toggle">
-        <button onclick="toggleLanguage()">EN / GE</button>
-    </div>
-
-    <!-- Header Section -->
-    <header>
-        <div class="title">
-            <h1 id="mainTitle">Lo-Fi Haven</h1>
-            <p id="subTitle">A peaceful place to relax and vibe</p>
-        </div>
-    </header>
-
-    <!-- About Us Section -->
-    <section id="about">
-        <h2 id="aboutTitle">About Us</h2>
-        <p id="aboutText">Welcome to Lo-Fi Haven, your peaceful retreat. Our goal is to provide a calm atmosphere where you can relax, listen to music, and find comfort.</p>
-    </section>
-
-    <!-- Community Section -->
-    <section id="community">
-        <h2 id="communityTitle">Our Community</h2>
-        <p id="communityText">Join our friendly community! We offer spaces for discussion, music, and relaxation. Whether you're looking for peace or new friends, Lo-Fi Haven is the place for you.</p>
-    </section>
-
-    <!-- Gallery Section -->
-    <section id="gallery">
-        <h2>Gallery</h2>
-        <div class="gallery-images">
-            <img src="image1.jpg" alt="Lo-Fi 1">
-            <img src="image2.jpg" alt="Lo-Fi 2">
-            <img src="image3.jpg" alt="Lo-Fi 3">
-        </div>
-    </section>
-
-    <!-- Create Your Avatar Section -->
-    <section id="create-avatar">
-        <h2>Create Your Lofi Avatar</h2>
-        <div class="avatar-creator">
-            <!-- Placeholder for avatar creation tool -->
-            <p>Customize your very own lo-fi avatar here!</p>
-        </div>
-    </section>
-
-    <!-- Footer Section -->
     <footer>
-        <p id="footerText">Official Lo-Fi Haven</p>
+        Official Lo-Fi Haven — Stay Chill, Stay Creative 🌸
     </footer>
 
     <script>
-        // Theme Switcher
-        function switchTheme(theme) {
-            document.body.classList.remove('rainy', 'sunny', 'night');
-            document.body.classList.add(theme);
+        const rain = document.getElementById('rain');
+        const clouds = document.getElementById('clouds');
+        const stars = document.getElementById('stars');
+
+        function clearEffects() {
+            rain.innerHTML = '';
+            clouds.innerHTML = '';
+            stars.innerHTML = '';
         }
 
-        // Language Toggle
-        function toggleLanguage() {
-            const lang = document.body.classList.contains('georgian') ? 'english' : 'georgian';
-            document.body.classList.toggle('georgian', lang === 'georgian');
-            
-            // Update text content for language change
-            if (lang === 'georgian') {
-                document.getElementById('mainTitle').textContent = 'ლო-ფი ჰეივენი';
-                document.getElementById('subTitle').textContent = 'მშვიდი ადგილი დასვენებისთვის და ატმოსფეროსთვის';
-                document.getElementById('aboutTitle').textContent = 'ჩვენს შესახებ';
-                document.getElementById('aboutText').textContent = 'ლო-ფი ჰეივენი, თქვენი მშვიდი დასვენების ადგილი. ჩვენი მიზანია მშვიდი ატმოსფეროს შექმნა, სადაც შეგიძლიათ მოისმინოთ მუსიკა და გაკმაყოფილდეთ.';
-                document.getElementById('communityTitle').textContent = 'ჩვენი საზოგადოება';
-                document.getElementById('communityText').textContent = 'დამუერთდით ჩვენს მეგობრულ საზოგადოებას! ჩვენ გვაქვს სივრცეები დისკუსიებისთვის, მუსიკისთვის და დასვენებისთვის. ლო-ფი ჰეივენი - ადგილი მშვიდობისა და ახალი მეგობრებისათვის.';
-                document.getElementById('footerText').textContent = 'ოფიციალური ლო-ფი ჰეივენი';
-            } else {
-                document.getElementById('mainTitle').textContent = 'Lo-Fi Haven';
-                document.getElementById('subTitle').textContent = 'A peaceful place to relax and vibe';
-                document.getElementById('aboutTitle').textContent = 'About Us';
-                document.getElementById('aboutText').textContent = 'Welcome to Lo-Fi Haven, your peaceful retreat. Our goal is to provide a calm atmosphere where you can relax, listen to music, and find comfort.';
-                document.getElementById('communityTitle').textContent = 'Our Community';
-                document.getElementById('communityText').textContent = 'Join our friendly community! We offer spaces for discussion, music, and relaxation. Whether you\'re looking for peace or new friends, Lo-Fi Haven is the place for you.';
-                document.getElementById('footerText').textContent = 'Official Lo-Fi Haven';
+        function setTheme(theme) {
+            document.body.className = 'theme-' + theme;
+            clearEffects();
+
+            if (theme === 'rainy') {
+                for (let i = 0; i < 80; i++) {
+                    let drop = document.createElement('div');
+                    drop.className = 'raindrop';
+                    drop.style.left = Math.random() * 100 + 'vw';
+                    drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+                    rain.appendChild(drop);
+                }
+            } else if (theme === 'sunny') {
+                for (let i = 0; i < 5; i++) {
+                    let cloud = document.createElement('div');
+                    cloud.className = 'cloud';
+                    cloud.style.top = (i * 60) + 'px';
+                    clouds.appendChild(cloud);
+                }
+            } else if (theme === 'night') {
+                for (let i = 0; i < 100; i++) {
+                    let star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 100 + 'vh';
+                    stars.appendChild(star);
+                }
             }
+        }
+
+        function switchLanguage(lang) {
+            if (lang === 'en') {
+                document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
+                document.getElementById('welcome-paragraph').innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — Lo-Fi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
+            } else if (lang === 'ka') {
+                document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
+                document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. იქნება სწავლობთ, მუშაობთ თუ უბრალოდ ისვენებთ — Lo-Fi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
+            }
+        }
+
+        window.onload = () => {
+            setTheme('night');
         }
     </script>
 </body>
