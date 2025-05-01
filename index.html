@@ -228,8 +228,8 @@
   <nav class="navbar">
     <div class="logo">Lo-Fi Haven</div>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#community">Community</a></li>
+      <li><a href="#about" id="about-link">About</a></li>
+      <li><a href="#community" id="community-link">Community</a></li>
     </ul>
     <div class="controls">
       <select id="themeSelector">
@@ -260,17 +260,17 @@
 
   <!-- About Section -->
   <section id="about" class="about">
-    <h2>About Us</h2>
-    <p>
+    <h2 id="about-title">About Us</h2>
+    <p id="about-text">
       Lo-Fi Haven is a sanctuary for music lovers and creative souls. Here, you can unwind, study, or relax while soaking in chill vibes through lo-fi beats. Our community is built on respect, creativity, and mindfulness, where every member adds their unique touch to the overall experience. Whether you're working, studying, or just unwinding, we welcome you to be part of our space.
     </p>
   </section>
 
   <!-- Community Section -->
   <section id="community" class="community">
-    <h2>Our Community</h2>
-    <p>
-      Our Discord community is full of passionate individuals who share the same love for lo-fi music, gaming, and creative discussions. We have channels for relaxation, gaming, education, and self-promotion, where everyone can share their interests and connect with others. Our goal is to foster a supportive, positive, and inclusive environment for everyone.
+    <h2 id="community-title">Our Community</h2>
+    <p id="community-text">
+      Lo-Fi Haven is more than just a place to listen to music; it's a place where people from all over the world come together to connect. Our community is filled with passionate individuals who share a love for music, creativity, and relaxation. Join our Discord server and meet like-minded individuals who are here to support, inspire, and create a peaceful environment for everyone.
     </p>
   </section>
 
@@ -278,15 +278,15 @@
   <section class="gallery">
     <h2>Gallery</h2>
     <div class="gallery-grid">
-      <img src="https://i.pinimg.com/originals/6b/3a/5e/6b3a5ef9a18f72a574b7c7a2dc8f69ee.gif" alt="Lo-fi Vibe">
-      <img src="https://media.tenor.com/wxKxwG3BPqcAAAAC/lofi.gif" alt="Lofi Chill">
-      <img src="https://i.pinimg.com/originals/b5/46/0d/b5460db109d4eaf30ae53d7cb263b75c.gif" alt="Night Music">
+      <img src="https://www.transparenttextures.com/patterns/stars.png" alt="star pattern">
+      <img src="https://www.transparenttextures.com/patterns/clouds.png" alt="cloud pattern">
+      <img src="https://www.transparenttextures.com/patterns/rain.png" alt="rain pattern">
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <p>Official Lo-Fi Haven © 2025</p>
+    <p>&copy; 2025 Lo-Fi Haven</p>
     <p>Follow us on social media!</p>
     <a href="https://www.instagram.com/" target="_blank">Instagram</a> | <a href="https://www.twitter.com/" target="_blank">Twitter</a> | <a href="https://www.discord.com/" target="_blank">Discord</a>
   </footer>
@@ -295,7 +295,6 @@
   <script>
     // Theme Switching Logic
     const themeSelector = document.getElementById('themeSelector');
-
     themeSelector.addEventListener('change', function() {
       const theme = this.value;
       document.body.className = theme;
@@ -322,9 +321,17 @@
       if (language === 'en') {
         document.getElementById('welcome-text').innerHTML = 'Welcome to Lo-Fi Haven';
         document.getElementById('welcome-paragraph').innerHTML = 'Step into a cozy digital universe where lo-fi music, peaceful vibes, and mindful communities come together...';
+        document.getElementById('about-title').innerHTML = 'About Us';
+        document.getElementById('about-text').innerHTML = 'Lo-Fi Haven is a sanctuary for music lovers and creative souls...';
+        document.getElementById('community-title').innerHTML = 'Our Community';
+        document.getElementById('community-text').innerHTML = 'Lo-Fi Haven is more than just a place to listen to music...';
       } else if (language === 'ka') {
         document.getElementById('welcome-text').innerHTML = 'მოგესალმებით Lo-Fi Haven-ში';
         document.getElementById('welcome-paragraph').innerHTML = 'დაეშვი მშვიდ აურზაურში, სადაც ლო-ფი მუსიკა, წყნარი ვიბები და გულწრფელი თემები ერთმანეთს აკავშირებენ...';
+        document.getElementById('about-title').innerHTML = 'ჩვენს შესახებ';
+        document.getElementById('about-text').innerHTML = 'Lo-Fi Haven არის სიქველი მუსიკის მოყვარულთათვის...';
+        document.getElementById('community-title').innerHTML = 'ჩვენი საზოგადოება';
+        document.getElementById('community-text').innerHTML = 'Lo-Fi Haven უფრო მეტია, ვიდრე მხოლოდ მუსიკის მოსმენა...';
       }
     }
   </script>
