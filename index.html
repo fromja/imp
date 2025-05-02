@@ -344,15 +344,36 @@
   }
 
   function sendMessage() {
-    const username = document.getElementById('chat-username').value.trim() || "Anonymous";
+  const username = document.getElementById('chat-username').value.trim() || "Anonymous";
+  const input = document.getElementById('chat-input');
   const secretCode = document.getElementById('chat-secretcode').value.trim();
+  const messages = document.getElementById('chat-messages');
   const officialUsers = ['LofiHaven', 'IMPEXS'];
   const correctSecret = 'dND666666TDtu';
-  
+
+  if (!username) {
+    alert("გთხოვთ შეიყვანოთ სახელი!");
+    return;
+  }
+
   if (officialUsers.includes(username)) {
     if (secretCode !== correctSecret) {
       alert("ეს სახელი დაცულია! გთხოვთ შეიყვანოთ სწორი საიდუმლო კოდი.");
       return;
+    }
+  }
+
+  if (input.value.trim() !== '') {
+    const msg = document.createElement('div');
+    if (officialUsers.includes(username)) {
+      msg.innerHTML = `<strong>${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
+    } else {
+      msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
+    }
+    messages.appendChild(msg);
+    input.value = '';
+    messages.scrollTop = messages.scrollHeight;
+  }
     }
   }
     
