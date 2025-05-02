@@ -261,9 +261,15 @@
   <div class="chatbox" id="chatbox">
     <div class="chat-header" onclick="toggleChat()">☕ Lofi Café Chat</div>
     <div class="chat-messages" id="chat-messages"></div>
-    <div class="chat-input" style="display: flex; flex-direction: column; gap: 5px; padding: 10px;">
-      <input type="text" id="chat-username" placeholder="Your Name..." style="width: 100%;">
-<input type="text" id="chat-secretcode" placeholder="Secret Code..." style="width: 100%;">
+    
+<div class="chat-input" id="chat-input-box">
+  <input type="text" id="chat-username" placeholder="Enter your Name..." style="width: 100%; margin-bottom:5px;">
+  <input type="text" id="chat-secretcode" placeholder="Enter Secret Code..." style="width: 100%; margin-bottom:5px; display:none;">
+  <input type="text" id="chat-input" placeholder="Type a message...">
+  <button onclick="sendMessage()">Send</button>
+</div>
+
+      <input type="text" id="chat-username" placeholder="Your Name..." style="width: 30%;">
       <input type="text" id="chat-input" placeholder="Type a message...">
       <button onclick="sendMessage()">Send</button>
     </div>
@@ -343,24 +349,52 @@
     chat.style.height = chat.classList.contains('collapsed') ? '30px' : '400px';
   }
 
-  function sendMessage() {
-    const username = document.getElementById('chat-username').value.trim() || "Anonymous";
-  const secretCode = document.getElementById('chat-secretcode').value.trim();
+  
+function sendMessage() {
+  const usernameInput = document.getElementById('chat-username');
+  const secretCodeInput = document.getElementById('chat-secretcode');
+  const messageInput = document.getElementById('chat-input');
+  const messages = document.getElementById('chat-messages');
+
+  let username = usernameInput.value.trim();
+  let secretCode = secretCodeInput.value.trim();
+  let message = messageInput.value.trim();
+
   const officialUsers = ['LofiHaven', 'IMPEXS'];
   const correctSecret = 'dND666666TDtu';
-  
-  if (officialUsers.includes(username) && secretCode !== correctSecret) {
-    alert("ეს სახელი დაცულია! გთხოვთ შეიყვანოთ სწორი საიდუმლო კოდი.");
-    return;
+
+  if (usernameInput && usernameInput.style.display !== 'none') {
+    if (!username) {
+      alert("Please enter your name!");
+      return;
+    }
+    if (officialUsers.includes(username)) {
+      if (!secretCodeInput || secretCodeInput.style.display === 'none') {
+        secretCodeInput.style.display = 'block';
+        return;
+      }
+      if (secretCode !== correctSecret) {
+        alert("Incorrect secret code for official name!");
+        return;
+      }
+    }
+    usernameInput.style.display = 'none';
+    secretCodeInput.style.display = 'none';
   }
-    
-    const input = document.getElementById('chat-input');
-    const messages = document.getElementById('chat-messages');
-    if (input.value.trim() !== '') {
-      const msg = document.createElement('div');
-      
-    if (username === 'LofiHaven') {
-      msg.innerHTML = `<strong>${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
+
+  if (message !== '') {
+    const msg = document.createElement('div');
+    if (officialUsers.includes(username)) {
+      msg.innerHTML = `<strong>${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;'>:</strong> ${message}`;
+    } else {
+      msg.innerHTML = `<strong>${username}:</strong> ${message}`;
+    }
+    messages.appendChild(msg);
+    messageInput.value = '';
+    messages.scrollTop = messages.scrollHeight;
+  }
+}
+ <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
     } else {
       msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
     }
