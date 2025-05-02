@@ -262,8 +262,8 @@
     <div class="chat-header" onclick="toggleChat()">☕ Lofi Café Chat</div>
     <div class="chat-messages" id="chat-messages"></div>
     <div class="chat-input">
-<input type="text" id="chat-secretcode" placeholder="Secret Code..." style="width: 30%;">
       <input type="text" id="chat-username" placeholder="Your Name..." style="width: 30%;">
+<input type="text" id="chat-secretcode" placeholder="Secret Code..." style="width: 30%;">
       <input type="text" id="chat-input" placeholder="Type a message...">
       <button onclick="sendMessage()">Send</button>
     </div>
@@ -343,35 +343,29 @@
     chat.style.height = chat.classList.contains('collapsed') ? '30px' : '400px';
   }
 
-  
-function sendMessage() {
-  const username = document.getElementById('chat-username').value.trim() || "Anonymous";
+  function sendMessage() {
+    const username = document.getElementById('chat-username').value.trim() || "Anonymous";
   const secretCode = document.getElementById('chat-secretcode').value.trim();
-  const input = document.getElementById('chat-input');
-  const messages = document.getElementById('chat-messages');
   const officialUsers = ['LofiHaven', 'IMPEXS'];
   const correctSecret = 'dND666666TDtu';
   
   if (officialUsers.includes(username)) {
-    if (secretCode === correctSecret) {
-      const msg = document.createElement('div');
-      msg.innerHTML = `<strong>${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
-      messages.appendChild(msg);
-      input.value = '';
-      messages.scrollTop = messages.scrollHeight;
-    } else {
+    if (secretCode !== correctSecret) {
       alert("ეს სახელი დაცულია! გთხოვთ შეიყვანოთ სწორი საიდუმლო კოდი.");
-    }
-  } else {
-    if (input.value.trim() !== '') {
-      const msg = document.createElement('div');
-      msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
-      messages.appendChild(msg);
-      input.value = '';
-      messages.scrollTop = messages.scrollHeight;
+      return;
     }
   }
-}
+    
+    const input = document.getElementById('chat-input');
+    const messages = document.getElementById('chat-messages');
+    if (input.value.trim() !== '') {
+      const msg = document.createElement('div');
+      
+    if (username === 'LofiHaven') {
+      msg.innerHTML = `<strong>${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
+    } else {
+      msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
+    }
     
       messages.appendChild(msg);
       input.value = '';
