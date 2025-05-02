@@ -42,6 +42,20 @@
         h1 {
             font-size: 3em;
             margin-bottom: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid;
+            animation: typing 4s steps(40, end), blink 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #ff4081; }
         }
 
         p {
@@ -49,6 +63,17 @@
             max-width: 700px;
             margin: 20px auto;
             line-height: 1.8;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 1s forwards;
+            animation-delay: 4s;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         button {
@@ -81,7 +106,7 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.5);
         }
 
-        .rain, .clouds, .stars {
+        .rain, .clouds, .stars, .leaves, .birds {
             position: fixed;
             width: 100%;
             height: 100%;
@@ -91,8 +116,11 @@
             z-index: -1;
         }
 
-        .raindrop {
+        .raindrop, .leaf, .bird, .cloud, .star {
             position: absolute;
+        }
+
+        .raindrop {
             width: 2px;
             height: 50px;
             background: rgba(255, 255, 255, 0.3);
@@ -100,13 +128,21 @@
             opacity: 0.5;
         }
 
-        @keyframes fall {
-            0% { top: -60px; }
-            100% { top: 110vh; }
+        .leaf {
+            width: 20px;
+            height: 20px;
+            background: url('https://i.imgur.com/Oj1rB5x.png') no-repeat center/contain;
+            animation: fallLeaf linear infinite;
+        }
+
+        .bird {
+            width: 40px;
+            height: 40px;
+            background: url('https://i.imgur.com/qRkDCsS.png') no-repeat center/contain;
+            animation: flyBird 20s linear infinite;
         }
 
         .cloud {
-            position: absolute;
             width: 200px;
             height: 60px;
             background: #fff;
@@ -116,13 +152,7 @@
             opacity: 0.3;
         }
 
-        @keyframes cloudMove {
-            from { left: -250px; }
-            to { left: 110%; }
-        }
-
         .star {
-            position: absolute;
             width: 2px;
             height: 2px;
             background: white;
@@ -130,80 +160,29 @@
             animation: twinkle 2s infinite ease-in-out alternate;
         }
 
+        @keyframes fall {
+            0% { top: -60px; }
+            100% { top: 110vh; }
+        }
+
+        @keyframes fallLeaf {
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        @keyframes flyBird {
+            0% { left: -50px; top: 30px; }
+            100% { left: 110%; top: 100px; }
+        }
+
+        @keyframes cloudMove {
+            from { left: -250px; }
+            to { left: 110%; }
+        }
+
         @keyframes twinkle {
             from { opacity: 0.2; }
             to { opacity: 1; }
-        }
-
-        .official-badge {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            font-size: 1.1em;
-            color: #ff4081;
-            font-weight: bold;
-            background: rgba(0,0,0,0.4);
-            padding: 6px 12px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        .official-badge::after {
-            content: '\2714';
-            background: #3aa3e3;
-            color: white;
-            font-size: 0.9em;
-            border-radius: 50%;
-            padding: 2px 6px;
-            margin-left: 5px;
-        }
-
-        .chatbox {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            max-height: 400px;
-            background: rgba(0,0,0,0.7);
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            color: white;
-            font-size: 14px;
-        }
-
-        .chat-header {
-            background: #ff4081;
-            padding: 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .chat-input {
-            display: flex;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-        }
-
-        .chat-input button {
-            background: #ff4081;
-            border: none;
-            padding: 10px;
-            color: white;
         }
 
         footer {
@@ -212,6 +191,25 @@
             font-size: 0.9em;
             color: #aaa;
         }
+
+        .music-controls {
+            margin-top: 20px;
+        }
+
+        .music-controls button {
+            margin: 5px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .music-controls button:hover {
+            background-color: #e73370;
+        }
     </style>
 </head>
 <body class="theme-night">
@@ -219,9 +217,11 @@
     <div class="rain" id="rain"></div>
     <div class="clouds" id="clouds"></div>
     <div class="stars" id="stars"></div>
+    <div class="leaves" id="leaves"></div>
+    <div class="birds" id="birds"></div>
 
-    <audio id="background-music" autoplay loop>
-        <source src="https://pixabay.com/music/beats-coffee-lofi-chill-lofi-music-332738/" type="audio/mp3">
+    <audio id="background-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/08/12/audio_4b35e19675.mp3?filename=coffee-shop-ambient-11496.mp3" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>
 
@@ -233,26 +233,19 @@
             Dive into a world of calm. Whether you're studying, working, or just relaxing — LoFi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.
         </p>
 
-        <button onclick="setTheme('rainy')">🌧️ Rainy Day</button>
-        <button onclick="setTheme('sunny')">☀️ Sunny Day</button>
-        <button onclick="setTheme('night')">🌙 Night Sky</button>
+        <div class="music-controls">
+            <button onclick="playMusic()">▶️ Play</button>
+            <button onclick="pauseMusic()">⏸️ Pause</button>
+        </div>
 
-        <button onclick="switchLanguage('en')">English</button>
-        <button onclick="switchLanguage('ka')">ქართული</button>
+        <button onclick="setTheme('rainy')">☔️ Rainy Day</button>
+        <button onclick="setTheme('sunny')">☀️ Sunny Day</button>
+        <button onclick="setTheme('night')">ἱ9 Night Sky</button>
 
         <div class="social-links">
             <a href="https://www.facebook.com/groups/675958058407487">Facebook</a>
             <a href="https://discord.gg/mbBJZEeq6G">Discord</a>
             <a href="https://lofigirl.com/generator/">Generate Lofi Avatar</a>
-        </div>
-    </div>
-
-    <div class="chatbox" id="chatbox">
-        <div class="chat-header" onclick="toggleChat()">☕ Lofi Café Chat</div>
-        <div class="chat-messages" id="chat-messages"></div>
-        <div class="chat-input">
-            <input type="text" id="chat-input" placeholder="Type a message...">
-            <button onclick="sendMessage()">Send</button>
         </div>
     </div>
 
@@ -264,11 +257,16 @@
         const rain = document.getElementById('rain');
         const clouds = document.getElementById('clouds');
         const stars = document.getElementById('stars');
+        const leaves = document.getElementById('leaves');
+        const birds = document.getElementById('birds');
+        const music = document.getElementById('background-music');
 
         function clearEffects() {
             rain.innerHTML = '';
             clouds.innerHTML = '';
             stars.innerHTML = '';
+            leaves.innerHTML = '';
+            birds.innerHTML = '';
         }
 
         function setTheme(theme) {
@@ -283,12 +281,26 @@
                     drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
                     rain.appendChild(drop);
                 }
+                for (let i = 0; i < 30; i++) {
+                    let leaf = document.createElement('div');
+                    leaf.className = 'leaf';
+                    leaf.style.left = Math.random() * 100 + 'vw';
+                    leaf.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                    leaves.appendChild(leaf);
+                }
             } else if (theme === 'sunny') {
                 for (let i = 0; i < 5; i++) {
                     let cloud = document.createElement('div');
                     cloud.className = 'cloud';
                     cloud.style.top = (i * 60) + 'px';
                     clouds.appendChild(cloud);
+                }
+                for (let i = 0; i < 10; i++) {
+                    let bird = document.createElement('div');
+                    bird.className = 'bird';
+                    bird.style.top = (Math.random() * 50 + 50) + 'px';
+                    bird.style.animationDuration = (Math.random() * 20 + 10) + 's';
+                    birds.appendChild(bird);
                 }
             } else if (theme === 'night') {
                 for (let i = 0; i < 100; i++) {
@@ -301,40 +313,17 @@
             }
         }
 
-        function switchLanguage(lang) {
-            if (lang === 'en') {
-                document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
-                document.getElementById('welcome-paragraph').innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — LoFi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
-            } else if (lang === 'ka') {
-                document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
-                document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. თუ თქვენ სწავლობთ, მუშაობთ ან უბრალოდ ისვენებთ — LoFi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
-            }
+        function playMusic() {
+            music.play();
         }
 
-        function toggleChat() {
-            const chat = document.getElementById('chatbox');
-            chat.classList.toggle('collapsed');
-            if (chat.classList.contains('collapsed')) {
-                chat.style.height = '30px';
-            } else {
-                chat.style.height = '400px';
-            }
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const messages = document.getElementById('chat-messages');
-            if (input.value.trim() !== '') {
-                const msg = document.createElement('div');
-                msg.textContent = '🗣️ ' + input.value;
-                messages.appendChild(msg);
-                input.value = '';
-                messages.scrollTop = messages.scrollHeight;
-            }
+        function pauseMusic() {
+            music.pause();
         }
 
         window.onload = () => {
             setTheme('night');
+            playMusic();
         }
     </script>
 </body>
