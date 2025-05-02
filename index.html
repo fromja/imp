@@ -177,15 +177,21 @@
   }
 
   function aiDecision() {
-    const aiAction = Math.random();
-    if (aiAction < 0.3) {
+    if (aiChips < currentBet) {
       aiFolded = true;
       message.innerText = "AI folds!";
       setTimeout(startNewRound, 3000);
     } else {
-      aiChips -= currentBet;
-      message.innerText = `AI calls with $${currentBet}`;
-      setTimeout(nextStage, 2000);
+      const aiAction = Math.random();
+      if (aiAction < 0.3) {
+        aiChips -= currentBet;
+        message.innerText = `AI calls with $${currentBet}`;
+        setTimeout(nextStage, 2000);
+      } else {
+        aiChips -= currentBet * 2;
+        message.innerText = `AI raises to $${currentBet * 2}`;
+        setTimeout(nextStage, 2000);
+      }
     }
   }
 
@@ -194,7 +200,10 @@
       playerFolded = true;
       message.innerText = "You folded. AI wins!";
       setTimeout(startNewRound, 3000);
-    } else {
+    } else if (action === 'check') {
+      message.innerText = "You checked.";
+      aiDecision();
+    } else if (action === 'bet' || action === 'raise') {
       playerChips -= currentBet;
       message.innerText = `You bet: $${currentBet}`;
       aiDecision();
@@ -227,8 +236,8 @@
     renderCards(playerHand, 'playerHand');
     renderCards(aiHand, 'aiHand');
     renderCards(community, 'community');
-    message.innerText = "New Round! Your move.";
     renderChips();
+    message.innerText = "New Round! Your move.";
   }
 
   function endRound() {
