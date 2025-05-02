@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Poker Game</title>
   <style>
     body {
@@ -28,12 +29,12 @@
     .cards, .player-hand, .ai-hand {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 30px;
     }
 
     .card {
-      width: 70px;
-      height: 100px;
+      width: 80px;
+      height: 120px;
       background-size: cover;
       border-radius: 5px;
       transition: transform 0.3s;
@@ -96,6 +97,7 @@
       color: white;
       margin-top: 10px;
     }
+
   </style>
 </head>
 <body>
@@ -158,13 +160,17 @@
     return deck.pop();
   }
 
-  function renderCards(cards, elementId) {
+  function renderCards(cards, elementId, isAI = false) {
     const div = document.getElementById(elementId);
     div.innerHTML = '';
     cards.forEach(card => {
       const img = document.createElement('div');
       img.className = 'card';
-      img.style.backgroundImage = `url('https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/png/${card.rank}_of_${card.suit}.png')`;
+      if (isAI) {
+        img.style.backgroundImage = `url('back_of_card.png')`; // Hide AI cards
+      } else {
+        img.style.backgroundImage = `url('https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/png/${card.rank}_of_${card.suit}.png')`;
+      }
       div.appendChild(img);
     });
   }
@@ -233,45 +239,37 @@
     renderCards(community, 'community');
     stage++;
     if (stage > 3) {
-      endRound();
+      message.innerText = "Round Over, comparing hands.";
+      setTimeout(startNewRound, 3000);
+    } else {
+      aiDecision();
     }
   }
 
   function startNewRound() {
-    stage = 0;
-    playerFolded = false;
-    aiFolded = false;
-    currentBet = 0;
-    community = [];
-    buildDeck();
-    shuffleDeck();
-    playerHand = [dealCard(), dealCard()];
-    aiHand = [dealCard(), dealCard()];
-    renderCards(playerHand, 'playerHand');
-    renderCards(aiHand, 'aiHand');
-    renderCards(community, 'community');
-    renderChips();
-    playerBalance.innerText = `Player Balance: $${playerChips}`;
-    aiBalance.innerText = `AI Balance: $${aiChips}`;
-    message.innerText = "New Round! Your move.";
-  }
-
-  function endRound() {
-    if (!playerFolded && !aiFolded) {
-      message.innerText = "Round Over, comparing hands.";
-      // Logic to compare hands, determine winner
-    }
     if (playerChips <= 0 || aiChips <= 0) {
       message.innerText = playerChips <= 0 ? "You lost!" : "AI lost!";
-      setTimeout(startNewRound, 3000);
+      setTimeout(() => {
+        playerChips = 1000;
+        aiChips = 1000;
+        startGame();
+      }, 3000);
     } else {
-      setTimeout(startNewRound, 3000);
+      buildDeck();
+      shuffleDeck();
+      stage = 0;
+      playerFolded = aiFolded = false;
+      currentBet = 0;
+      community = [];
+      playerHand = [dealCard(), dealCard()];
+      aiHand = [dealCard(), dealCard()];
+      renderCards(playerHand, 'playerHand');
+      renderCards(aiHand, 'aiHand', true);
+      renderChips();
+      message.innerText = "New Round Started!";
     }
   }
 
-  // Initial game setup
-  buildDeck();
-  shuffleDeck();
   startNewRound();
 </script>
 
