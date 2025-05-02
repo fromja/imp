@@ -534,20 +534,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ultimate Poker</title>
+    <title>Ultimate Poker - SinglePlayer with AI</title>
     <style>
         body {
             background-color: #0b6623;
             font-family: Arial, sans-serif;
             text-align: center;
             color: white;
+            margin: 0;
+            padding: 0;
         }
         .table {
             margin: 20px auto;
             padding: 20px;
             background: #004400;
             border-radius: 20px;
-            width: 80%;
+            width: 90%;
             box-shadow: 0 0 20px black;
         }
         .cards {
@@ -589,11 +591,15 @@
         h2 {
             margin-top: 20px;
         }
+        #result {
+            font-size: 24px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Ultimate Poker</h1>
+    <h1>Ultimate Poker - With AI</h1>
     <div class="table">
         <h2>Community Cards</h2>
         <div id="community-cards" class="cards"></div>
@@ -601,12 +607,20 @@
         <h2>Your Hand</h2>
         <div id="player-hand" class="cards"></div>
 
+        <h2>AI Hand</h2>
+        <div id="ai-hand" class="cards"></div>
+
         <div class="buttons">
-            <button onclick="dealHand()">Deal New Hand</button>
+            <button onclick="dealHand()">New Hand</button>
             <button onclick="flop()">Flop</button>
             <button onclick="turn()">Turn</button>
             <button onclick="river()">River</button>
+            <button onclick="playerBet()">Bet</button>
+            <button onclick="playerCheck()">Check</button>
+            <button onclick="playerFold()">Fold</button>
         </div>
+
+        <div id="result"></div>
     </div>
 
     <script>
@@ -614,7 +628,10 @@
         const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         let deck = [];
         let playerHand = [];
+        let aiHand = [];
         let communityCards = [];
+        let pot = 0;
+        let playerFolded = false;
 
         function createDeck() {
             deck = [];
@@ -636,34 +653,107 @@
             createDeck();
             shuffleDeck();
             playerHand = [deck.pop(), deck.pop()];
+            aiHand = [deck.pop(), deck.pop()];
             communityCards = [];
+            pot = 0;
+            playerFolded = false;
+            document.getElementById('result').innerText = '';
             updateDisplay();
         }
 
         function flop() {
-            communityCards.push(deck.pop(), deck.pop(), deck.pop());
-            updateDisplay();
+            if (communityCards.length === 0) {
+                communityCards.push(deck.pop(), deck.pop(), deck.pop());
+                updateDisplay();
+            }
         }
 
         function turn() {
-            communityCards.push(deck.pop());
-            updateDisplay();
+            if (communityCards.length === 3) {
+                communityCards.push(deck.pop());
+                updateDisplay();
+            }
         }
 
         function river() {
-            communityCards.push(deck.pop());
-            updateDisplay();
+            if (communityCards.length === 4) {
+                communityCards.push(deck.pop());
+                updateDisplay();
+            }
+        }
+
+        function playerBet() {
+            pot += 10;
+            aiResponse();
+        }
+
+        function playerCheck() {
+            aiResponse();
+        }
+
+        function playerFold() {
+            playerFolded = true;
+            document.getElementById('result').innerText = "You folded! AI wins!";
+        }
+
+        function aiResponse() {
+            if (Math.random() > 0.5) {
+                pot += 10;
+                document.getElementById('result').innerText = "AI calls your action!";
+            } else {
+                document.getElementById('result').innerText = "AI checks.";
+            }
+
+            // თუ ყველაფერი გადიოდა river-მდე, და განვსაზღვროთ გამარჯვებული
+            if (communityCards.length === 5) {
+                setTimeout(determineWinner, 1000);
+            }
+        }
+
+        function determineWinner() {
+            if (playerFolded) return;
+
+            let playerScore = evaluateHand(playerHand.concat(communityCards));
+            let aiScore = evaluateHand(aiHand.concat(communityCards));
+
+            if (playerScore > aiScore) {
+                document.getElementById('result').innerText = `You win! 🏆 Pot: $${pot}`;
+            } else if (playerScore < aiScore) {
+                document.getElementById('result').innerText = `AI wins! 🤖 Pot: $${pot}`;
+            } else {
+                document.getElementById('result').innerText = `It's a tie! 🤝 Pot: $${pot}`;
+            }
+        }
+
+        function evaluateHand(cards) {
+            let valueOrder = {
+                '2': 2, '3': 3, '4': 4, '5': 5, '6': 6,
+                '7': 7, '8': 8, '9': 9, '10': 10,
+                'J': 11, 'Q': 12, 'K': 13, 'A': 14
+            };
+            let max = 0;
+            for (let card of cards) {
+                if (valueOrder[card.value] > max) {
+                    max = valueOrder[card.value];
+                }
+            }
+            return max;
         }
 
         function updateDisplay() {
             const playerHandDiv = document.getElementById('player-hand');
+            const aiHandDiv = document.getElementById('ai-hand');
             const communityCardsDiv = document.getElementById('community-cards');
 
             playerHandDiv.innerHTML = '';
+            aiHandDiv.innerHTML = '';
             communityCardsDiv.innerHTML = '';
 
             for (let card of playerHand) {
                 playerHandDiv.appendChild(createCardElement(card));
+            }
+            for (let card of aiHand) {
+                aiHandDiv.appendChild(createCardBack());
             }
             for (let card of communityCards) {
                 communityCardsDiv.appendChild(createCardElement(card));
@@ -679,7 +769,17 @@
             }
             return div;
         }
+
+        function createCardBack() {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.style.background = '#333';
+            div.innerHTML = '🂠';
+            div.style.color = 'white';
+            return div;
+        }
     </script>
 
 </body>
 </html>
+
