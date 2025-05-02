@@ -526,58 +526,5 @@
 
   createBoard();
 </script>
-
-<!-- ჩათი -->
-<div id="chat-container">
-  <div id="chat-header">ჩატი</div>
-  <div id="chat-messages"></div>
-  <div id="chat-name" style="padding:10px;">
-    <input type="text" id="name-input" placeholder="შეიყვანე სახელი">
-  </div>
-  <div id="chat-input" style="display:none;">
-    <input type="text" id="message-input" placeholder="შეიყვანე მესიჯი">
-    <button onclick="sendMessage()">გაგზავნა</button>
-  </div>
-</div>
-
-<script>
-let username = "";
-function sendMessage() {
-  const messageInput = document.getElementById("message-input");
-  const message = messageInput.value.trim();
-  if (message === "") return;
-
-  const chatMessages = document.getElementById("chat-messages");
-  const newMessage = document.createElement("div");
-  newMessage.innerHTML = `<b>${username}</b>: ${message}`;
-  chatMessages.appendChild(newMessage);
-  messageInput.value = "";
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-document.getElementById("name-input").addEventListener("keypress", function(e) {
-  if (e.key === "Enter") {
-    const input = e.target.value.trim();
-    if (input === "") return;
-    if (input === "LofiHaven" || input === "IMPEXS") {
-      const password = prompt("საიდუმლო კოდი შეიყვანეთ:");
-      if (password !== "dND666666TDtu") {
-        alert("არასწორი კოდი!");
-        return;
-      }
-      username = input + " <span class='verified'>✔️</span>";
-    } else {
-      if (input === "LofiHaven" || input === "IMPEXS") {
-        alert("ეს სახელი მხოლოდ ვერიფიცირებული მომხმარებლებისთვისაა.");
-        return;
-      }
-      username = input;
-    }
-    document.getElementById("chat-name").style.display = "none";
-    document.getElementById("chat-input").style.display = "flex";
-  }
-});
-</script>
-
 </body>
 </html>
