@@ -1,277 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Poker Game</title>
-  <style>
-    body {
-      background-color: #006400;
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            margin: 0;
+        }
 
-    .table {
-      width: 900px;
-      height: 600px;
-      background-color: #234a2e;
-      border-radius: 20px;
-      position: relative;
-      padding: 40px;
-      margin-top: 20px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7);
-    }
+        #gameArea {
+            border: 2px solid white;
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(20, 30px);
+            gap: 1px;
+            background-color: #111;
+        }
 
-    .cards, .player-hand, .ai-hand {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-    }
+        .cell {
+            width: 30px;
+            height: 30px;
+            background-color: #222;
+        }
 
-    .card {
-      width: 80px;
-      height: 120px;
-      background-size: cover;
-      border-radius: 5px;
-      transition: transform 0.3s;
-    }
+        .filled {
+            background-color: #3498db;
+        }
 
-    .card:hover {
-      transform: scale(1.1);
-    }
+        #score {
+            color: white;
+            font-size: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
 
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 20px;
-    }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: #ffd700;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    }
-
-    .chips {
-      display: flex;
-      justify-content: center;
-      margin-top: 15px;
-      gap: 20px;
-    }
-
-    .chip {
-      width: 50px;
-      height: 50px;
-      background-color: #f4c542;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .chip:hover {
-      background-color: #ffcd3c;
-    }
-
-    #message {
-      font-size: 20px;
-      color: white;
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .balance {
-      font-size: 18px;
-      color: white;
-      margin-top: 10px;
-    }
-
-  </style>
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 <body>
 
-  <h1 style="color: white;">Poker Game</h1>
+    <div id="gameArea"></div>
+    <div id="score">Score: 0</div>
+    <button onclick="startGame()">Start New Game</button>
 
-  <div class="table">
-    <div class="ai-hand" id="aiHand"></div>
+    <script>
+        const width = 10;
+        const height = 20;
+        const gameArea = document.getElementById('gameArea');
+        const scoreDisplay = document.getElementById('score');
+        const cells = [];
+        let score = 0;
+        let currentPiece, nextPiece, piecePosition;
+        let gameInterval, gameOver = false;
 
-    <div class="cards" id="community"></div>
+        const shapes = [
+            [[1, 1, 1, 1]], // I
+            [[1, 1], [1, 1]], // O
+            [[0, 1, 0], [1, 1, 1]], // T
+            [[1, 1, 0], [0, 1, 1]], // S
+            [[0, 1, 1], [1, 1, 0]], // Z
+            [[1, 0, 0], [1, 1, 1]], // L
+            [[0, 0, 1], [1, 1, 1]]  // J
+        ];
 
-    <div class="player-hand" id="playerHand"></div>
+        function createGrid() {
+            for (let i = 0; i < width * height; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                gameArea.appendChild(cell);
+                cells.push(cell);
+            }
+        }
 
-    <div class="chips" id="chips">
-      <div class="chip" onclick="updateBet(10)">10</div>
-      <div class="chip" onclick="updateBet(50)">50</div>
-      <div class="chip" onclick="updateBet(100)">100</div>
-    </div>
+        function drawPiece(piece, offsetX, offsetY) {
+            piece.forEach((row, y) => {
+                row.forEach((block, x) => {
+                    if (block) {
+                        const index = (y + offsetY) * width + (x + offsetX);
+                        if (index >= 0 && index < cells.length) {
+                            cells[index].classList.add('filled');
+                        }
+                    }
+                });
+            });
+        }
 
-    <div class="buttons" id="actionButtons">
-      <button onclick="playerAction('check')">Check</button>
-      <button onclick="playerAction('bet')">Bet</button>
-      <button onclick="playerAction('raise')">Raise</button>
-      <button onclick="playerAction('fold')">Fold</button>
-    </div>
+        function clearPiece(piece, offsetX, offsetY) {
+            piece.forEach((row, y) => {
+                row.forEach((block, x) => {
+                    if (block) {
+                        const index = (y + offsetY) * width + (x + offsetX);
+                        if (index >= 0 && index < cells.length) {
+                            cells[index].classList.remove('filled');
+                        }
+                    }
+                });
+            });
+        }
 
-    <div id="message">Game Loading...</div>
-    <div class="balance" id="playerBalance">Player Balance: $1000</div>
-    <div class="balance" id="aiBalance">AI Balance: $1000</div>
-  </div>
+        function isValidMove(piece, offsetX, offsetY) {
+            return piece.every((row, y) => {
+                return row.every((block, x) => {
+                    if (!block) return true;
+                    const index = (y + offsetY) * width + (x + offsetX);
+                    if (index < 0 || index >= cells.length) return false;
+                    return !cells[index].classList.contains('filled');
+                });
+            });
+        }
 
-<script>
-  const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
-  const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-  let deck = [], playerHand = [], aiHand = [], community = [];
-  let stage = 0; // 0-preflop, 1-flop, 2-turn, 3-river
-  let playerFolded = false, aiFolded = false, playerChips = 1000, aiChips = 1000;
-  let currentBet = 0;
-  const message = document.getElementById('message');
-  const playerBalance = document.getElementById('playerBalance');
-  const aiBalance = document.getElementById('aiBalance');
+        function dropPiece() {
+            if (isValidMove(currentPiece, piecePosition.x, piecePosition.y + 1)) {
+                piecePosition.y++;
+            } else {
+                placePiece();
+            }
+            updateGame();
+        }
 
-  function buildDeck() {
-    deck = [];
-    for (let suit of suits) {
-      for (let rank of ranks) {
-        deck.push({rank, suit});
-      }
-    }
-  }
+        function placePiece() {
+            drawPiece(currentPiece, piecePosition.x, piecePosition.y);
+            clearFullLines();
+            generateNewPiece();
+        }
 
-  function shuffleDeck() {
-    for (let i = deck.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [deck[i], deck[j]] = [deck[j], deck[i]];
-    }
-  }
+        function clearFullLines() {
+            for (let row = height - 1; row >= 0; row--) {
+                const rowCells = [];
+                for (let col = 0; col < width; col++) {
+                    rowCells.push(cells[row * width + col]);
+                }
 
-  function dealCard() {
-    return deck.pop();
-  }
+                if (rowCells.every(cell => cell.classList.contains('filled'))) {
+                    rowCells.forEach(cell => cell.classList.remove('filled'));
+                    shiftDown(row);
+                    score += 10;
+                    scoreDisplay.textContent = `Score: ${score}`;
+                }
+            }
+        }
 
-  function renderCards(cards, elementId, isAI = false) {
-    const div = document.getElementById(elementId);
-    div.innerHTML = '';
-    cards.forEach(card => {
-      const img = document.createElement('div');
-      img.className = 'card';
-      if (isAI) {
-        img.style.backgroundImage = `url('back_of_card.png')`; // Hide AI cards
-      } else {
-        img.style.backgroundImage = `url('https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/png/${card.rank}_of_${card.suit}.png')`;
-      }
-      div.appendChild(img);
-    });
-  }
+        function shiftDown(row) {
+            for (let y = row - 1; y >= 0; y--) {
+                for (let x = 0; x < width; x++) {
+                    const fromIndex = y * width + x;
+                    const toIndex = (y + 1) * width + x;
+                    cells[toIndex].className = cells[fromIndex].className;
+                }
+            }
+        }
 
-  function renderChips() {
-    const chipsDiv = document.getElementById('chips');
-    chipsDiv.innerHTML = '';
-    [10, 50, 100].forEach(value => {
-      const chip = document.createElement('div');
-      chip.className = 'chip';
-      chip.textContent = value;
-      chip.onclick = () => updateBet(value);
-      chipsDiv.appendChild(chip);
-    });
-  }
+        function generateNewPiece() {
+            currentPiece = nextPiece || shapes[Math.floor(Math.random() * shapes.length)];
+            nextPiece = shapes[Math.floor(Math.random() * shapes.length)];
+            piecePosition = { x: Math.floor(width / 2) - 2, y: 0 };
 
-  function updateBet(amount) {
-    currentBet = amount;
-    message.innerText = `You bet: $${currentBet}`;
-  }
+            if (!isValidMove(currentPiece, piecePosition.x, piecePosition.y)) {
+                gameOver = true;
+                clearInterval(gameInterval);
+                alert('Game Over!');
+            }
+        }
 
-  function aiDecision() {
-    if (aiChips < currentBet) {
-      aiFolded = true;
-      message.innerText = "AI folds!";
-      setTimeout(startNewRound, 3000);
-    } else {
-      const aiAction = Math.random();
-      if (aiAction < 0.4) {
-        aiChips -= currentBet;
-        message.innerText = `AI calls with $${currentBet}`;
-        setTimeout(nextStage, 2000);
-      } else if (aiAction < 0.7) {
-        aiChips -= currentBet * 2;
-        message.innerText = `AI raises to $${currentBet * 2}`;
-        setTimeout(nextStage, 2000);
-      } else {
-        aiFolded = true;
-        message.innerText = "AI folds!";
-        setTimeout(startNewRound, 3000);
-      }
-    }
-  }
+        function updateGame() {
+            if (!gameOver) {
+                clearPiece(currentPiece, piecePosition.x, piecePosition.y);
+                dropPiece();
+                drawPiece(currentPiece, piecePosition.x, piecePosition.y);
+            }
+        }
 
-  function playerAction(action) {
-    if (action === 'fold') {
-      playerFolded = true;
-      message.innerText = "You folded. AI wins!";
-      setTimeout(startNewRound, 3000);
-    } else if (action === 'check') {
-      message.innerText = "You checked.";
-      aiDecision();
-    } else if (action === 'bet' || action === 'raise') {
-      playerChips -= currentBet;
-      message.innerText = `You bet: $${currentBet}`;
-      aiDecision();
-    }
-  }
+        function startGame() {
+            cells.forEach(cell => cell.classList.remove('filled'));
+            score = 0;
+            scoreDisplay.textContent = `Score: ${score}`;
+            gameOver = false;
+            generateNewPiece();
+            gameInterval = setInterval(updateGame, 500);
+        }
 
-  function nextStage() {
-    if (stage === 0) {
-      community = [dealCard(), dealCard(), dealCard()];
-    } else if (stage === 1 || stage === 2) {
-      community.push(dealCard());
-    }
-    renderCards(community, 'community');
-    stage++;
-    if (stage > 3) {
-      message.innerText = "Round Over, comparing hands.";
-      setTimeout(startNewRound, 3000);
-    } else {
-      aiDecision();
-    }
-  }
+        document.addEventListener('keydown', (e) => {
+            if (gameOver) return;
 
-  function startNewRound() {
-    if (playerChips <= 0 || aiChips <= 0) {
-      message.innerText = playerChips <= 0 ? "You lost!" : "AI lost!";
-      setTimeout(() => {
-        playerChips = 1000;
-        aiChips = 1000;
-        startGame();
-      }, 3000);
-    } else {
-      buildDeck();
-      shuffleDeck();
-      stage = 0;
-      playerFolded = aiFolded = false;
-      currentBet = 0;
-      community = [];
-      playerHand = [dealCard(), dealCard()];
-      aiHand = [dealCard(), dealCard()];
-      renderCards(playerHand, 'playerHand');
-      renderCards(aiHand, 'aiHand', true);
-      renderChips();
-      message.innerText = "New Round Started!";
-    }
-  }
+            if (e.key === 'ArrowLeft') {
+                if (isValidMove(currentPiece, piecePosition.x - 1, piecePosition.y)) {
+                    piecePosition.x--;
+                }
+            } else if (e.key === 'ArrowRight') {
+                if (isValidMove(currentPiece, piecePosition.x + 1, piecePosition.y)) {
+                    piecePosition.x++;
+                }
+            } else if (e.key === 'ArrowDown') {
+                if (isValidMove(currentPiece, piecePosition.x, piecePosition.y + 1)) {
+                    piecePosition.y++;
+                }
+            } else if (e.key === 'ArrowUp') {
+                const rotated = currentPiece[0].map((_, index) => currentPiece.map(row => row[index])).reverse();
+                if (isValidMove(rotated, piecePosition.x, piecePosition.y)) {
+                    currentPiece = rotated;
+                }
+            }
+        });
 
-  startNewRound();
-</script>
+        createGrid();
+    </script>
 
 </body>
 </html>
