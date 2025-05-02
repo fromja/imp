@@ -528,3 +528,158 @@
 </script>
 </body>
 </html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ultimate Poker</title>
+    <style>
+        body {
+            background-color: #0b6623;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+        }
+        .table {
+            margin: 20px auto;
+            padding: 20px;
+            background: #004400;
+            border-radius: 20px;
+            width: 80%;
+            box-shadow: 0 0 20px black;
+        }
+        .cards {
+            display: flex;
+            justify-content: center;
+            margin: 10px;
+        }
+        .card {
+            width: 60px;
+            height: 90px;
+            margin: 5px;
+            background: white;
+            color: black;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            box-shadow: 2px 2px 5px black;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 10px;
+            background-color: #228B22;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #32CD32;
+        }
+        h2 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ultimate Poker</h1>
+    <div class="table">
+        <h2>Community Cards</h2>
+        <div id="community-cards" class="cards"></div>
+
+        <h2>Your Hand</h2>
+        <div id="player-hand" class="cards"></div>
+
+        <div class="buttons">
+            <button onclick="dealHand()">Deal New Hand</button>
+            <button onclick="flop()">Flop</button>
+            <button onclick="turn()">Turn</button>
+            <button onclick="river()">River</button>
+        </div>
+    </div>
+
+    <script>
+        const suits = ['♠', '♥', '♦', '♣'];
+        const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        let deck = [];
+        let playerHand = [];
+        let communityCards = [];
+
+        function createDeck() {
+            deck = [];
+            for (let suit of suits) {
+                for (let value of values) {
+                    deck.push({value: value, suit: suit});
+                }
+            }
+        }
+
+        function shuffleDeck() {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
+
+        function dealHand() {
+            createDeck();
+            shuffleDeck();
+            playerHand = [deck.pop(), deck.pop()];
+            communityCards = [];
+            updateDisplay();
+        }
+
+        function flop() {
+            communityCards.push(deck.pop(), deck.pop(), deck.pop());
+            updateDisplay();
+        }
+
+        function turn() {
+            communityCards.push(deck.pop());
+            updateDisplay();
+        }
+
+        function river() {
+            communityCards.push(deck.pop());
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const playerHandDiv = document.getElementById('player-hand');
+            const communityCardsDiv = document.getElementById('community-cards');
+
+            playerHandDiv.innerHTML = '';
+            communityCardsDiv.innerHTML = '';
+
+            for (let card of playerHand) {
+                playerHandDiv.appendChild(createCardElement(card));
+            }
+            for (let card of communityCards) {
+                communityCardsDiv.appendChild(createCardElement(card));
+            }
+        }
+
+        function createCardElement(card) {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = `<div>${card.value}</div><div>${card.suit}</div>`;
+            if (card.suit === '♥' || card.suit === '♦') {
+                div.style.color = 'red';
+            }
+            return div;
+        }
+    </script>
+
+</body>
+</html>
