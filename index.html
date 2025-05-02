@@ -528,3 +528,124 @@
 </script>
 </body>
 </html>
+
+
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singleplayer Billiards</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #333;
+        }
+        canvas {
+            border: 2px solid #fff;
+            background-color: #1e7028;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="billiardsCanvas" width="800" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById('billiardsCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Game parameters
+        const tableWidth = canvas.width;
+        const tableHeight = canvas.height;
+
+        // Ball parameters
+        const ballRadius = 10;
+        const ballColors = ['white', 'yellow', 'blue', 'red', 'purple', 'orange', 'green', 'brown', 'blue', 'pink', 'black'];
+
+        // Balls array: {x, y, vx, vy, color}
+        let balls = [];
+        let whiteBall = { x: 150, y: 200, vx: 0, vy: 0, color: 'white' };
+        balls.push(whiteBall);
+
+        // Create the other balls
+        for (let i = 1; i <= 14; i++) {
+            balls.push({
+                x: 150 + (i * 40), 
+                y: 200,
+                vx: 0,
+                vy: 0,
+                color: ballColors[i % ballColors.length]
+            });
+        }
+
+        // Draw the table and balls
+        function draw() {
+            ctx.clearRect(0, 0, tableWidth, tableHeight);
+            ctx.fillStyle = '#1e7028'; // Green table
+            ctx.fillRect(0, 0, tableWidth, tableHeight);
+
+            // Draw the balls
+            balls.forEach(ball => {
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
+                ctx.fillStyle = ball.color;
+                ctx.fill();
+                ctx.closePath();
+            });
+        }
+
+        // Update ball positions
+        function update() {
+            balls.forEach(ball => {
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+
+                // Ball collision with walls
+                if (ball.x - ballRadius < 0 || ball.x + ballRadius > tableWidth) {
+                    ball.vx = -ball.vx;
+                }
+                if (ball.y - ballRadius < 0 || ball.y + ballRadius > tableHeight) {
+                    ball.vy = -ball.vy;
+                }
+
+                // Slow down the balls (friction effect)
+                ball.vx *= 0.99;
+                ball.vy *= 0.99;
+
+                // Stop the ball if it's moving too slowly
+                if (Math.abs(ball.vx) < 0.1 && Math.abs(ball.vy) < 0.1) {
+                    ball.vx = 0;
+                    ball.vy = 0;
+                }
+            });
+        }
+
+        // Handle mouse click to "shoot" the white ball
+        canvas.addEventListener('click', function (e) {
+            const mouseX = e.offsetX;
+            const mouseY = e.offsetY;
+
+            // Calculate velocity towards mouse click
+            const dx = mouseX - whiteBall.x;
+            const dy = mouseY - whiteBall.y;
+            const angle = Math.atan2(dy, dx);
+            const speed = 5;
+            whiteBall.vx = speed * Math.cos(angle);
+            whiteBall.vy = speed * Math.sin(angle);
+        });
+
+        // Main game loop
+        function gameLoop() {
+            draw();
+            update();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();  // Start the game
+    </script>
+</body>
+</html>
