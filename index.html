@@ -1,243 +1,315 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lo-Fi Haven</title>
-  <link rel="icon" href="images/lofigirllogo.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    /* აქ იქნება იგივე სტილები + ახალი ელემენტების დამატებები */
+  <div class="container">
+    <img src="images/lofigirlmain.png" alt="Lo-Fi Girl" class="lofi-girl">
+    <h1>Lo-Fi Haven</h1>
+    <p>დასვენდი და მოუსმინე საუკეთესო Lo-Fi მუსიკას. შეცვალე თემა შენი განწყობის მიხედვით და ითამაშე პატარა თამაში!</p>
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Roboto', sans-serif;
-      transition: background-color 0.5s ease, color 0.5s ease;
-      overflow-x: hidden;
-    }
-    .theme-rainy { background: linear-gradient(to bottom, #2e2e2e, #1e1e1e); color: #e0e0e0; }
-    .theme-sunny { background: linear-gradient(to top, #fffbd5, #b20a2c); color: #1e1e1e; }
-    .theme-night { background: linear-gradient(to top, #0f2027, #203a43, #2c5364); color: #e0e0e0; }
+    <!-- თემა შეცვლის ღილაკები -->
+    <div>
+      <button onclick="setTheme('rainy')">წვიმიანი</button>
+      <button onclick="setTheme('sunny')">მზიანი</button>
+      <button onclick="setTheme('night')">ღამის</button>
+    </div>
 
-    .container {
-      text-align: center;
-      padding: 50px 20px;
-      animation: fadeIn 1.5s ease-in-out;
-    }
+    <!-- სოციალური ლინკები -->
+    <div class="social-links">
+      <a href="#" target="_blank">Instagram</a>
+      <a href="#" target="_blank">YouTube</a>
+      <a href="#" target="_blank">Discord</a>
+    </div>
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    <!-- აუდიო კონტროლები -->
+    <div class="audio-controls">
+      <audio id="lofiAudio" src="music/lofi.mp3" loop></audio>
+      <button onclick="togglePlay()">▶️/⏸️</button>
+      ხმის დონე: <input type="range" min="0" max="1" step="0.01" onchange="setVolume(this.value)">
+    </div>
 
-    h1 { font-size: 3em; margin-bottom: 20px; }
-    p { font-size: 1.2em; max-width: 700px; margin: 20px auto; line-height: 1.8; }
-    button {
-      background-color: #ff4081;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-    button:hover { background-color: #e73370; }
+    <!-- ---- ახალი ნაწილი: TIC TAC TOE თამაში ---- -->
+    <div class="tictactoe">
+      <h2>ითამაშე X და 0 🎮</h2>
 
-    .section {
-      padding: 50px 20px;
-      text-align: center;
-    }
+      <!-- სირთულის არჩევა -->
+      <div class="difficulty-select">
+        <label for="difficulty">აირჩიე სირთულე:</label>
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="expert">Expert</option>
+        </select>
+      </div>
 
-    .tictactoe-board {
-      display: grid;
-      grid-template-columns: repeat(3, 100px);
-      grid-gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .tictactoe-board div {
-      width: 100px;
-      height: 100px;
-      background: rgba(255,255,255,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2em;
-      cursor: pointer;
-      border-radius: 8px;
-      user-select: none;
-    }
+      <!-- სათამაშო დაფა -->
+      <div class="board" id="board"></div>
 
-    select {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 16px;
-    }
+      <!-- თამაშის სტატუსი -->
+      <div id="status"></div>
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 0.9em;
-      color: #aaa;
-    }
-  </style>
-</head>
-<body class="theme-night">
+      <!-- ახალი თამაშის დაწყების ღილაკი -->
+      <button onclick="restartGame()">თავიდან დაწყება 🔄</button>
+    </div>
 
-<div class="container">
-  <h1>Welcome to Lo-Fi Haven</h1>
-  <p>Enjoy relaxing beats, chill visuals, and calming vibes. Stay as long as you like! 🎵☁️</p>
-
-  <!-- Audio and Controls -->
-  <audio id="background-music" autoplay loop>
-    <source src="audio/lofimusic.mp3" type="audio/mpeg">
-  </audio>
-
-  <div>
-    <button onclick="togglePlay()" id="playPauseButton">⏸️</button>
-    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
   </div>
 
-  <button onclick="setTheme('rainy')">🌧️ Rainy</button>
-  <button onclick="setTheme('sunny')">☀️ Sunny</button>
-  <button onclick="setTheme('night')">🌙 Night</button>
-</div>
+  <!-- დაფარვები: წვიმა, ღრუბლები, ვარსკვლავები -->
+  <div class="rain" id="rain"></div>
+  <div class="clouds" id="clouds"></div>
+  <div class="stars" id="stars"></div>
 
-<!-- Server Info Section -->
-<div class="section">
-  <h2>About the Server</h2>
-  <p>Lo-Fi Haven is created with love for everyone who seeks a moment of peace. 🎶<br>
-  Whether you're working, studying or simply dreaming — this place is for you.</p>
-</div>
+  <!-- ჩატბოქსი -->
+  <div class="chatbox">
+    <div class="chat-header">ჩატი</div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="დაწერე რამე...">
+      <button onclick="sendMessage()">📨</button>
+    </div>
+  </div>
 
-<!-- Tic Tac Toe Section -->
-<div class="section">
-  <h2>Play Tic Tac Toe</h2>
-  <select id="difficulty">
-    <option value="easy">Easy</option>
-    <option value="medium">Medium</option>
-    <option value="hard">Expert</option>
-  </select>
+  <footer>
+    © 2025 Lo-Fi Haven - ყველა უფლება დაცულია
+  </footer>
 
-  <div class="tictactoe-board" id="board"></div>
-  <button onclick="resetGame()">Restart Game</button>
-</div>
-
-<footer>
-  Official Lo-Fi Haven — Stay Chill, Stay Creative 🌸
-</footer>
-
-<script>
-  const audio = document.getElementById('background-music');
-  const playPauseButton = document.getElementById('playPauseButton');
-  const volumeControl = document.getElementById('volumeControl');
-  let board;
-  let currentPlayer = 'X';
-
-  volumeControl.addEventListener('input', () => {
-    audio.volume = volumeControl.value;
-  });
-
-  function togglePlay() {
-    if (audio.paused) {
-      audio.play();
-      playPauseButton.textContent = '⏸️';
-    } else {
-      audio.pause();
-      playPauseButton.textContent = '▶️';
-    }
-  }
-
-  function setTheme(theme) {
-    document.body.className = 'theme-' + theme;
-  }
-
-  function startGame() {
-    board = Array(9).fill('');
-    const boardDiv = document.getElementById('board');
-    boardDiv.innerHTML = '';
-    board.forEach((_, i) => {
-      const cell = document.createElement('div');
-      cell.addEventListener('click', () => playerMove(i));
-      boardDiv.appendChild(cell);
-    });
-  }
-
-  function playerMove(index) {
-    if (board[index] !== '') return;
-    board[index] = 'X';
-    updateBoard();
-    if (!checkWinner()) {
-      setTimeout(botMove, 500);
-    }
-  }
-
-  function botMove() {
-    let emptyIndices = board.map((val, i) => val === '' ? i : null).filter(v => v !== null);
-    const difficulty = document.getElementById('difficulty').value;
-
-    let move;
-    if (difficulty === 'easy') {
-      move = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-    } else if (difficulty === 'medium') {
-      move = emptyIndices.length > 0 ? emptyIndices[0] : null;
-    } else {
-      move = findBestMove();
+  <!-- ყველა საჭირო სკრიპტი -->
+  <script>
+    // თემის შეცვლა
+    function setTheme(theme) {
+      document.body.className = 'theme-' + theme;
     }
 
-    if (move !== null) {
-      board[move] = 'O';
-      updateBoard();
-      checkWinner();
-    }
-  }
-
-  function updateBoard() {
-    const cells = document.querySelectorAll('#board div');
-    cells.forEach((cell, i) => {
-      cell.textContent = board[i];
-    });
-  }
-
-  function resetGame() {
-    startGame();
-  }
-
-  function checkWinner() {
-    const wins = [
-      [0,1,2],[3,4,5],[6,7,8],
-      [0,3,6],[1,4,7],[2,5,8],
-      [0,4,8],[2,4,6]
-    ];
-    for (let pattern of wins) {
-      const [a, b, c] = pattern;
-      if (board[a] && board[a] === board[b] && board[b] === board[c]) {
-        alert(`${board[a]} wins!`);
-        resetGame();
-        return true;
+    // მუსიკის გაშვება/შეჩერება
+    const audio = document.getElementById('lofiAudio');
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
       }
     }
-    if (!board.includes('')) {
-      alert("It's a draw!");
-      resetGame();
-      return true;
+    function setVolume(value) {
+      audio.volume = value;
     }
-    return false;
-  }
 
-  function findBestMove() {
-    for (let i = 0; i < 9; i++) {
-      if (board[i] === '') return i;
+    // წვიმის გენერაცია
+    function createRain() {
+      const rain = document.getElementById('rain');
+      for (let i = 0; i < 100; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'raindrop';
+        drop.style.left = Math.random() * 100 + 'vw';
+        drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+        drop.style.opacity = Math.random();
+        rain.appendChild(drop);
+      }
     }
-    return null;
-  }
+    // ღრუბლების გენერაცია
+    function createClouds() {
+      const clouds = document.getElementById('clouds');
+      for (let i = 0; i < 5; i++) {
+        const cloud = document.createElement('div');
+        cloud.className = 'cloud';
+        cloud.style.top = Math.random() * 50 + 'vh';
+        cloud.style.animationDuration = (Math.random() * 60 + 30) + 's';
+        clouds.appendChild(cloud);
+      }
+    }
+    // ვარსკვლავების გენერაცია
+    function createStars() {
+      const stars = document.getElementById('stars');
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = Math.random() * 100 + 'vh';
+        stars.appendChild(star);
+      }
+    }
+    createRain();
+    createClouds();
+    createStars();
 
-  startGame();
-</script>
+    // ჩატბოქსი
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const messages = document.getElementById('chatMessages');
+      if (input.value.trim() !== '') {
+        const message = document.createElement('div');
+        message.textContent = input.value;
+        messages.appendChild(message);
+        input.value = '';
+        messages.scrollTop = messages.scrollHeight;
+      }
+    }
 
+    // ==== TIC TAC TOE თამაში ====
+    const board = document.getElementById('board');
+    const statusDiv = document.getElementById('status');
+    let cells = [];
+    let currentPlayer = 'X';
+    let isGameOver = false;
+
+    function createBoard() {
+      board.innerHTML = '';
+      cells = [];
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.addEventListener('click', () => playerMove(i));
+        board.appendChild(cell);
+        cells.push('');
+      }
+      statusDiv.textContent = "შენი სვლა: X";
+    }
+
+    function playerMove(index) {
+      if (cells[index] === '' && !isGameOver) {
+        cells[index] = 'X';
+        updateBoard();
+        if (checkWinner('X')) {
+          statusDiv.textContent = "მოგება! 🎉";
+          isGameOver = true;
+          return;
+        }
+        if (cells.every(cell => cell !== '')) {
+          statusDiv.textContent = "ფრე!";
+          isGameOver = true;
+          return;
+        }
+        setTimeout(botMove, 500);
+      }
+    }
+
+    function botMove() {
+      let difficulty = document.getElementById('difficulty').value;
+      let index;
+
+      if (difficulty === 'easy') {
+        const available = cells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+        index = available[Math.floor(Math.random() * available.length)];
+      } else if (difficulty === 'medium') {
+        index = findBestMove('O') ?? randomMove();
+      } else if (difficulty === 'expert') {
+        index = minimax(cells, 'O').index;
+      }
+
+      if (index != null) {
+        cells[index] = 'O';
+        updateBoard();
+        if (checkWinner('O')) {
+          statusDiv.textContent = "დაგამარცხა ბოტმა 😔";
+          isGameOver = true;
+          return;
+        }
+        if (cells.every(cell => cell !== '')) {
+          statusDiv.textContent = "ფრე!";
+          isGameOver = true;
+        }
+      }
+    }
+
+    function updateBoard() {
+      const cellElements = document.querySelectorAll('.cell');
+      cells.forEach((value, index) => {
+        cellElements[index].textContent = value;
+      });
+    }
+
+    function checkWinner(player) {
+      const winPatterns = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+      ];
+      return winPatterns.some(pattern => pattern.every(idx => cells[idx] === player));
+    }
+
+    function restartGame() {
+      isGameOver = false;
+      currentPlayer = 'X';
+      createBoard();
+    }
+
+    function randomMove() {
+      const available = cells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+      return available[Math.floor(Math.random() * available.length)];
+    }
+
+    function findBestMove(player) {
+      // Try to win
+      for (let i = 0; i < cells.length; i++) {
+        if (cells[i] === '') {
+          cells[i] = player;
+          if (checkWinner(player)) {
+            cells[i] = '';
+            return i;
+          }
+          cells[i] = '';
+        }
+      }
+      // Block opponent
+      const opponent = player === 'X' ? 'O' : 'X';
+      for (let i = 0; i < cells.length; i++) {
+        if (cells[i] === '') {
+          cells[i] = opponent;
+          if (checkWinner(opponent)) {
+            cells[i] = '';
+            return i;
+          }
+          cells[i] = '';
+        }
+      }
+      return null;
+    }
+
+    function minimax(newBoard, player) {
+      const availSpots = newBoard.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+
+      if (checkWinner('X')) {
+        return {score: -10};
+      } else if (checkWinner('O')) {
+        return {score: 10};
+      } else if (availSpots.length === 0) {
+        return {score: 0};
+      }
+
+      const moves = [];
+      for (let i = 0; i < availSpots.length; i++) {
+        const move = {};
+        move.index = availSpots[i];
+        newBoard[availSpots[i]] = player;
+
+        if (player === 'O') {
+          move.score = minimax(newBoard, 'X').score;
+        } else {
+          move.score = minimax(newBoard, 'O').score;
+        }
+
+        newBoard[availSpots[i]] = '';
+        moves.push(move);
+      }
+
+      let bestMove;
+      if (player === 'O') {
+        let bestScore = -Infinity;
+        for (let i = 0; i < moves.length; i++) {
+          if (moves[i].score > bestScore) {
+            bestScore = moves[i].score;
+            bestMove = i;
+          }
+        }
+      } else {
+        let bestScore = Infinity;
+        for (let i = 0; i < moves.length; i++) {
+          if (moves[i].score < bestScore) {
+            bestScore = moves[i].score;
+            bestMove = i;
+          }
+        }
+      }
+
+      return moves[bestMove];
+    }
+
+    createBoard(); // სტარტზე დაფის შექმნა
+  </script>
 </body>
 </html>
