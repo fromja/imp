@@ -20,7 +20,7 @@
 <body>
     <script>
         // Matter.js engine setup
-        const { Engine, Render, Runner, World, Bodies, Body, Events } = Matter;
+        const { Engine, Render, Runner, World, Bodies, Body, Events, Vector } = Matter;
 
         // Create an engine
         const engine = Engine.create();
@@ -58,6 +58,8 @@
         // Create the white ball
         const whiteBall = Bodies.circle(150, 200, ballRadius, {
             density: 0.05,
+            friction: 0.1,
+            restitution: 0.9,
             render: {
                 fillStyle: 'white'
             }
@@ -68,6 +70,8 @@
         for (let i = 0; i < 8; i++) {
             balls.push(Bodies.circle(400 + i * 40, 200, ballRadius, {
                 density: 0.05,
+                friction: 0.1,
+                restitution: 0.9,
                 render: {
                     fillStyle: colors[i % colors.length]
                 }
@@ -87,8 +91,10 @@
         });
         World.add(world, cueStick);
 
-        // Shoot ball based on mouse position
+        // Set shooting state
         let isShooting = false;
+
+        // Event listener for mouse click to "shoot"
         canvas.addEventListener('click', function(e) {
             if (!isShooting) {
                 const mouseX = e.clientX;
