@@ -261,9 +261,9 @@
   <div class="chatbox" id="chatbox">
     <div class="chat-header" onclick="toggleChat()">☕ Lofi Café Chat</div>
     <div class="chat-messages" id="chat-messages"></div>
-    <div class="chat-input">
-      <input type="text" id="chat-username" placeholder="Your Name..." style="width: 30%;">
-<input type="text" id="chat-secretcode" placeholder="Secret Code..." style="width: 30%;">
+    <div class="chat-input" style="display: flex; flex-direction: column; gap: 5px; padding: 10px;">
+      <input type="text" id="chat-username" placeholder="Your Name..." style="width: 100%;">
+<input type="text" id="chat-secretcode" placeholder="Secret Code..." style="width: 100%;">
       <input type="text" id="chat-input" placeholder="Type a message...">
       <button onclick="sendMessage()">Send</button>
     </div>
