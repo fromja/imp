@@ -534,164 +534,207 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Poker Game</title>
+  <title>Ultimate Poker</title>
   <style>
     body {
       margin: 0;
-      background-color: #006400;
+      background: #006400;
       font-family: Arial, sans-serif;
-      overflow-x: hidden;
-    }
-    .table {
-      width: 100%;
-      height: 100vh;
-      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      overflow: hidden;
     }
-    .cards {
+    .table {
+      margin-top: 20px;
+      background: radial-gradient(circle, #085c1e, #034d12);
+      width: 900px;
+      height: 600px;
+      border: 8px solid #654321;
+      border-radius: 50px;
+      position: relative;
+      padding: 20px;
+    }
+    .cards, .player-hand, .ai-hand {
       display: flex;
+      justify-content: center;
+      margin: 10px 0;
       gap: 10px;
-      margin: 20px 0;
     }
     .card {
       width: 60px;
       height: 90px;
       background-size: cover;
       border-radius: 5px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.7);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.6);
     }
-    .chips {
-      margin-top: 20px;
+    .buttons {
+      margin-top: 10px;
       display: flex;
       gap: 15px;
     }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ffd700;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+    }
+    .chips {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
     .chip {
-      width: 40px;
-      height: 40px;
-      background-color: #f5f5f5;
-      border: 3px solid #ff0000;
+      width: 45px;
+      height: 45px;
+      background: radial-gradient(circle, white, red);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      box-shadow: 0 2px 5px black;
     }
-    .message {
+    #message {
       margin-top: 20px;
-      font-size: 24px;
-      color: #fff;
+      color: white;
+      font-size: 22px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+
+  <h1 style="color: white;">Ultimate Poker</h1>
+
   <div class="table">
-    <div id="playerHand" class="cards"></div>
-    <div id="communityCards" class="cards"></div>
-    <div id="aiHand" class="cards"></div>
+    <div class="ai-hand" id="aiHand"></div>
+
+    <div class="cards" id="community"></div>
+
+    <div class="player-hand" id="playerHand"></div>
+
     <div class="chips">
+      <div class="chip">10</div>
       <div class="chip">50</div>
       <div class="chip">100</div>
-      <div class="chip">500</div>
     </div>
-    <div id="message" class="message">Poker Game Loading...</div>
+
+    <div class="buttons" id="actionButtons">
+      <button onclick="playerAction('check')">Check</button>
+      <button onclick="playerAction('bet')">Bet</button>
+      <button onclick="playerAction('raise')">Raise</button>
+      <button onclick="playerAction('fold')">Fold</button>
+    </div>
+
+    <div id="message">Game Loading...</div>
   </div>
 
-  <script>
-    const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
-    const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-    let deck = [];
-    let playerHand = [];
-    let aiHand = [];
-    let communityCards = [];
+<script>
+  const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+  const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+  let deck = [], playerHand = [], aiHand = [], community = [];
+  let stage = 0; // 0-preflop, 1-flop, 2-turn, 3-river
+  let playerFolded = false, aiFolded = false;
+  const message = document.getElementById('message');
 
-    function buildDeck() {
-      deck = [];
-      for (let suit of suits) {
-        for (let rank of ranks) {
-          deck.push({rank, suit});
-        }
+  function buildDeck() {
+    deck = [];
+    for (let suit of suits) {
+      for (let rank of ranks) {
+        deck.push({rank, suit});
       }
     }
+  }
 
-    function shuffleDeck() {
-      for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
-      }
+  function shuffleDeck() {
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [deck[i], deck[j]] = [deck[j], deck[i]];
     }
+  }
 
-    function dealCard() {
-      return deck.pop();
-    }
+  function dealCard() {
+    return deck.pop();
+  }
 
-    function renderCard(card) {
+  function renderCards(cards, elementId) {
+    const div = document.getElementById(elementId);
+    div.innerHTML = '';
+    cards.forEach(card => {
       const img = document.createElement('div');
       img.className = 'card';
       img.style.backgroundImage = `url('https://raw.githubusercontent.com/hayeah/playing-cards-assets/master/png/${card.rank}_of_${card.suit}.png')`;
-      return img;
+      div.appendChild(img);
+    });
+  }
+
+  function nextStage() {
+    if (stage === 0) {
+      community = [dealCard(), dealCard(), dealCard()];
+    } else if (stage === 1 || stage === 2) {
+      community.push(dealCard());
     }
-
-    function showHands() {
-      const playerDiv = document.getElementById('playerHand');
-      const aiDiv = document.getElementById('aiHand');
-      playerDiv.innerHTML = '';
-      aiDiv.innerHTML = '';
-      playerHand.forEach(card => playerDiv.appendChild(renderCard(card)));
-      aiHand.forEach(card => aiDiv.appendChild(renderCard(card)));
+    renderCards(community, 'community');
+    stage++;
+    if (stage > 3) {
+      endRound();
     }
+  }
 
-    function showCommunity() {
-      const communityDiv = document.getElementById('communityCards');
-      communityDiv.innerHTML = '';
-      communityCards.forEach(card => communityDiv.appendChild(renderCard(card)));
+  function aiDecision() {
+    if (Math.random() > 0.7) {
+      aiFolded = true;
+      message.innerText = "AI folded! You win!";
+      setTimeout(startNewRound, 3000);
+    } else {
+      message.innerText = "AI calls!";
+      setTimeout(nextStage, 2000);
     }
+  }
 
-    function randomDecision() {
-      const decisions = ['Check', 'Bet', 'Fold'];
-      return decisions[Math.floor(Math.random() * decisions.length)];
+  function playerAction(action) {
+    if (action === 'fold') {
+      playerFolded = true;
+      message.innerText = "You folded. AI wins!";
+      setTimeout(startNewRound, 3000);
+    } else {
+      aiDecision();
     }
+  }
 
-    async function playGame() {
-      document.getElementById('message').innerText = "Game Started!";
-      buildDeck();
-      shuffleDeck();
+  function startNewRound() {
+    stage = 0;
+    playerFolded = false;
+    aiFolded = false;
+    community = [];
+    buildDeck();
+    shuffleDeck();
+    playerHand = [dealCard(), dealCard()];
+    aiHand = [dealCard(), dealCard()];
+    renderCards(playerHand, 'playerHand');
+    renderCards(aiHand, 'aiHand');
+    renderCards(community, 'community');
+    message.innerText = "New Round! Your move.";
+  }
 
-      playerHand = [dealCard(), dealCard()];
-      aiHand = [dealCard(), dealCard()];
-      showHands();
-
-      await new Promise(r => setTimeout(r, 1000));
-      communityCards = [dealCard(), dealCard(), dealCard()];
-      showCommunity();
-
-      const aiMove = randomDecision();
-      document.getElementById('message').innerText = `AI chooses to ${aiMove}`;
-      if (aiMove === 'Fold') {
-        document.getElementById('message').innerText = 'AI folded. You win!';
-        return;
-      }
-
-      await new Promise(r => setTimeout(r, 1000));
-      communityCards.push(dealCard());
-      showCommunity();
-
-      await new Promise(r => setTimeout(r, 1000));
-      communityCards.push(dealCard());
-      showCommunity();
-
-      await new Promise(r => setTimeout(r, 1000));
-      document.getElementById('message').innerText = 'Showdown!';
-
-      // Here you could add more logic to compare hands etc.
+  function endRound() {
+    if (!playerFolded && !aiFolded) {
+      message.innerText = "Showdown! (Winner logic here)";
     }
+    setTimeout(startNewRound, 5000);
+  }
 
-    playGame();
-  </script>
+  // Start game
+  startNewRound();
+</script>
+
 </body>
 </html>
+
 
 
