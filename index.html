@@ -7,8 +7,7 @@
   <link rel="icon" href="images/lofigirllogo.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* აქ შენს ძველ სტილებს ვტოვებ უცვლელად */
-
+    /* სტილები */
     body {
       margin: 0;
       padding: 0;
@@ -16,7 +15,6 @@
       transition: background-color 0.5s ease, color 0.5s ease;
       overflow-x: hidden;
     }
-    /* თემების სტილები */
     .theme-rainy { background: linear-gradient(to bottom, #2e2e2e, #1e1e1e); color: #e0e0e0; }
     .theme-sunny { background: linear-gradient(to top, #fffbd5, #b20a2c); color: #1e1e1e; }
     .theme-night { background: linear-gradient(to top, #0f2027, #203a43, #2c5364); color: #e0e0e0; }
@@ -58,7 +56,6 @@
       margin-bottom: 20px;
       box-shadow: 0 8px 16px rgba(0,0,0,0.5);
     }
-    /* ატმოსფეროს ელემენტები */
     .rain, .clouds, .stars {
       position: fixed;
       width: 100%;
@@ -111,10 +108,9 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      animation: fadeIn 2s ease-in-out;
     }
     .official-badge::after {
-      content: '\2714';
+      content: '✔️';
       background: #3aa3e3;
       color: white;
       font-size: 0.9em;
@@ -123,7 +119,6 @@
       margin-left: 5px;
     }
 
-    /* ახალი სტილი ვოლიუმისთვის */
     .audio-controls {
       margin-top: 20px;
     }
@@ -182,6 +177,32 @@
       color: white;
     }
 
+    .tictactoe {
+      margin-top: 50px;
+      text-align: center;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .cell {
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    .difficulty-select {
+      margin-bottom: 20px;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -204,7 +225,6 @@
 
   <div class="container">
     <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
-
     <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
     <p id="welcome-paragraph">
       Dive into a world of calm. Whether you're studying, working, or just relaxing — LoFi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.
@@ -227,6 +247,23 @@
       <a href="https://discord.gg/mbBJZEeq6G">Discord</a>
       <a href="https://lofigirl.com/generator/">Generate Lofi Avatar</a>
     </div>
+
+    <!-- TIC TAC TOE თამაში -->
+    <div class="tictactoe">
+      <h2>ითამაშე X და 0 🎮</h2>
+      <div class="difficulty-select">
+        <label for="difficulty">აირჩიე სირთულე:</label>
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="expert">Expert</option>
+        </select>
+      </div>
+      <div class="board" id="board"></div>
+      <div id="status"></div>
+      <button onclick="restartGame()">თავიდან დაწყება 🔄</button>
+    </div>
+
   </div>
 
   <div class="chatbox" id="chatbox">
@@ -243,293 +280,253 @@
     Official Lo-Fi Haven — Stay Chill, Stay Creative 🌸
   </footer>
 
-  <script>
-    const audio = document.getElementById('background-music');
-    const playPauseButton = document.getElementById('playPauseButton');
-    const volumeControl = document.getElementById('volumeControl');
+<script>
+  const audio = document.getElementById('background-music');
+  const playPauseButton = document.getElementById('playPauseButton');
+  const volumeControl = document.getElementById('volumeControl');
 
-    volumeControl.addEventListener('input', () => {
-      audio.volume = volumeControl.value;
+  volumeControl.addEventListener('input', () => {
+    audio.volume = volumeControl.value;
+  });
+
+  function togglePlay() {
+    if (audio.paused) {
+      audio.play();
+      playPauseButton.textContent = '⏸️';
+    } else {
+      audio.pause();
+      playPauseButton.textContent = '▶️';
+    }
+  }
+
+  function clearEffects() {
+    document.getElementById('rain').innerHTML = '';
+    document.getElementById('clouds').innerHTML = '';
+    document.getElementById('stars').innerHTML = '';
+  }
+
+  function setTheme(theme) {
+    document.body.className = 'theme-' + theme;
+    clearEffects();
+    if (theme === 'rainy') {
+      for (let i = 0; i < 80; i++) {
+        let drop = document.createElement('div');
+        drop.className = 'raindrop';
+        drop.style.left = Math.random() * 100 + 'vw';
+        drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+        document.getElementById('rain').appendChild(drop);
+      }
+    } else if (theme === 'sunny') {
+      for (let i = 0; i < 5; i++) {
+        let cloud = document.createElement('div');
+        cloud.className = 'cloud';
+        cloud.style.top = (i * 60) + 'px';
+        document.getElementById('clouds').appendChild(cloud);
+      }
+    } else if (theme === 'night') {
+      for (let i = 0; i < 100; i++) {
+        let star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = Math.random() * 100 + 'vh';
+        document.getElementById('stars').appendChild(star);
+      }
+    }
+  }
+
+  function switchLanguage(lang) {
+    if (lang === 'en') {
+      document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
+      document.getElementById('welcome-paragraph').innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — LoFi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
+    } else if (lang === 'ka') {
+      document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
+      document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. თუ თქვენ სწავლობთ, მუშაობთ ან უბრალოდ ისვენებთ — LoFi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
+    }
+  }
+
+  function toggleChat() {
+    const chat = document.getElementById('chatbox');
+    chat.classList.toggle('collapsed');
+    chat.style.height = chat.classList.contains('collapsed') ? '30px' : '400px';
+  }
+
+  function sendMessage() {
+    const username = document.getElementById('chat-username').value.trim() || "Anonymous";
+    const input = document.getElementById('chat-input');
+    const messages = document.getElementById('chat-messages');
+    if (input.value.trim() !== '') {
+      const msg = document.createElement('div');
+      msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
+      messages.appendChild(msg);
+      input.value = '';
+      messages.scrollTop = messages.scrollHeight;
+    }
+  }
+
+  // ==== TIC TAC TOE ====
+  const board = document.getElementById('board');
+  const statusDiv = document.getElementById('status');
+  let cells = [];
+  let isGameOver = false;
+
+  function createBoard() {
+    board.innerHTML = '';
+    cells = [];
+    for (let i = 0; i < 9; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.addEventListener('click', () => playerMove(i));
+      board.appendChild(cell);
+      cells.push('');
+    }
+    statusDiv.textContent = "შენი სვლა: X";
+  }
+
+  function playerMove(index) {
+    if (cells[index] === '' && !isGameOver) {
+      cells[index] = 'X';
+      updateBoard();
+      if (checkWinner('X')) {
+        statusDiv.textContent = "მოგება! 🎉";
+        isGameOver = true;
+        return;
+      }
+      if (cells.every(cell => cell !== '')) {
+        statusDiv.textContent = "ფრე!";
+        isGameOver = true;
+        return;
+      }
+      setTimeout(botMove, 500);
+    }
+  }
+
+  function botMove() {
+    const difficulty = document.getElementById('difficulty').value;
+    let index;
+
+    if (difficulty === 'easy') {
+      const available = cells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+      index = available[Math.floor(Math.random() * available.length)];
+    } else if (difficulty === 'medium') {
+      index = findBestMove('O') ?? randomMove();
+    } else if (difficulty === 'expert') {
+      index = minimax(cells, 'O').index;
+    }
+
+    if (index != null) {
+      cells[index] = 'O';
+      updateBoard();
+      if (checkWinner('O')) {
+        statusDiv.textContent = "დაგამარცხა ბოტმა 😔";
+        isGameOver = true;
+        return;
+      }
+      if (cells.every(cell => cell !== '')) {
+        statusDiv.textContent = "ფრე!";
+        isGameOver = true;
+      }
+    }
+  }
+
+  function updateBoard() {
+    const cellElements = document.querySelectorAll('.cell');
+    cells.forEach((value, index) => {
+      cellElements[index].textContent = value;
     });
+  }
 
-    function togglePlay() {
-      if (audio.paused) {
-        audio.play();
-        playPauseButton.textContent = '⏸️';
+  function checkWinner(player) {
+    const winPatterns = [
+      [0,1,2], [3,4,5], [6,7,8],
+      [0,3,6], [1,4,7], [2,5,8],
+      [0,4,8], [2,4,6]
+    ];
+    return winPatterns.some(pattern => pattern.every(idx => cells[idx] === player));
+  }
+
+  function restartGame() {
+    isGameOver = false;
+    createBoard();
+  }
+
+  function randomMove() {
+    const available = cells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+    return available[Math.floor(Math.random() * available.length)];
+  }
+
+  function findBestMove(player) {
+    for (let i = 0; i < cells.length; i++) {
+      if (cells[i] === '') {
+        cells[i] = player;
+        if (checkWinner(player)) {
+          cells[i] = '';
+          return i;
+        }
+        cells[i] = '';
+      }
+    }
+    const opponent = player === 'X' ? 'O' : 'X';
+    for (let i = 0; i < cells.length; i++) {
+      if (cells[i] === '') {
+        cells[i] = opponent;
+        if (checkWinner(opponent)) {
+          cells[i] = '';
+          return i;
+        }
+        cells[i] = '';
+      }
+    }
+    return null;
+  }
+
+  function minimax(newCells, player) {
+    const available = newCells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+
+    if (checkWinner('X')) return {score: -10};
+    if (checkWinner('O')) return {score: 10};
+    if (available.length === 0) return {score: 0};
+
+    const moves = [];
+
+    for (let i = 0; i < available.length; i++) {
+      const move = {};
+      move.index = available[i];
+      newCells[available[i]] = player;
+
+      if (player === 'O') {
+        const result = minimax(newCells, 'X');
+        move.score = result.score;
       } else {
-        audio.pause();
-        playPauseButton.textContent = '▶️';
+        const result = minimax(newCells, 'O');
+        move.score = result.score;
       }
+
+      newCells[available[i]] = '';
+      moves.push(move);
     }
 
-    function clearEffects() {
-      document.getElementById('rain').innerHTML = '';
-      document.getElementById('clouds').innerHTML = '';
-      document.getElementById('stars').innerHTML = '';
-    }
-
-    function setTheme(theme) {
-      document.body.className = 'theme-' + theme;
-      clearEffects();
-      if (theme === 'rainy') {
-        for (let i = 0; i < 80; i++) {
-          let drop = document.createElement('div');
-          drop.className = 'raindrop';
-          drop.style.left = Math.random() * 100 + 'vw';
-          drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
-          document.getElementById('rain').appendChild(drop);
+    let bestMove;
+    if (player === 'O') {
+      let bestScore = -Infinity;
+      moves.forEach((move, i) => {
+        if (move.score > bestScore) {
+          bestScore = move.score;
+          bestMove = i;
         }
-      } else if (theme === 'sunny') {
-        for (let i = 0; i < 5; i++) {
-          let cloud = document.createElement('div');
-          cloud.className = 'cloud';
-          cloud.style.top = (i * 60) + 'px';
-          document.getElementById('clouds').appendChild(cloud);
+      });
+    } else {
+      let bestScore = Infinity;
+      moves.forEach((move, i) => {
+        if (move.score < bestScore) {
+          bestScore = move.score;
+          bestMove = i;
         }
-      } else if (theme === 'night') {
-        for (let i = 0; i < 100; i++) {
-          let star = document.createElement('div');
-          star.className = 'star';
-          star.style.left = Math.random() * 100 + 'vw';
-          star.style.top = Math.random() * 100 + 'vh';
-          document.getElementById('stars').appendChild(star);
-        }
-      }
-    }
-
-    function switchLanguage(lang) {
-      if (lang === 'en') {
-        document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
-        document.getElementById('welcome-paragraph').innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — LoFi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
-      } else if (lang === 'ka') {
-        document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
-        document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. თუ თქვენ სწავლობთ, მუშაობთ ან უბრალოდ ისვენებთ — LoFi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
-      }
-    }
-
-    function toggleChat() {
-      const chat = document.getElementById('chatbox');
-      chat.classList.toggle('collapsed');
-      chat.style.height = chat.classList.contains('collapsed') ? '30px' : '400px';
-    }
-
-    function sendMessage() {
-      const username = document.getElementById('chat-username').value.trim() || "Anonymous";
-      const input = document.getElementById('chat-input');
-      const messages = document.getElementById('chat-messages');
-      if (input.value.trim() !== '') {
-        const msg = document.createElement('div');
-        msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
-        messages.appendChild(msg);
-        input.value = '';
-        messages.scrollTop = messages.scrollHeight;
-      }
-    }
-
-    window.onload = () => {
-      setTheme('night');
-    }
-  </script>
-
-</body>
-</html>
-
-<!-- ---- ახალი ნაწილი: TIC TAC TOE თამაში ---- -->
-    <div class="tictactoe">
-      <h2>ითამაშე X და 0 🎮</h2>
-
-      <!-- სირთულის არჩევა -->
-      <div class="difficulty-select">
-        <label for="difficulty">აირჩიე სირთულე:</label>
-        <select id="difficulty">
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="expert">Expert</option>
-        </select>
-      </div>
-
-      <!-- სათამაშო დაფა -->
-      <div class="board" id="board"></div>
-
-      <!-- თამაშის სტატუსი -->
-      <div id="status"></div>
-
-      <!-- ახალი თამაშის დაწყების ღილაკი -->
-      <button onclick="restartGame()">თავიდან დაწყება 🔄</button>
-    </div>
-
-  </div>
-
-// ==== TIC TAC TOE თამაში ====
-    const board = document.getElementById('board');
-    const statusDiv = document.getElementById('status');
-    let cells = [];
-    let currentPlayer = 'X';
-    let isGameOver = false;
-
-    function createBoard() {
-      board.innerHTML = '';
-      cells = [];
-      for (let i = 0; i < 9; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.addEventListener('click', () => playerMove(i));
-        board.appendChild(cell);
-        cells.push('');
-      }
-      statusDiv.textContent = "შენი სვლა: X";
-    }
-
-    function playerMove(index) {
-      if (cells[index] === '' && !isGameOver) {
-        cells[index] = 'X';
-        updateBoard();
-        if (checkWinner('X')) {
-          statusDiv.textContent = "მოგება! 🎉";
-          isGameOver = true;
-          return;
-        }
-        if (cells.every(cell => cell !== '')) {
-          statusDiv.textContent = "ფრე!";
-          isGameOver = true;
-          return;
-        }
-        setTimeout(botMove, 500);
-      }
-    }
-
-    function botMove() {
-      let difficulty = document.getElementById('difficulty').value;
-      let index;
-
-      if (difficulty === 'easy') {
-        const available = cells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
-        index = available[Math.floor(Math.random() * available.length)];
-      } else if (difficulty === 'medium') {
-        index = findBestMove('O') ?? randomMove();
-      } else if (difficulty === 'expert') {
-        index = minimax(cells, 'O').index;
-      }
-
-      if (index != null) {
-        cells[index] = 'O';
-        updateBoard();
-        if (checkWinner('O')) {
-          statusDiv.textContent = "დაგამარცხა ბოტმა 😔";
-          isGameOver = true;
-          return;
-        }
-        if (cells.every(cell => cell !== '')) {
-          statusDiv.textContent = "ფრე!";
-          isGameOver = true;
-        }
-      }
-    }
-
-    function updateBoard() {
-      const cellElements = document.querySelectorAll('.cell');
-      cells.forEach((value, index) => {
-        cellElements[index].textContent = value;
       });
     }
+    return moves[bestMove];
+  }
 
-    function checkWinner(player) {
-      const winPatterns = [
-        [0,1,2], [3,4,5], [6,7,8],
-        [0,3,6], [1,4,7], [2,5,8],
-        [0,4,8], [2,4,6]
-      ];
-      return winPatterns.some(pattern => pattern.every(idx => cells[idx] === player));
-    }
-
-    function restartGame() {
-      isGameOver = false;
-      currentPlayer = 'X';
-      createBoard();
-    }
-
-    function randomMove() {
-      const available = cells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
-      return available[Math.floor(Math.random() * available.length)];
-    }
-
-    function findBestMove(player) {
-      // Try to win
-      for (let i = 0; i < cells.length; i++) {
-        if (cells[i] === '') {
-          cells[i] = player;
-          if (checkWinner(player)) {
-            cells[i] = '';
-            return i;
-          }
-          cells[i] = '';
-        }
-      }
-      // Block opponent
-      const opponent = player === 'X' ? 'O' : 'X';
-      for (let i = 0; i < cells.length; i++) {
-        if (cells[i] === '') {
-          cells[i] = opponent;
-          if (checkWinner(opponent)) {
-            cells[i] = '';
-            return i;
-          }
-          cells[i] = '';
-        }
-      }
-      return null;
-    }
-
-    function minimax(newBoard, player) {
-      const availSpots = newBoard.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
-
-      if (checkWinner('X')) {
-        return {score: -10};
-      } else if (checkWinner('O')) {
-        return {score: 10};
-      } else if (availSpots.length === 0) {
-        return {score: 0};
-      }
-
-      const moves = [];
-      for (let i = 0; i < availSpots.length; i++) {
-        const move = {};
-        move.index = availSpots[i];
-        newBoard[availSpots[i]] = player;
-
-        if (player === 'O') {
-          move.score = minimax(newBoard, 'X').score;
-        } else {
-          move.score = minimax(newBoard, 'O').score;
-        }
-
-        newBoard[availSpots[i]] = '';
-        moves.push(move);
-      }
-
-      let bestMove;
-      if (player === 'O') {
-        let bestScore = -Infinity;
-        for (let i = 0; i < moves.length; i++) {
-          if (moves[i].score > bestScore) {
-            bestScore = moves[i].score;
-            bestMove = i;
-          }
-        }
-      } else {
-        let bestScore = Infinity;
-        for (let i = 0; i < moves.length; i++) {
-          if (moves[i].score < bestScore) {
-            bestScore = moves[i].score;
-            bestMove = i;
-          }
-        }
-      }
-
-      return moves[bestMove];
-    }
-
-    createBoard(); // სტარტზე დაფის შექმნა
-  </script>
+  createBoard();
+</script>
 </body>
 </html>
