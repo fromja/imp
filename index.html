@@ -7,7 +7,7 @@
   <link rel="icon" href="images/lofigirllogo.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* სტილები */
+    /* ======= CSS STYLES ======= */
     body {
       margin: 0;
       padding: 0;
@@ -24,11 +24,7 @@
       padding: 50px 20px;
       animation: fadeIn 1.5s ease-in-out;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     h1 { font-size: 3em; margin-bottom: 20px; }
     p { font-size: 1.2em; max-width: 700px; margin: 20px auto; line-height: 1.8; }
@@ -44,18 +40,21 @@
       transition: background 0.3s;
     }
     button:hover { background-color: #e73370; }
+
     .social-links a {
       color: #ff4081;
       margin: 0 10px;
       text-decoration: none;
       font-size: 24px;
     }
+
     .lofi-girl {
       width: 300px;
       border-radius: 20px;
       margin-bottom: 20px;
       box-shadow: 0 8px 16px rgba(0,0,0,0.5);
     }
+
     .rain, .clouds, .stars {
       position: fixed;
       width: 100%;
@@ -74,6 +73,7 @@
       opacity: 0.5;
     }
     @keyframes fall { 0% { top: -60px; } 100% { top: 110vh; } }
+
     .cloud {
       position: absolute;
       width: 200px;
@@ -85,6 +85,7 @@
       opacity: 0.3;
     }
     @keyframes cloudMove { from { left: -250px; } to { left: 110%; } }
+
     .star {
       position: absolute;
       width: 2px;
@@ -122,10 +123,6 @@
     .audio-controls {
       margin-top: 20px;
     }
-    .audio-controls button {
-      font-size: 20px;
-      margin-right: 10px;
-    }
     .audio-controls input[type="range"] {
       width: 150px;
       vertical-align: middle;
@@ -146,30 +143,25 @@
       color: white;
       font-size: 14px;
     }
-
     .chat-header {
       background: #ff4081;
       padding: 10px;
       font-weight: bold;
       cursor: pointer;
     }
-
     .chat-messages {
       flex: 1;
       overflow-y: auto;
       padding: 10px;
     }
-
     .chat-input {
       display: flex;
     }
-
     .chat-input input {
       flex: 1;
       padding: 10px;
       border: none;
     }
-
     .chat-input button {
       background: #ff4081;
       border: none;
@@ -202,7 +194,6 @@
     .difficulty-select {
       margin-bottom: 20px;
     }
-
     footer {
       text-align: center;
       padding: 20px;
@@ -248,7 +239,6 @@
       <a href="https://lofigirl.com/generator/">Generate Lofi Avatar</a>
     </div>
 
-    <!-- TIC TAC TOE თამაში -->
     <div class="tictactoe">
       <h2>ითამაშე X და 0 🎮</h2>
       <div class="difficulty-select">
@@ -281,6 +271,7 @@
   </footer>
 
 <script>
+  /* ======= JAVASCRIPT ======= */
   const audio = document.getElementById('background-music');
   const playPauseButton = document.getElementById('playPauseButton');
   const volumeControl = document.getElementById('volumeControl');
@@ -337,10 +328,10 @@
   function switchLanguage(lang) {
     if (lang === 'en') {
       document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
-      document.getElementById('welcome-paragraph').innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — LoFi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
+      document.getElementById('welcome-paragraph').innerText = "Dive into a world of calm. Whether you're studying, working, or just relaxing — LoFi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.";
     } else if (lang === 'ka') {
       document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
-      document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. თუ თქვენ სწავლობთ, მუშაობთ ან უბრალოდ ისვენებთ — LoFi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
+      document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. თუ თქვენ სწავლობთ, მუშაობთ ან უბრალოდ ისვენებთ — LoFi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს.';
     }
   }
 
@@ -363,7 +354,7 @@
     }
   }
 
-  // ==== TIC TAC TOE ====
+  // ==== TIC TAC TOE LOGIC ====
   const board = document.getElementById('board');
   const statusDiv = document.getElementById('status');
   let cells = [];
@@ -403,16 +394,9 @@
   function botMove() {
     const difficulty = document.getElementById('difficulty').value;
     let index;
-
-    if (difficulty === 'easy') {
-      const available = cells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
-      index = available[Math.floor(Math.random() * available.length)];
-    } else if (difficulty === 'medium') {
-      index = findBestMove('O') ?? randomMove();
-    } else if (difficulty === 'expert') {
-      index = minimax(cells, 'O').index;
-    }
-
+    if (difficulty === 'easy') index = randomMove();
+    else if (difficulty === 'medium') index = findBestMove('O') ?? randomMove();
+    else if (difficulty === 'expert') index = minimax(cells, 'O').index;
     if (index != null) {
       cells[index] = 'O';
       updateBoard();
@@ -465,29 +449,16 @@
         cells[i] = '';
       }
     }
-    const opponent = player === 'X' ? 'O' : 'X';
-    for (let i = 0; i < cells.length; i++) {
-      if (cells[i] === '') {
-        cells[i] = opponent;
-        if (checkWinner(opponent)) {
-          cells[i] = '';
-          return i;
-        }
-        cells[i] = '';
-      }
-    }
     return null;
   }
 
   function minimax(newCells, player) {
     const available = newCells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
-
     if (checkWinner('X')) return {score: -10};
     if (checkWinner('O')) return {score: 10};
     if (available.length === 0) return {score: 0};
 
     const moves = [];
-
     for (let i = 0; i < available.length; i++) {
       const move = {};
       move.index = available[i];
@@ -500,33 +471,33 @@
         const result = minimax(newCells, 'O');
         move.score = result.score;
       }
-
       newCells[available[i]] = '';
       moves.push(move);
     }
-
     let bestMove;
     if (player === 'O') {
       let bestScore = -Infinity;
-      moves.forEach((move, i) => {
-        if (move.score > bestScore) {
-          bestScore = move.score;
-          bestMove = i;
+      moves.forEach(m => {
+        if (m.score > bestScore) {
+          bestScore = m.score;
+          bestMove = m;
         }
       });
     } else {
       let bestScore = Infinity;
-      moves.forEach((move, i) => {
-        if (move.score < bestScore) {
-          bestScore = move.score;
-          bestMove = i;
+      moves.forEach(m => {
+        if (m.score < bestScore) {
+          bestScore = m.score;
+          bestMove = m;
         }
       });
     }
-    return moves[bestMove];
+    return bestMove;
   }
 
   createBoard();
+  setTheme('night');
+
 </script>
 </body>
 </html>
