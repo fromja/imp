@@ -1,107 +1,582 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LofiHaven Chat</title>
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: #1e1e1e;
-    color: #f0f0f0;
-  }
-  #chat-container {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    width: 300px;
-    background: #2c2c2c;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  }
-  #chat-messages {
-    height: 300px;
-    overflow-y: auto;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  #chat-input-area {
-    display: flex;
-    padding: 10px;
-    background: #252525;
-  }
-  #chat-input-area input {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    margin-right: 5px;
-  }
-  #chat-input-area button {
-    padding: 8px 12px;
-    background: #3aa3e3;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .official-badge {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    background-image: url('Images/891983a3-696d-4a21-bf10-8d0824df0163.png');
-    background-size: contain;
-    margin-left: 5px;
-    vertical-align: middle;
-  }
-</style>
-</head>
-<body>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lo-Fi Haven</title>
+  <link rel="icon" href="images/lofigirllogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* სტილები */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      overflow-x: hidden;
+    }
+    .theme-rainy { background: linear-gradient(to bottom, #2e2e2e, #1e1e1e); color: #e0e0e0; }
+    .theme-sunny { background: linear-gradient(to top, #fffbd5, #b20a2c); color: #1e1e1e; }
+    .theme-night { background: linear-gradient(to top, #0f2027, #203a43, #2c5364); color: #e0e0e0; }
 
-<div id="chat-container">
-  <div id="chat-messages"></div>
-  <div id="name-area">
-    <input type="text" id="name-input" placeholder="Enter your name">
-    <button onclick="setName()">Set</button>
+    .container {
+      text-align: center;
+      padding: 50px 20px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h1 { font-size: 3em; margin-bottom: 20px; }
+    p { font-size: 1.2em; max-width: 700px; margin: 20px auto; line-height: 1.8; }
+    button {
+      background-color: #ff4081;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    button:hover { background-color: #e73370; }
+    .social-links a {
+      color: #ff4081;
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 24px;
+    }
+    .lofi-girl {
+      width: 300px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    }
+    .rain, .clouds, .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .raindrop {
+      position: absolute;
+      width: 2px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.3);
+      animation: fall linear infinite;
+      opacity: 0.5;
+    }
+    @keyframes fall { 0% { top: -60px; } 100% { top: 110vh; } }
+    .cloud {
+      position: absolute;
+      width: 200px;
+      height: 60px;
+      background: #fff;
+      border-radius: 100px;
+      top: 50px;
+      animation: cloudMove 60s linear infinite;
+      opacity: 0.3;
+    }
+    @keyframes cloudMove { from { left: -250px; } to { left: 110%; } }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite ease-in-out alternate;
+    }
+    @keyframes twinkle { from { opacity: 0.2; } to { opacity: 1; } }
+
+    .official-badge {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 1.1em;
+      color: #ff4081;
+      font-weight: bold;
+      background: rgba(0,0,0,0.4);
+      padding: 6px 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+
+    .audio-controls {
+      margin-top: 20px;
+    }
+    .audio-controls button {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+    .audio-controls input[type="range"] {
+      width: 150px;
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+
+    .chatbox {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      max-height: 400px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      color: white;
+      font-size: 14px;
+    }
+
+    .chat-header {
+      background: #ff4081;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .chat-input {
+      display: flex;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+    }
+
+    .chat-input button {
+      background: #ff4081;
+      border: none;
+      padding: 10px;
+      color: white;
+    }
+
+    .tictactoe {
+      margin-top: 50px;
+      text-align: center;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .cell {
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    .difficulty-select {
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+  </style>
+</head>
+
+<body class="theme-night">
+  <div class="official-badge">Lofi Haven <img src="images/verified.png" alt="Verified Badge" style="width:22px;height:22px;"></div>
+  <div class="rain" id="rain"></div>
+  <div class="clouds" id="clouds"></div>
+  <div class="stars" id="stars"></div>
+
+  <audio id="background-music" autoplay loop>
+    <source src="audio/lofimusic.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="container">
+    <img class="lofi-girl" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHM0OHR4NjZ2cHg0NmlucGhoZW1lNm45MDl0djVhcmNtejdta2cyMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/6S0J4T4dy2PIr8htHa/giphy.gif" alt="Lofi Girl">
+    <h1 id="welcome-text">Welcome to Lo-Fi Haven</h1>
+    <p id="welcome-paragraph">
+      Dive into a world of calm. Whether you're studying, working, or just relaxing — LoFi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.
+    </p>
+
+    <div class="audio-controls">
+      <button onclick="togglePlay()" id="playPauseButton">⏸️</button>
+      <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
+    </div>
+
+    <button onclick="setTheme('rainy')">🌧️ Rainy Day</button>
+    <button onclick="setTheme('sunny')">☀️ Sunny Day</button>
+    <button onclick="setTheme('night')">🌙 Night Sky</button>
+
+    <button onclick="switchLanguage('en')">English</button>
+    <button onclick="switchLanguage('ka')">ქართული</button>
+
+    <div class="social-links">
+      <a href="https://www.facebook.com/groups/675958058407487">Facebook</a>
+      <a href="https://discord.gg/mbBJZEeq6G">Discord</a>
+      <a href="https://lofigirl.com/generator/">Generate Lofi Avatar</a>
+    </div>
+
+    <!-- TIC TAC TOE თამაში -->
+    <div class="tictactoe">
+      <h2>ითამაშე X და 0 🎮</h2>
+      <div class="difficulty-select">
+        <label for="difficulty">აირჩიე სირთულე:</label>
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="expert">Expert</option>
+        </select>
+      </div>
+      <div class="board" id="board"></div>
+      <div id="status"></div>
+      <button onclick="restartGame()">თავიდან დაწყება 🔄</button>
+    </div>
+
   </div>
-  <div id="chat-input-area" style="display: none;">
-    <input type="text" id="chat-input" placeholder="Type a message">
-    <button onclick="sendMessage()">Send</button>
+
+  <div class="chatbox" id="chatbox">
+    <div class="chat-header" onclick="toggleChat()">☕ Lofi Café Chat</div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input">
+      <input type="text" id="chat-username" placeholder="Your Name..." style="width: 30%;">
+      <input type="text" id="chat-input" placeholder="Type a message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <footer>
+    Official Lo-Fi Haven — Stay Chill, Stay Creative 🌸
+  </footer>
+
+<script>
+  const audio = document.getElementById('background-music');
+  const playPauseButton = document.getElementById('playPauseButton');
+  const volumeControl = document.getElementById('volumeControl');
+
+  volumeControl.addEventListener('input', () => {
+    audio.volume = volumeControl.value;
+  });
+
+  function togglePlay() {
+    if (audio.paused) {
+      audio.play();
+      playPauseButton.textContent = '⏸️';
+    } else {
+      audio.pause();
+      playPauseButton.textContent = '▶️';
+    }
+  }
+
+  function clearEffects() {
+    document.getElementById('rain').innerHTML = '';
+    document.getElementById('clouds').innerHTML = '';
+    document.getElementById('stars').innerHTML = '';
+  }
+
+  function setTheme(theme) {
+    document.body.className = 'theme-' + theme;
+    clearEffects();
+    if (theme === 'rainy') {
+      for (let i = 0; i < 80; i++) {
+        let drop = document.createElement('div');
+        drop.className = 'raindrop';
+        drop.style.left = Math.random() * 100 + 'vw';
+        drop.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+        document.getElementById('rain').appendChild(drop);
+      }
+    } else if (theme === 'sunny') {
+      for (let i = 0; i < 5; i++) {
+        let cloud = document.createElement('div');
+        cloud.className = 'cloud';
+        cloud.style.top = (i * 60) + 'px';
+        document.getElementById('clouds').appendChild(cloud);
+      }
+    } else if (theme === 'night') {
+      for (let i = 0; i < 100; i++) {
+        let star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = Math.random() * 100 + 'vh';
+        document.getElementById('stars').appendChild(star);
+      }
+    }
+  }
+
+  function switchLanguage(lang) {
+    if (lang === 'en') {
+      document.getElementById('welcome-text').innerText = 'Welcome to Lo-Fi Haven';
+      document.getElementById('welcome-paragraph').innerText = 'Dive into a world of calm. Whether you\'re studying, working, or just relaxing — LoFi Haven is here to bring peace through mellow beats, cozy visuals, and a soothing atmosphere that feels like home.';
+    } else if (lang === 'ka') {
+      document.getElementById('welcome-text').innerText = 'კეთილი იყოს თქვენი მობრძანება Lo-Fi Haven-ში';
+      document.getElementById('welcome-paragraph').innerText = 'შეხვდით სიმშვიდესა და ჰარმონიას. თუ თქვენ სწავლობთ, მუშაობთ ან უბრალოდ ისვენებთ — LoFi Haven მოგაწვდით სითბოს, სიმყუდროვესა და მუსიკით გაჟღენთილ მყუდრო სივრცეს, რომელიც სახლივით გეყვარებათ.';
+    }
+  }
+
+  function toggleChat() {
+    const chat = document.getElementById('chatbox');
+    chat.classList.toggle('collapsed');
+    chat.style.height = chat.classList.contains('collapsed') ? '30px' : '400px';
+  }
+
+  function sendMessage() {
+    const username = document.getElementById('chat-username').value.trim() || "Anonymous";
+    const input = document.getElementById('chat-input');
+    const messages = document.getElementById('chat-messages');
+    if (input.value.trim() !== '') {
+      const msg = document.createElement('div');
+      
+    if (username === 'LofiHaven') {
+      msg.innerHTML = `<strong>${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
+    } else {
+      msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
+    }
+    
+      messages.appendChild(msg);
+      input.value = '';
+      messages.scrollTop = messages.scrollHeight;
+    }
+  }
+
+  // ==== TIC TAC TOE ====
+  const board = document.getElementById('board');
+  const statusDiv = document.getElementById('status');
+  let cells = [];
+  let isGameOver = false;
+
+  function createBoard() {
+    board.innerHTML = '';
+    cells = [];
+    for (let i = 0; i < 9; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.addEventListener('click', () => playerMove(i));
+      board.appendChild(cell);
+      cells.push('');
+    }
+    statusDiv.textContent = "შენი სვლა: X";
+  }
+
+  function playerMove(index) {
+    if (cells[index] === '' && !isGameOver) {
+      cells[index] = 'X';
+      updateBoard();
+      if (checkWinner('X')) {
+        statusDiv.textContent = "მოგება! 🎉";
+        isGameOver = true;
+        return;
+      }
+      if (cells.every(cell => cell !== '')) {
+        statusDiv.textContent = "ფრე!";
+        isGameOver = true;
+        return;
+      }
+      setTimeout(botMove, 500);
+    }
+  }
+
+  function botMove() {
+    const difficulty = document.getElementById('difficulty').value;
+    let index;
+
+    if (difficulty === 'easy') {
+      const available = cells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+      index = available[Math.floor(Math.random() * available.length)];
+    } else if (difficulty === 'medium') {
+      index = findBestMove('O') ?? randomMove();
+    } else if (difficulty === 'expert') {
+      index = minimax(cells, 'O').index;
+    }
+
+    if (index != null) {
+      cells[index] = 'O';
+      updateBoard();
+      if (checkWinner('O')) {
+        statusDiv.textContent = "დაგამარცხა ბოტმა 😔";
+        isGameOver = true;
+        return;
+      }
+      if (cells.every(cell => cell !== '')) {
+        statusDiv.textContent = "ფრე!";
+        isGameOver = true;
+      }
+    }
+  }
+
+  function updateBoard() {
+    const cellElements = document.querySelectorAll('.cell');
+    cells.forEach((value, index) => {
+      cellElements[index].textContent = value;
+    });
+  }
+
+  function checkWinner(player) {
+    const winPatterns = [
+      [0,1,2], [3,4,5], [6,7,8],
+      [0,3,6], [1,4,7], [2,5,8],
+      [0,4,8], [2,4,6]
+    ];
+    return winPatterns.some(pattern => pattern.every(idx => cells[idx] === player));
+  }
+
+  function restartGame() {
+    isGameOver = false;
+    createBoard();
+  }
+
+  function randomMove() {
+    const available = cells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+    return available[Math.floor(Math.random() * available.length)];
+  }
+
+  function findBestMove(player) {
+    for (let i = 0; i < cells.length; i++) {
+      if (cells[i] === '') {
+        cells[i] = player;
+        if (checkWinner(player)) {
+          cells[i] = '';
+          return i;
+        }
+        cells[i] = '';
+      }
+    }
+    const opponent = player === 'X' ? 'O' : 'X';
+    for (let i = 0; i < cells.length; i++) {
+      if (cells[i] === '') {
+        cells[i] = opponent;
+        if (checkWinner(opponent)) {
+          cells[i] = '';
+          return i;
+        }
+        cells[i] = '';
+      }
+    }
+    return null;
+  }
+
+  function minimax(newCells, player) {
+    const available = newCells.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+
+    if (checkWinner('X')) return {score: -10};
+    if (checkWinner('O')) return {score: 10};
+    if (available.length === 0) return {score: 0};
+
+    const moves = [];
+
+    for (let i = 0; i < available.length; i++) {
+      const move = {};
+      move.index = available[i];
+      newCells[available[i]] = player;
+
+      if (player === 'O') {
+        const result = minimax(newCells, 'X');
+        move.score = result.score;
+      } else {
+        const result = minimax(newCells, 'O');
+        move.score = result.score;
+      }
+
+      newCells[available[i]] = '';
+      moves.push(move);
+    }
+
+    let bestMove;
+    if (player === 'O') {
+      let bestScore = -Infinity;
+      moves.forEach((move, i) => {
+        if (move.score > bestScore) {
+          bestScore = move.score;
+          bestMove = i;
+        }
+      });
+    } else {
+      let bestScore = Infinity;
+      moves.forEach((move, i) => {
+        if (move.score < bestScore) {
+          bestScore = move.score;
+          bestMove = i;
+        }
+      });
+    }
+    return moves[bestMove];
+  }
+
+  createBoard();
+</script>
+
+<!-- ჩათი -->
+<div id="chat-container">
+  <div id="chat-header">ჩატი</div>
+  <div id="chat-messages"></div>
+  <div id="chat-name" style="padding:10px;">
+    <input type="text" id="name-input" placeholder="შეიყვანე სახელი">
+  </div>
+  <div id="chat-input" style="display:none;">
+    <input type="text" id="message-input" placeholder="შეიყვანე მესიჯი">
+    <button onclick="sendMessage()">გაგზავნა</button>
   </div>
 </div>
 
 <script>
 let username = "";
-let verifiedUsers = ["LofiHaven", "IMPEXS"];
-let secretPassword = "dND666666TDtu";
-
-function setName() {
-  let name = document.getElementById("name-input").value.trim();
-  if (verifiedUsers.includes(name)) {
-    let pass = prompt("Enter secret password to use this name:");
-    if (pass !== secretPassword) {
-      alert("Wrong password!");
-      return;
-    }
-  }
-  username = name;
-  document.getElementById("name-area").style.display = "none";
-  document.getElementById("chat-input-area").style.display = "flex";
-}
-
 function sendMessage() {
-  let msg = document.getElementById("chat-input").value.trim();
-  if (msg === "") return;
-  let chat = document.getElementById("chat-messages");
-  let newMsg = document.createElement("div");
-  newMsg.innerHTML = `<strong>${username}</strong>${verifiedUsers.includes(username) ? '<span class='official-badge'></span>' : ''}: ${msg}`;
-  chat.appendChild(newMsg);
-  document.getElementById("chat-input").value = "";
-  chat.scrollTop = chat.scrollHeight;
+  const messageInput = document.getElementById("message-input");
+  const message = messageInput.value.trim();
+  if (message === "") return;
+
+  const chatMessages = document.getElementById("chat-messages");
+  const newMessage = document.createElement("div");
+  newMessage.innerHTML = `<b>${username}</b>: ${message}`;
+  chatMessages.appendChild(newMessage);
+  messageInput.value = "";
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
+
+document.getElementById("name-input").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    const input = e.target.value.trim();
+    if (input === "") return;
+    if (input === "LofiHaven" || input === "IMPEXS") {
+      const password = prompt("საიდუმლო კოდი შეიყვანეთ:");
+      if (password !== "dND666666TDtu") {
+        alert("არასწორი კოდი!");
+        return;
+      }
+      username = input + " <span class='verified'>✔️</span>";
+    } else {
+      if (input === "LofiHaven" || input === "IMPEXS") {
+        alert("ეს სახელი მხოლოდ ვერიფიცირებული მომხმარებლებისთვისაა.");
+        return;
+      }
+      username = input;
+    }
+    document.getElementById("chat-name").style.display = "none";
+    document.getElementById("chat-input").style.display = "flex";
+  }
+});
 </script>
 
 </body>
