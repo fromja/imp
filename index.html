@@ -28,7 +28,7 @@
     .cards, .player-hand, .ai-hand {
       display: flex;
       justify-content: center;
-      gap: 15px;
+      gap: 20px;
     }
 
     .card {
@@ -90,6 +90,12 @@
       margin-top: 20px;
       text-align: center;
     }
+
+    .balance {
+      font-size: 18px;
+      color: white;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -117,6 +123,8 @@
     </div>
 
     <div id="message">Game Loading...</div>
+    <div class="balance" id="playerBalance">Player Balance: $1000</div>
+    <div class="balance" id="aiBalance">AI Balance: $1000</div>
   </div>
 
 <script>
@@ -127,6 +135,8 @@
   let playerFolded = false, aiFolded = false, playerChips = 1000, aiChips = 1000;
   let currentBet = 0;
   const message = document.getElementById('message');
+  const playerBalance = document.getElementById('playerBalance');
+  const aiBalance = document.getElementById('aiBalance');
 
   function buildDeck() {
     deck = [];
@@ -183,14 +193,18 @@
       setTimeout(startNewRound, 3000);
     } else {
       const aiAction = Math.random();
-      if (aiAction < 0.3) {
+      if (aiAction < 0.4) {
         aiChips -= currentBet;
         message.innerText = `AI calls with $${currentBet}`;
         setTimeout(nextStage, 2000);
-      } else {
+      } else if (aiAction < 0.7) {
         aiChips -= currentBet * 2;
         message.innerText = `AI raises to $${currentBet * 2}`;
         setTimeout(nextStage, 2000);
+      } else {
+        aiFolded = true;
+        message.innerText = "AI folds!";
+        setTimeout(startNewRound, 3000);
       }
     }
   }
@@ -237,16 +251,27 @@
     renderCards(aiHand, 'aiHand');
     renderCards(community, 'community');
     renderChips();
+    playerBalance.innerText = `Player Balance: $${playerChips}`;
+    aiBalance.innerText = `AI Balance: $${aiChips}`;
     message.innerText = "New Round! Your move.";
   }
 
   function endRound() {
     if (!playerFolded && !aiFolded) {
-      message.innerText = "Showdown! (Winner logic here)";
+      message.innerText = "Round Over, comparing hands.";
+      // Logic to compare hands, determine winner
     }
-    setTimeout(startNewRound, 5000);
+    if (playerChips <= 0 || aiChips <= 0) {
+      message.innerText = playerChips <= 0 ? "You lost!" : "AI lost!";
+      setTimeout(startNewRound, 3000);
+    } else {
+      setTimeout(startNewRound, 3000);
+    }
   }
 
+  // Initial game setup
+  buildDeck();
+  shuffleDeck();
   startNewRound();
 </script>
 
