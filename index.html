@@ -1,3 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lo-Fi Haven</title>
+  <link rel="icon" href="images/lofigirllogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* შენი ძველი სტილები */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      overflow-x: hidden;
+    }
+    .theme-rainy { background: linear-gradient(to bottom, #2e2e2e, #1e1e1e); color: #e0e0e0; }
+    .theme-sunny { background: linear-gradient(to top, #fffbd5, #b20a2c); color: #1e1e1e; }
+    .theme-night { background: linear-gradient(to top, #0f2027, #203a43, #2c5364); color: #e0e0e0; }
+
+    .container {
+      text-align: center;
+      padding: 50px 20px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    h1 { font-size: 3em; margin-bottom: 20px; }
+    p { font-size: 1.2em; max-width: 700px; margin: 20px auto; line-height: 1.8; }
+    button {
+      background-color: #ff4081;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    button:hover { background-color: #e73370; }
+    .social-links a {
+      color: #ff4081;
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 24px;
+    }
+    .lofi-girl {
+      width: 300px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    }
+    .rain, .clouds, .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .raindrop {
+      position: absolute;
+      width: 2px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.3);
+      animation: fall linear infinite;
+      opacity: 0.5;
+    }
+    @keyframes fall { 0% { top: -60px; } 100% { top: 110vh; } }
+    .cloud {
+      position: absolute;
+      width: 200px;
+      height: 60px;
+      background: #fff;
+      border-radius: 100px;
+      top: 50px;
+      animation: cloudMove 60s linear infinite;
+      opacity: 0.3;
+    }
+    @keyframes cloudMove { from { left: -250px; } to { left: 110%; }
+    }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite ease-in-out alternate;
+    }
+    @keyframes twinkle { from { opacity: 0.2; } to { opacity: 1; } }
+    .official-badge {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 1.1em;
+      color: #ff4081;
+      font-weight: bold;
+      background: rgba(0,0,0,0.4);
+      padding: 6px 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      animation: fadeIn 2s ease-in-out;
+    }
+    .official-badge::after {
+      content: '\2714';
+      background: #3aa3e3;
+      color: white;
+      font-size: 0.9em;
+      border-radius: 50%;
+      padding: 2px 6px;
+      margin-left: 5px;
+    }
+    .audio-controls {
+      margin-top: 20px;
+    }
+    .audio-controls button {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+    .audio-controls input[type="range"] {
+      width: 150px;
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+    .chatbox {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      max-height: 400px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      color: white;
+      font-size: 14px;
+    }
+    .chat-header {
+      background: #ff4081;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .chat-input {
+      display: flex;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+    }
+    .chat-input button {
+      background: #ff4081;
+      border: none;
+      padding: 10px;
+      color: white;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+    /* ---- აქ დაამატე სტილი ტიკ-ტაკ-ტოესთვის ---- */
+    .tictactoe {
+      text-align: center;
+      margin-top: 50px;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-gap: 5px;
+      margin: 20px auto;
+      justify-content: center;
+    }
+    .cell {
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5em;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    .difficulty-select {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body class="theme-night">
   <div class="container">
     <img src="images/lofigirlmain.png" alt="Lo-Fi Girl" class="lofi-girl">
     <h1>Lo-Fi Haven</h1>
