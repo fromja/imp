@@ -526,51 +526,141 @@
 
   createBoard();
 
-    // Adding nickname functionality with secret code for "LofiHaven" and "IMPEXS"
-    let isLofiHavenSet = false; // Flag to check if LofiHaven has been set once
-    let isImpexSet = false; // Flag to check if IMPEXS has been set once
+    <style>
+      /* Modern chat design with open/close functionality */
+      .chatbox {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 350px;
+        max-height: 500px;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 15px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        color: white;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
 
-    function sendMessage() {
-      const username = document.getElementById('chat-username').value.trim() || "Anonymous";
-      const input = document.getElementById('chat-input');
-      const messages = document.getElementById('chat-messages');
-      
-      // Only ask for the secret code the first time "LofiHaven" or "IMPEXS" is set
-      if (username === "LofiHaven" && !isLofiHavenSet) {
-        const secretCode = prompt("Please enter the secret code for LofiHaven:");
-        if (secretCode !== "idi.naxui123") {
-          alert("Incorrect secret code! You cannot use the 'LofiHaven' name.");
-          return;
-        }
-        isLofiHavenSet = true; // Mark LofiHaven as set
+      .chatbox.collapsed {
+        height: 40px; /* Minimal height when collapsed */
       }
-      
-      if (username === "IMPEXS" && !isImpexSet) {
-        const secretCode = prompt("Please enter the secret code for IMPEXS:");
-        if (secretCode !== "idi.naxui123") {
-          alert("Incorrect secret code! You cannot use the 'IMPEXS' name.");
-          return;
-        }
-        isImpexSet = true; // Mark IMPEXS as set
+
+      .chat-header {
+        background: #ff4081;
+        padding: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-      
-      if (input.value.trim() !== '') {
-        const msg = document.createElement('div');
-        
-        // Add the verified symbol and color the message text for "LofiHaven" or "IMPEXS"
-        if (username === 'LofiHaven') {
-          msg.innerHTML = `<strong style="color: red;">${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
-        } else if (username === 'IMPEXS') {
-          msg.innerHTML = `<strong style="color: red;">${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
+
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+        background: #222;
+        border-top: 2px solid #ff4081;
+      }
+
+      .chat-input {
+        display: flex;
+        background: #333;
+        padding: 10px;
+      }
+
+      .chat-input input {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 10px;
+        margin-right: 10px;
+        background: #444;
+        color: white;
+      }
+
+      .chat-input button {
+        background: #ff4081;
+        border: none;
+        padding: 10px;
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .chat-input button:hover {
+        background: #e73370;
+      }
+
+      /* Icon for toggle button */
+      .toggle-button {
+        font-size: 20px;
+        color: white;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+
+      .message {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
+
+      .message strong {
+        color: #ff4081;
+      }
+    </style>
+
+    <div class="chatbox" id="chatbox">
+      <div class="chat-header" onclick="toggleChat()">
+        <span>☕ Lofi Café Chat</span>
+        <span class="toggle-button">▼</span>
+      </div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input">
+        <input type="text" id="chat-input" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <script>
+      let isChatOpen = true;
+
+      function toggleChat() {
+        const chatbox = document.getElementById('chatbox');
+        const toggleButton = document.querySelector('.toggle-button');
+
+        if (isChatOpen) {
+          chatbox.classList.add('collapsed');
+          toggleButton.textContent = '►'; // Change icon to show "expand"
         } else {
-          msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
+          chatbox.classList.remove('collapsed');
+          toggleButton.textContent = '▼'; // Change icon to show "collapse"
         }
-        
-        messages.appendChild(msg);
-        input.value = '';
-        messages.scrollTop = messages.scrollHeight;
+
+        isChatOpen = !isChatOpen;
       }
-    }
+
+      function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const messages = document.getElementById('chat-messages');
+
+        if (input.value.trim() !== '') {
+          const msg = document.createElement('div');
+          msg.classList.add('message');
+          msg.innerHTML = `<strong>Your Name:</strong> ${input.value}`;
+
+          messages.appendChild(msg);
+          input.value = '';
+          messages.scrollTop = messages.scrollHeight;
+        }
+      }
+    </script>
     </script>
     
 </body>
