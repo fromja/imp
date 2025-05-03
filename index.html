@@ -192,14 +192,18 @@
         }
 
         function startGame() {
+            // Reset game state
             gameOver = false;
-            cells.forEach(cell => cell.classList.remove('filled'));
             score = 0;
             scoreDisplay.textContent = `Score: ${score}`;
+            cells.forEach(cell => cell.classList.remove('filled'));  // clear grid
+
+            // Generate new piece
             generateNewPiece();
             gameInterval = setInterval(updateGame, 500);
         }
 
+        // Handle keyboard inputs
         document.addEventListener('keydown', (e) => {
             if (gameOver) return;
 
@@ -223,6 +227,7 @@
             }
         });
 
+        // Initialize game grid
         createGrid();
     </script>
 
