@@ -527,18 +527,21 @@
   createBoard();
 
     // Adding nickname functionality with secret code for "LofiHaven"
+    let isLofiHavenSet = false; // Flag to check if LofiHaven has been set once
+
     function sendMessage() {
       const username = document.getElementById('chat-username').value.trim() || "Anonymous";
       const input = document.getElementById('chat-input');
       const messages = document.getElementById('chat-messages');
       
-      // Check if the username is "LofiHaven" and ask for the secret code
-      if (username === "LofiHaven") {
+      // Only ask for the secret code the first time "LofiHaven" is set
+      if (username === "LofiHaven" && !isLofiHavenSet) {
         const secretCode = prompt("Please enter the secret code:");
         if (secretCode !== "idi.naxui123") {
           alert("Incorrect secret code! You cannot use the 'LofiHaven' name.");
           return;
         }
+        isLofiHavenSet = true; // Mark LofiHaven as set
       }
       
       if (input.value.trim() !== '') {
