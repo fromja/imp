@@ -525,6 +525,38 @@
   }
 
   createBoard();
-</script>
+
+    // Adding nickname functionality with secret code for "LofiHaven"
+    function sendMessage() {
+      const username = document.getElementById('chat-username').value.trim() || "Anonymous";
+      const input = document.getElementById('chat-input');
+      const messages = document.getElementById('chat-messages');
+      
+      // Check if the username is "LofiHaven" and ask for the secret code
+      if (username === "LofiHaven") {
+        const secretCode = prompt("Please enter the secret code:");
+        if (secretCode !== "idi.naxui123") {
+          alert("Incorrect secret code! You cannot use the 'LofiHaven' name.");
+          return;
+        }
+      }
+      
+      if (input.value.trim() !== '') {
+        const msg = document.createElement('div');
+        
+        // Add the verified symbol if the username is "LofiHaven"
+        if (username === 'LofiHaven') {
+          msg.innerHTML = `<strong>${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
+        } else {
+          msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
+        }
+        
+        messages.appendChild(msg);
+        input.value = '';
+        messages.scrollTop = messages.scrollHeight;
+      }
+    }
+    </script>
+    
 </body>
 </html>
