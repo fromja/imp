@@ -573,7 +573,7 @@
     }
     
     <style>
-      /* Modern chat design with open/close functionality */
+      /* Chatbox and visual enhancement */
       .chatbox {
         position: fixed;
         bottom: 20px;
@@ -588,10 +588,11 @@
         color: white;
         font-size: 16px;
         transition: all 0.3s ease;
+        padding: 15px;
       }
 
       .chatbox.collapsed {
-        height: 40px; /* Minimal height when collapsed */
+        height: 40px;
       }
 
       .chat-header {
@@ -610,17 +611,20 @@
         padding: 15px;
         background: #222;
         border-top: 2px solid #ff4081;
+        border-radius: 10px;
+        max-height: 300px;
       }
 
       .chat-input {
         display: flex;
         background: #333;
         padding: 10px;
+        border-radius: 10px;
       }
 
       .chat-input input {
         flex: 1;
-        padding: 8px;
+        padding: 10px;
         border: none;
         border-radius: 10px;
         margin-right: 10px;
@@ -642,7 +646,6 @@
         background: #e73370;
       }
 
-      /* Icon for toggle button */
       .toggle-button {
         font-size: 20px;
         color: white;
@@ -651,15 +654,43 @@
       }
 
       .message {
-        margin-bottom: 10px;
-        padding: 10px;
+        margin-bottom: 15px;
+        padding: 12px;
         background: rgba(255, 255, 255, 0.1);
         border-radius: 10px;
+        margin-left: 0;
+        margin-right: 0;
       }
 
       .message strong {
         color: #ff4081;
+        font-weight: bold;
       }
+
+      .message .username {
+        font-size: 16px;
+        color: #ff4081;
+      }
+
+      .message .message-text {
+        font-size: 14px;
+        margin-top: 5px;
+      }
+
+      .message.self {
+        background: rgba(255, 255, 255, 0.2);
+        margin-left: auto;
+        margin-right: 0;
+        text-align: right;
+      }
+
+      .message.other {
+        background: rgba(255, 255, 255, 0.1);
+        margin-left: 0;
+        margin-right: auto;
+        text-align: left;
+      }
+
     </style>
 
     <div class="chatbox" id="chatbox">
@@ -684,31 +715,30 @@
 
         if (isChatOpen) {
           chatbox.classList.add('collapsed');
-          toggleButton.textContent = '►'; // Change icon to show "expand"
+          toggleButton.textContent = '►';
         } else {
           chatbox.classList.remove('collapsed');
-          toggleButton.textContent = '▼'; // Change icon to show "collapse"
+          toggleButton.textContent = '▼';
         }
 
         isChatOpen = !isChatOpen;
       }
 
-      let isLofiHavenSet = false; // Flag to check if LofiHaven has been set once
-      let isImpexSet = false; // Flag to check if IMPEXS has been set once
+      let isLofiHavenSet = false;
+      let isImpexSet = false;
 
       function sendMessage() {
         const username = document.getElementById('chat-username').value.trim() || "Anonymous";
         const input = document.getElementById('chat-input');
         const messages = document.getElementById('chat-messages');
 
-        // Only ask for the secret code the first time "LofiHaven" or "IMPEXS" is set
         if (username === "LofiHaven" && !isLofiHavenSet) {
           const secretCode = prompt("Please enter the secret code for LofiHaven:");
           if (secretCode !== "idi.naxui123") {
             alert("Incorrect secret code! You cannot use the 'LofiHaven' name.");
             return;
           }
-          isLofiHavenSet = true; // Mark LofiHaven as set
+          isLofiHavenSet = true;
         }
 
         if (username === "IMPEXS" && !isImpexSet) {
@@ -717,20 +747,22 @@
             alert("Incorrect secret code! You cannot use the 'IMPEXS' name.");
             return;
           }
-          isImpexSet = true; // Mark IMPEXS as set
+          isImpexSet = true;
         }
 
         if (input.value.trim() !== '') {
           const msg = document.createElement('div');
           msg.classList.add('message');
           
-          // Add the verified symbol and color the message text for "LofiHaven" or "IMPEXS"
           if (username === 'LofiHaven') {
-            msg.innerHTML = `<strong style="color: red;">${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
+            msg.classList.add('self');
+            msg.innerHTML = `<strong class="username">${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong><p class="message-text">${input.value}</p>`;
           } else if (username === 'IMPEXS') {
-            msg.innerHTML = `<strong style="color: red;">${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
+            msg.classList.add('self');
+            msg.innerHTML = `<strong class="username">${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong><p class="message-text">${input.value}</p>`;
           } else {
-            msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
+            msg.classList.add('other');
+            msg.innerHTML = `<strong class="username">${username}:</strong><p class="message-text">${input.value}</p>`;
           }
 
           messages.appendChild(msg);
