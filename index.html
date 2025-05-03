@@ -13,6 +13,7 @@
             height: 100vh;
             margin: 0;
             background-color: #222;
+            flex-direction: column;
         }
 
         #gameArea {
@@ -35,11 +36,9 @@
         }
 
         #score {
-            position: absolute;
-            top: 20px;
-            left: 20px;
             color: white;
             font-size: 24px;
+            margin-bottom: 10px;
         }
 
         button {
@@ -60,8 +59,8 @@
 </head>
 <body>
 
-    <div id="gameArea"></div>
     <div id="score">Score: 0</div>
+    <div id="gameArea"></div>
     <button onclick="startGame()">Start New Game</button>
 
     <script>
@@ -72,7 +71,8 @@
         const cells = [];
         let score = 0;
         let currentPiece, nextPiece, piecePosition;
-        let gameInterval, gameOver = false;
+        let gameInterval;
+        let gameOver = false;
 
         const shapes = [
             [[1, 1, 1, 1]], // I
@@ -192,10 +192,10 @@
         }
 
         function startGame() {
+            gameOver = false;
             cells.forEach(cell => cell.classList.remove('filled'));
             score = 0;
             scoreDisplay.textContent = `Score: ${score}`;
-            gameOver = false;
             generateNewPiece();
             gameInterval = setInterval(updateGame, 500);
         }
