@@ -557,11 +557,11 @@
       if (input.value.trim() !== '') {
         const msg = document.createElement('div');
         
-        // Add the verified symbol if the username is "LofiHaven" or "IMPEXS"
+        // Add the verified symbol and color the message text for "LofiHaven" or "IMPEXS"
         if (username === 'LofiHaven') {
-          msg.innerHTML = `<strong>${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
+          msg.innerHTML = `<strong style="color: red;">${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
         } else if (username === 'IMPEXS') {
-          msg.innerHTML = `<strong>${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
+          msg.innerHTML = `<strong style="color: red;">${username} <img src='images/verified.png' style='width:16px;height:16px;vertical-align:middle;margin-left:4px;' alt='Verified'></strong>: ${input.value}`;
         } else {
           msg.innerHTML = `<strong>${username}:</strong> ${input.value}`;
         }
